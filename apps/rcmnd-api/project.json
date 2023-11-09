@@ -1,0 +1,57 @@
+{
+  "name": "rcmnd-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/rcmnd-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/rcmnd-api",
+        "main": "apps/rcmnd-api/src/main.ts",
+        "tsConfig": "apps/rcmnd-api/tsconfig.app.json",
+        "assets": ["apps/rcmnd-api/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/rcmnd-api/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "rcmnd-api:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "rcmnd-api:build:development"
+        },
+        "production": {
+          "buildTarget": "rcmnd-api:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/rcmnd-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/rcmnd-api/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
