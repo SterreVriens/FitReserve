@@ -14,7 +14,20 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@fit-reserve/backend/dto": ["libs/backend/dto/src/index.ts"],
+      "@fit-reserve/backend/features": [
+        "libs/backend/features/user/src/index.ts"
+      ],
+      "@fit-reserve/fit-reserve/common": [
+        "libs/fit-reserve/common/src/index.ts"
+      ],
+      "@fit-reserve/fit-reserve/features": [
+        "libs/fit-reserve/features/src/index.ts"
+      ],
+      "@fit-reserve/shared/api": ["libs/shared/api/src/index.ts"],
+      "@fit-reserve/ui": ["libs/fit-reserve/ui/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
