@@ -5,11 +5,14 @@ import { UserListComponent } from './user/user-list/user-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './user/user.service';
 import { UserDetailComponent } from './user/user-detail/user-detail.component';
+import { TrainingListComponent } from './training/training-list/training-list.component';
 
 
 const routes: Routes = [
   { path: 'users', pathMatch: 'full', component: UserListComponent },
   { path: 'users/:id', pathMatch: 'full', component: UserDetailComponent },
+  { path: 'training', pathMatch: 'full', component: TrainingListComponent },
+
 
 ];
 
