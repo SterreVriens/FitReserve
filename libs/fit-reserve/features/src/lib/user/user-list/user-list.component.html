@@ -1,5 +1,16 @@
-<div *ngFor="let user of users"> 
-    <h2>{{user.UserName}}</h2>
-    <p>Rol : {{user.Role }}</p>
-    <p>aangemeld : {{user.Date}}</p>
+<div class="container">
+    <h1 class="color-lightblue">Alle gebruikers:</h1>
+
+    <div *ngFor="let user of users"> 
+        <div class="card my-3">
+            <div class="card-body">
+                <h2 class="card-title color-orange">{{user.UserName}}</h2>
+                <div class="card-text">
+                    <p class="color-blue">Rol: {{user.Role }}</p>
+                    <p class="color-yellow">Aangemeld: {{user.Date}}</p>
+                    <a routerLink="{{ user.id }}">Bekijk details</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
@@ -46,19 +47,18 @@ export class UserService {
      * Get a single item from the service.
      *
      */
-    // public read(id: string | null, options?: any): Observable<IUser> {
-    //     console.log(`read ${this.endpoint}`);
-    //     return this.http
-    //         .get<ApiResponse<IUser>>(this.endpoint, {
-    //             ...options,
-    //             ...httpOptions,
-    //         })
-    //         .pipe(
-    //             tap(console.log),
-    //             map((response: any) => response.results as IUser),
-    //             catchError(this.handleError)
-    //         );
-    // }
+    public read(id: string | null, options?: any): Observable<IUser> {
+        const url = `${this.endpoint}/${id}`; // Update de URL om het ID op te nemen
+        console.log(`read ${url}`);
+    
+        return this.http
+          .get<ApiResponse<IUser>>(url, { ...options, ...httpOptions })
+          .pipe(
+            map((response: any) => response.results as IUser),
+            tap(console.log),
+            catchError(this.handleError)
+          );
+      }
 
     /**
      * Handle errors.

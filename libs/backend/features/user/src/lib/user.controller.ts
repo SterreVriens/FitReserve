@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Param } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get} from '@nestjs/common';
 import { IUser } from '@fit-reserve/shared/api';
@@ -11,5 +11,10 @@ export class UserController {
     @Get('')
     getAll(): IUser[]{
         return this.userService.getAll();
+    }
+
+    @Get(':id')
+    getOne(@Param('id') id: string): IUser {
+        return this.userService.getOne(id);
     }
 }

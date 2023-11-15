@@ -1,0 +1,20 @@
+<div class="container">
+    <div *ngIf="user; else loadingTemplate">
+        <h2>User Details</h2>
+        <dl>
+          <dt>ID:</dt>
+          <dd>{{ user.id }}</dd>
+      
+          <dt>Gebruikersnaam:</dt>
+          <dd>{{ user.UserName }}</dd>
+      
+          <!-- Voeg andere gebruikersdetails toe zoals nodig -->
+        </dl>
+      </div>
+      
+      <ng-template #loadingTemplate>
+        <p>Loading...</p>
+      </ng-template>
+      
+</div>
+

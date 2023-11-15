@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { IUser, Role } from '@fit-reserve/shared/api';
 import { BehaviorSubject} from 'rxjs';
 import { Logger } from '@nestjs/common';
@@ -17,7 +17,7 @@ export class UserService{
             Role: Role.Trainer
         },
         {
-            id: '0',
+            id: '1',
             UserName: "Hans",
             Password: "Hans123",
             Date: new Date(),
@@ -29,4 +29,14 @@ export class UserService{
         Logger.log("GetAll", this.TAG)
         return this.users$.value;
     }
+
+    getOne(id: string): IUser {
+        Logger.log(`getOne(${id})`, this.TAG);
+        const meal = this.users$.value.find((td) => td.id === id);
+        if (!meal) {
+            throw new NotFoundException(`User could not be found!`);
+        }
+        return meal;
+    }
+
 }
