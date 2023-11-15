@@ -19,6 +19,9 @@
       "@fit-reserve/backend/features": [
         "libs/backend/features/user/src/index.ts"
       ],
+      "@fit-reserve/backend/features/training": [
+        "libs/backend/features/training/src/index.ts"
+      ],
       "@fit-reserve/fit-reserve/common": [
         "libs/fit-reserve/common/src/index.ts"
       ],
