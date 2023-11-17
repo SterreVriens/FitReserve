@@ -1,7 +1,7 @@
 // user-detail.component.ts
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { IUser } from '@fit-reserve/shared/api';
 
@@ -13,7 +13,7 @@ import { IUser } from '@fit-reserve/shared/api';
 export class UserDetailComponent implements OnInit {
   user: IUser | null = null;
 
-  constructor(private route: ActivatedRoute, private userService: UserService) {}
+  constructor(private route: ActivatedRoute, private userService: UserService, private router: Router,) {}
 
   ngOnInit(): void {
     // Haal het gebruikersid op uit de routeparameters
@@ -31,4 +31,24 @@ export class UserDetailComponent implements OnInit {
       );
     }
   }
+  onSubmit(): void {
+    console.log('onSubmit - delete');
+  
+    if(this.user){
+      this.userService.delete(this.user.id).subscribe(
+        (success) => {
+          console.log('Delete successful', success);
+          this.router.navigate(['..'], { relativeTo: this.route });
+          // Handle any additional logic after successful deletion
+        },
+        (error) => {
+          console.error('Error deleting user:', error);
+          // Handle errors, display a message, or perform any other necessary actions
+        }
+      );
+    }
+    else console.error('Er is een fout opgetreden bij het verwijderen van de gebruiker', Error);
+     
+  }
+  
 }

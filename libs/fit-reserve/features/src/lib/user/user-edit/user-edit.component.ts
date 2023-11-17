@@ -55,19 +55,35 @@ export class UserEditComponent implements OnInit {
 
 
   onSubmit() {
-    console.log('onSubmit -', this.user);
+    console.log('onSubmit - create/update');
   
-    this.userService.create(this.user).subscribe(
-      (success) => {
-        console.log(success);
-        if (success) {
+    if (this.userId) {
+      console.log(`Update user - ${this.userId}`)
+      this.userService.update(this.user,this.userId).subscribe(
+        (success) => {
+          console.log(success);
           this.router.navigate(['..'], { relativeTo: this.route });
+        },
+        (error) => {
+          console.error('Error updating user:', error);
         }
-      },
-      (error) => {
-        console.error('Error creating user:', error);
-      }
-    );
+      );
+    } else {
+      // New user: Create the user
+      console.log('Create user -', this.user);
+      this.userService.create(this.user).subscribe(
+        (success) => {
+          console.log(success);
+          if (success) {
+            this.router.navigate(['..'], { relativeTo: this.route });
+          }
+        },
+        (error) => {
+          console.error('Error creating user:', error);
+        }
+      );
+    }
   }
+  
   
 }

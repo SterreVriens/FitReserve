@@ -8,7 +8,19 @@
           <dt>Gebruikersnaam:</dt>
           <dd>{{ user.UserName }}</dd>
       
-          <!-- Voeg andere gebruikersdetails toe zoals nodig -->
+          <a routerLink="edit" class="button">Update</a>
+          <div>
+            <form 
+              #deleteForm = "ngForm"
+              name="form"
+              (ngSubmit)="onSubmit()"  
+            >
+
+              <button type="submit" class="btn btn-danger">
+                Verwijder
+            </button>
+            </form>
+          </div>
         </dl>
       </div>
       

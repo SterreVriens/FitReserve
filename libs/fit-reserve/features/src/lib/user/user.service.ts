@@ -72,6 +72,33 @@ export class UserService {
                 catchError(this.handleError)
             );
     }
+
+    public update(user: IUser, options?: any): Observable<IUser> {
+        const url = `${this.endpoint}/${user.id}`;
+        console.log(`Update - ${url}`);
+      
+        return this.http
+          .put<ApiResponse<IUser>>(url, user, { ...httpOptions, ...options })
+          .pipe(
+            map((response: any) => response.results as IUser),
+            tap(console.log),
+            catchError(this.handleError)
+          );
+      }
+      
+      public delete(id: string | null, options?: any): Observable<IUser> {
+        const url = `${this.endpoint}/${id}`;
+        console.log(`Delete - ${url}`);
+      
+        return this.http
+          .delete<ApiResponse<IUser>>(url, { ...httpOptions, ...options })
+          .pipe(
+            map((response: any) => response.results as IUser),
+            tap(console.log),
+            catchError(this.handleError)
+          );
+    }
+    
     
       
     /**

@@ -32,11 +32,11 @@ export class UserService{
 
     getOne(id: string): IUser {
         Logger.log(`getOne(${id})`, this.TAG);
-        const meal = this.users$.value.find((td) => td.id === id);
-        if (!meal) {
+        const user = this.users$.value.find((td) => td.id === id);
+        if (!user) {
             throw new NotFoundException(`User could not be found!`);
         }
-        return meal;
+        return user;
     }
 
     create(user: Pick<IUser,  'Password' | 'UserName'>): IUser {
@@ -56,5 +56,51 @@ export class UserService{
         return newUser;
     }
     
+    update(
+        user: Pick<IUser, 'Password' | 'UserName'>,
+        id: string
+      ): IUser {
+        Logger.log(`Update user with ID ${id}`, this.TAG);
+    
+        const currentUsers = this.users$.value;
+        const userIndex = currentUsers.findIndex((u) => u.id === id);
+    
+        if (userIndex === -1) {
+          Logger.error(`User with ID ${id} not found`, undefined, this.TAG);
+          throw new NotFoundException(`User could not be found!`);
+        }
+    
+        // Update the user properties
+        currentUsers[userIndex].Password = user.Password;
+        currentUsers[userIndex].UserName = user.UserName;
+    
+        // Update the BehaviorSubject with the modified array
+        this.users$.next([...currentUsers]);
+    
+        Logger.log('User updated successfully', this.TAG);
+        return currentUsers[userIndex];
+      }
+
+      delete(id: string): string {
+        Logger.log(`Delete user - ${id}`, this.TAG);
+      
+        const currentUsers = this.users$.value;
+        const userIndex = currentUsers.findIndex((u) => u.id === id);
+      
+        if (userIndex === -1) {
+          Logger.error(`User with ID ${id} not found`, undefined, this.TAG);
+          throw new NotFoundException(`User could not be found!`);
+        }
+      
+        // Remove the user from the array
+        const deletedUser = currentUsers.splice(userIndex, 1)[0];
+      
+        // Update the BehaviorSubject with the modified array
+        this.users$.next([...currentUsers]);
+      
+        Logger.log('User deleted successfully', this.TAG);
+        return `User ${deletedUser.UserName} deleted`;
+      }
+      
 
 }

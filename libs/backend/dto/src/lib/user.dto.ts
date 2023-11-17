@@ -51,10 +51,7 @@ export class CreateUserDto implements ICreateUser {
 //     Role!: Role;
 // }
 
-export class UpsertUserDto implements IUpdateUser {
-    @IsString()
-    @IsNotEmpty()
-    id!: Id ;
+export class UpdateUserDto implements IUpdateUser {
 
     @IsString()
     @IsNotEmpty()
@@ -64,7 +61,4 @@ export class UpsertUserDto implements IUpdateUser {
     @IsNotEmpty()
     Password!: string;
 
-    @IsString()
-    @IsNotEmpty()
-    Role!: Role;
 }
