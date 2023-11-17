@@ -19,7 +19,7 @@ export const httpOptions = {
  */
 @Injectable()
 export class TrainingService {
-    endpoint = 'http://localhost:3000/api/user';
+    endpoint = 'http://localhost:3000/api/training';
 
     constructor(private readonly http: HttpClient) {}
 

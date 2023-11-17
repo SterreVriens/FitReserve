@@ -1,0 +1,71 @@
+<div class="container">
+    <h2>User Form</h2>
+    <form
+        
+        #userEditForm="ngForm"
+        name="form"
+        (ngSubmit)="userEditForm.form.valid && onSubmit()"
+        novalidate>
+        
+        <div class="form-group">
+            <label for="UserName">Username:</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="UserName" 
+                placeholder="Enter username" 
+                [(ngModel)]="user!.UserName" 
+                name="UserName" 
+                #userName="ngModel"
+                [ngClass]="{
+                    'is-invalid': userName.invalid
+                }"
+                required
+                minlength="3">
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="userName.invalid" class="invalid-feedback">
+                <div>Username mag niet leeg zijn</div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                placeholder="Enter password" 
+                [(ngModel)]="user.Password" 
+                name="password"
+                #password="ngModel"
+                [ngClass]="{
+                    'is-invalid': password.invalid 
+                }"
+                required>
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="password.invalid && password.touched" class="invalid-feedback">
+                <div >Password mag niet leeg zijn</div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="form-group">
+            <label for="role">Role:</label>
+            <select class="form-control" id="role" [(ngModel)]="user.Role" name="role" required>
+                <option value="" disabled>Select a role</option>
+                <option value="Trainee">Trainee</option>
+                <option value="Trainer">Trainer</option>
+            </select>
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="userEditForm.controls['role'].invalid && userEditForm.controls['role'].touched">
+                Please select a role
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary"
+         [disabled]="!userEditForm.valid"
+         [class.pointer-events-none]="userEditForm.invalid"
+         [class.opacity-30]="userEditForm.invalid"
+         >Submit</button>
+    </form>
+</div>

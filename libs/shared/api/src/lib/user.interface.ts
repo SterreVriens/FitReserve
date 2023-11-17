@@ -11,3 +11,10 @@ export interface IUser{
     Date: Date;
     Role: Role;
 }
+
+export type ICreateUser = Pick<
+    IUser,
+    'id'| 'UserName' | 'Password' | 'Role' 
+>;
+export type IUpdateUser= Partial<Omit<IUser, 'id'>>;
+export type IUpsertUser = IUser;

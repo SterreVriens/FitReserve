@@ -29,7 +29,7 @@ export class UserService {
      * @options options - optional URL queryparam options
      */
     public list(options?: any): Observable<IUser[] | null> {
-        console.log(`list ${this.endpoint}`);
+        console.log(`list - ${this.endpoint}`);
 
         return this.http
             .get<ApiResponse<IUser[]>>(this.endpoint, {
@@ -49,7 +49,7 @@ export class UserService {
      */
     public read(id: string | null, options?: any): Observable<IUser> {
         const url = `${this.endpoint}/${id}`; // Update de URL om het ID op te nemen
-        console.log(`read ${url}`);
+        console.log(`Read - ${url}`);
     
         return this.http
           .get<ApiResponse<IUser>>(url, { ...options, ...httpOptions })
@@ -60,6 +60,20 @@ export class UserService {
           );
       }
 
+      public create(user: IUser | null, options?: any): Observable<IUser> {
+        const url = `${this.endpoint}`;
+        console.log(`Create - ${url}`);
+    
+        return this.http
+            .post<ApiResponse<IUser>>(url, user, { ...httpOptions, ...options })
+            .pipe(
+                map((response: any) => response.results as IUser),
+                tap(console.log),
+                catchError(this.handleError)
+            );
+    }
+    
+      
     /**
      * Handle errors.
      */

@@ -39,4 +39,22 @@ export class UserService{
         return meal;
     }
 
+    create(user: Pick<IUser,  'Password' | 'UserName'>): IUser {
+        Logger.log('create', this.TAG);
+        const current = this.users$.value;
+    
+        // Use the incoming data, a randomized ID, and default values for other fields
+        const newUser: IUser = {
+            id: `user-${Math.floor(Math.random() * 10000)}`,
+            UserName: user.UserName || '', // Use the provided value or default to an empty string
+            Password: user.Password || '', // Use the provided value or default to an empty string
+            Role: Role.Trainee,
+            Date: new Date()
+        };
+    
+        this.users$.next([...current, newUser]);
+        return newUser;
+    }
+    
+
 }
