@@ -1,0 +1,27 @@
+{
+  "name": "features",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/fit-reserve/features/src",
+  "prefix": "fit-reserve",
+  "tags": [],
+  "projectType": "library",
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/fit-reserve/features/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "libs/fit-reserve/features/**/*.ts",
+          "libs/fit-reserve/features/**/*.html"
+        ]
+      }
+    }
+  }
+}
