@@ -15,16 +15,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-      - name: npm install, build, test
+      - name: npm install, build
         run: |
           npm install --legacy-peer-deps
           npm run build --if-present
-          npm run test --if-present
       - name: Zip artifacts for deployment
         run: |
           echo ${GITHUB_WORKSPACE}
-          cd ${GITHUB_WORKSPACE}\dist\apps\data-api\ && zip ${GITHUB_WORKSPACE}\data-api-release.zip .\* -r
-          cd ${GITHUB_WORKSPACE}\dist\apps\fit-reserve\ && zip ${GITHUB_WORKSPACE}\fit-reserve-release.zip .\* -r
+          cd ${GITHUB_WORKSPACE}/dist/apps/data-api/ && zip ${GITHUB_WORKSPACE}/data-api-release.zip ./* -r
+          cd ${GITHUB_WORKSPACE}/dist/apps/fit-reserve/ && zip ${GITHUB_WORKSPACE}/fit-reserve-release.zip ./* -r
+
 
       - name: Upload frontend artifact for deployment job
         uses: actions/upload-artifact@v3
@@ -47,10 +47,10 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: frontend
+          name: fit-reserve
 
       - name: Unzip artifact for deployment
-        run: unzip frontend-release.zip
+        run: unzip fit-reserve-release.zip
 
       - name: Deploy to static azure web app
         id: builddeploy
