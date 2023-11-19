@@ -2,7 +2,11 @@
   "name": "@fit-reserve/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "deploy": "nx run data-api:build",
+     "build": "nx run-many -t build",
+     "test": "nx run-many -t test"
+ },
   "private": true,
   "dependencies": {
     "@angular/animations": "~17.0.0",
@@ -71,4 +75,5 @@
     "ts-node": "10.9.1",
     "typescript": "~5.2.2"
   }
+  
 }
