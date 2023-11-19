@@ -50,7 +50,7 @@ jobs:
           name: fit-reserve
 
       - name: Unzip artifact for deployment
-        run: unzip frontend-release.zip
+        run: unzip fit-reserve-release.zip
 
       - name: Deploy to static azure web app
         id: builddeploy
