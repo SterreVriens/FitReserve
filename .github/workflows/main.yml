@@ -22,8 +22,9 @@ jobs:
       - name: Zip artifacts for deployment
         run: |
           echo ${GITHUB_WORKSPACE}
-          cd ${GITHUB_WORKSPACE}\dist\apps\data-api\ && zip ${GITHUB_WORKSPACE}\data-api-release.zip .\* -r
-          cd ${GITHUB_WORKSPACE}\dist\apps\fit-reserve\ && zip ${GITHUB_WORKSPACE}\fit-reserve-release.zip .\* -r
+          cd ${GITHUB_WORKSPACE}/dist/apps/data-api/ && zip ${GITHUB_WORKSPACE}/data-api-release.zip ./* -r
+          cd ${GITHUB_WORKSPACE}/dist/apps/fit-reserve/ && zip ${GITHUB_WORKSPACE}/fit-reserve-release.zip ./* -r
+
 
       - name: Upload frontend artifact for deployment job
         uses: actions/upload-artifact@v3
