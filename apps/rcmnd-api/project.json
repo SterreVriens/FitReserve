@@ -14,7 +14,7 @@
         "outputPath": "dist/apps/rcmnd-api",
         "main": "apps/rcmnd-api/src/main.ts",
         "tsConfig": "apps/rcmnd-api/tsconfig.app.json",
-        "assets": ["apps/rcmnd-api/src/assets"],
+        "": ["apps/rcmnd-api/src/"],
         "isolatedConfig": true,
         "webpackConfig": "apps/rcmnd-api/webpack.config.js"
       },
