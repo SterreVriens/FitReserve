@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { Get} from '@nestjs/common';
 import { IUser } from '@fit-reserve/shared/api';
 import { CreateUserDto, UpdateUserDto} from '@fit-reserve/backend/dto'
+import { User } from './schemas/user.schema';
 
 
 @Controller('user')
@@ -10,7 +11,7 @@ export class UserController {
     constructor(private userService: UserService){}
 
     @Get('')
-    getAll(): IUser[]{
+    getAll():Promise<User[]>{
         return this.userService.getAll();
     }
 

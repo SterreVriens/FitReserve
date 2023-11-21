@@ -2,11 +2,45 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { IUser, Role } from '@fit-reserve/shared/api';
 import { BehaviorSubject} from 'rxjs';
 import { Logger } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from './schemas/user.schema';
 
 
 @Injectable()
 export class UserService{
     TAG = 'UserService';
+
+    constructor(@InjectModel(User.name) private userModel: Model<User>){
+      this.seedDb()
+    }
+
+    async seedDb() {
+      const currentUsers = await this.getAll();
+      if (currentUsers.length > 0) {
+        Logger.log('db already seeded');
+        return;
+      }
+      Logger.log('seeding db');
+      //const newCook = new this.cookModel(cook);
+      const seedUser1 = new User();
+      seedUser1.UserName = 'mustrumridcully';
+      seedUser1.Password = 'Hallo123';
+      seedUser1.Date = new Date();
+      seedUser1.Role = Role.Trainee;
+      const newSeedUser1 = new this.userModel(seedUser1);
+      await newSeedUser1.save();
+  
+      const seedUser2 = new User();
+      seedUser2.UserName = 'rincewind';
+      seedUser2.Password = 'Hallo123';
+      seedUser2.Date = new Date();
+      seedUser2.Role= Role.Trainer
+      const newSeedUser2 = new this.userModel(seedUser2);
+      await newSeedUser2.save();
+  
+    }
+  
 
     private users$ = new BehaviorSubject<IUser[]>([
         {
@@ -25,9 +59,9 @@ export class UserService{
         }
     ]);
 
-    getAll() :IUser[]{
+    getAll() :Promise<User[]>{
         Logger.log("GetAll", this.TAG)
-        return this.users$.value;
+        return this.userModel.find().exec();
     }
 
     getOne(id: string): IUser {
