@@ -13,7 +13,7 @@ import { MongooseModule } from '@nestjs/mongoose';
     [UserModule, 
     TrainingModule,
     //ConfigModule.forRoot({isGlobal:true}),
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/Fit-Reserve-Data-api')
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/fit-reserve-data-api')
   ],
   controllers: [AppController],
   providers: [AppService],

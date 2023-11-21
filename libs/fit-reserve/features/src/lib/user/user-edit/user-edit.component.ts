@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 export class UserEditComponent implements OnInit {
   userId: Id | null = null;
   user: IUser = {
-    id: '1',
+    _id: '1',
     UserName: '',
     Password: '',
     Role: Role.Trainee,

@@ -74,7 +74,7 @@ export class UserService {
     }
 
     public update(user: IUser, options?: any): Observable<IUser> {
-        const url = `${this.endpoint}/${user.id}`;
+        const url = `${this.endpoint}/${user._id}`;
         console.log(`Update - ${url}`);
       
         return this.http

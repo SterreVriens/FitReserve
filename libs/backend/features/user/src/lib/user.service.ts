@@ -44,14 +44,14 @@ export class UserService{
 
     private users$ = new BehaviorSubject<IUser[]>([
         {
-            id: '0',
+            _id: '0',
             UserName: "Bob",
             Password: "Bob123",
             Date: new Date(),
             Role: Role.Trainer
         },
         {
-            id: '1',
+            _id: '1',
             UserName: "Hans",
             Password: "Hans123",
             Date: new Date(),
@@ -64,13 +64,17 @@ export class UserService{
         return this.userModel.find().exec();
     }
 
-    getOne(id: string): IUser {
-        Logger.log(`getOne(${id})`, this.TAG);
-        const user = this.users$.value.find((td) => td.id === id);
-        if (!user) {
-            throw new NotFoundException(`User could not be found!`);
-        }
-        return user;
+    // getOne(id: string): IUser {
+    //     Logger.log(`getOne(${id})`, this.TAG);
+    //     const user = this.users$.value.find((td) => td.id === id);
+    //     if (!user) {
+    //         throw new NotFoundException(`User could not be found!`);
+    //     }
+    //     return user;
+    // }
+
+    async getOne(id: string): Promise<User | null> {
+      return await this.userModel.findOne({ _id: id }).exec();
     }
 
     create(user: Pick<IUser,  'Password' | 'UserName'>): IUser {
@@ -79,7 +83,7 @@ export class UserService{
     
         // Use the incoming data, a randomized ID, and default values for other fields
         const newUser: IUser = {
-            id: `user-${Math.floor(Math.random() * 10000)}`,
+            _id: `user-${Math.floor(Math.random() * 10000)}`,
             UserName: user.UserName || '', // Use the provided value or default to an empty string
             Password: user.Password || '', // Use the provided value or default to an empty string
             Role: Role.Trainee,
@@ -97,7 +101,7 @@ export class UserService{
         Logger.log(`Update user with ID ${id}`, this.TAG);
     
         const currentUsers = this.users$.value;
-        const userIndex = currentUsers.findIndex((u) => u.id === id);
+        const userIndex = currentUsers.findIndex((u) => u._id === id);
     
         if (userIndex === -1) {
           Logger.error(`User with ID ${id} not found`, undefined, this.TAG);
@@ -119,7 +123,7 @@ export class UserService{
         Logger.log(`Delete user - ${id}`, this.TAG);
       
         const currentUsers = this.users$.value;
-        const userIndex = currentUsers.findIndex((u) => u.id === id);
+        const userIndex = currentUsers.findIndex((u) => u._id === id);
       
         if (userIndex === -1) {
           Logger.error(`User with ID ${id} not found`, undefined, this.TAG);

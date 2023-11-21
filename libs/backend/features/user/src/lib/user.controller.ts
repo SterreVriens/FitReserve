@@ -16,7 +16,7 @@ export class UserController {
     }
 
     @Get(':id')
-    getOne(@Param('id') id: string): IUser {
+    getOne(@Param('id') id: string): Promise<User | null> {
         return this.userService.getOne(id);
     }
 

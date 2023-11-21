@@ -35,7 +35,7 @@ export class UserDetailComponent implements OnInit {
     console.log('onSubmit - delete');
   
     if(this.user){
-      this.userService.delete(this.user.id).subscribe(
+      this.userService.delete(this.user._id).subscribe(
         (success) => {
           console.log('Delete successful', success);
           this.router.navigate(['..'], { relativeTo: this.route });

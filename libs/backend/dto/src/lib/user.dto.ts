@@ -18,7 +18,7 @@ import {
 export class CreateUserDto implements ICreateUser {
     @IsString()
     @IsNotEmpty()
-    id!: Id ;
+    _id!: Id ;
 
     @IsString()
     @IsNotEmpty()
