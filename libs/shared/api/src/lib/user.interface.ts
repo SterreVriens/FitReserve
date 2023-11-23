@@ -5,7 +5,7 @@ export enum Role{
     Trainee = "Trainee"
 }
 export interface IUser{
-    _id: Id;
+    _id?: Id;
     UserName: string;
     Password: string;
     Date: Date;

@@ -5,6 +5,8 @@ import { Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
+import * as bcrypt from 'bcrypt';
+
 
 
 @Injectable()
@@ -25,7 +27,7 @@ export class UserService{
       //const newCook = new this.cookModel(cook);
       const seedUser1 = new User();
       seedUser1.UserName = 'mustrumridcully';
-      seedUser1.Password = 'Hallo123';
+      seedUser1.Password = await this.generateHashedPassword('Hallo123');
       seedUser1.Date = new Date();
       seedUser1.Role = Role.Trainee;
       const newSeedUser1 = new this.userModel(seedUser1);
@@ -33,7 +35,7 @@ export class UserService{
   
       const seedUser2 = new User();
       seedUser2.UserName = 'rincewind';
-      seedUser2.Password = 'Hallo123';
+      seedUser2.Password = await this.generateHashedPassword('Hallo123');
       seedUser2.Date = new Date();
       seedUser2.Role= Role.Trainer
       const newSeedUser2 = new this.userModel(seedUser2);
@@ -59,22 +61,20 @@ export class UserService{
         }
     ]);
 
-    getAll() :Promise<User[]>{
+    async getAll() :Promise<User[]>{
         Logger.log("GetAll", this.TAG)
         return this.userModel.find().exec();
     }
 
-    // getOne(id: string): IUser {
-    //     Logger.log(`getOne(${id})`, this.TAG);
-    //     const user = this.users$.value.find((td) => td.id === id);
-    //     if (!user) {
-    //         throw new NotFoundException(`User could not be found!`);
-    //     }
-    //     return user;
-    // }
+    async getOne(username: string): Promise<User | null> {
+      Logger.log(`getOne(${username})`, this.TAG);
+      return await this.userModel.findOne({ UserName: username }).exec();
+    }
+    
 
-    async getOne(id: string): Promise<User | null> {
-      return await this.userModel.findOne({ _id: id }).exec();
+    async generateHashedPassword(plainTextPassword: string): Promise<string> {
+      const saltOrRounds = 10;
+      return await bcrypt.hash(plainTextPassword, saltOrRounds);
     }
 
     create(user: Pick<IUser,  'Password' | 'UserName'>): IUser {

@@ -31,24 +31,24 @@ export class UserDetailComponent implements OnInit {
       );
     }
   }
-  onSubmit(): void {
-    console.log('onSubmit - delete');
+  // onSubmit(): void {
+  //   console.log('onSubmit - delete');
   
-    if(this.user){
-      this.userService.delete(this.user._id).subscribe(
-        (success) => {
-          console.log('Delete successful', success);
-          this.router.navigate(['..'], { relativeTo: this.route });
-          // Handle any additional logic after successful deletion
-        },
-        (error) => {
-          console.error('Error deleting user:', error);
-          // Handle errors, display a message, or perform any other necessary actions
-        }
-      );
-    }
-    else console.error('Er is een fout opgetreden bij het verwijderen van de gebruiker', Error);
+  //   if(this.user){
+  //     this.userService.delete(this.user._id).subscribe(
+  //       (success) => {
+  //         console.log('Delete successful', success);
+  //         this.router.navigate(['..'], { relativeTo: this.route });
+  //         // Handle any additional logic after successful deletion
+  //       },
+  //       (error) => {
+  //         console.error('Error deleting user:', error);
+  //         // Handle errors, display a message, or perform any other necessary actions
+  //       }
+  //     );
+  //   }
+  //   else console.error('Er is een fout opgetreden bij het verwijderen van de gebruiker', Error);
      
-  }
+  // }
   
 }
