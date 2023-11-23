@@ -30,6 +30,7 @@ import {
 
     
 
+    @Public()
     @Post('register')
     async register(@Body() user: Record<string, any>): Promise<IUser> {
         try {
