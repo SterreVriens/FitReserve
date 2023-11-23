@@ -11,16 +11,15 @@ import { UserModule } from '@fit-reserve/backend/features';
 
 @Module({
   imports: [
-      ConfigModule,
-      UserModule,
+    ConfigModule,
+    UserModule, // Make sure to import UserModule
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '3600s' },
     }),
   ],
-  providers: [AuthService,
-    {provide: APP_GUARD, useClass: AuthGuard}],
+  providers: [AuthService, { provide: APP_GUARD, useClass: AuthGuard }],
   controllers: [AuthController],
   exports: [AuthService],
 })

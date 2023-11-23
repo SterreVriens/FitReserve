@@ -48,18 +48,19 @@ export class AuthService {
     const savedUser = await userModel.save();
   
     return savedUser.toObject();
+
   }
   
 
 
-async generateHashedPassword(plainTextPassword: string): Promise<string> {
-  const saltOrRounds = 10;
-  return await bcrypt.hash(plainTextPassword, saltOrRounds);
-}
+  async generateHashedPassword(plainTextPassword: string): Promise<string> {
+    const saltOrRounds = 10;
+    return await bcrypt.hash(plainTextPassword, saltOrRounds);
+  }
 
-async validatePassword(givenPassword: string, passwordHash: string): Promise<boolean> {
-  return await bcrypt.compare(givenPassword, passwordHash);
-}
-  
+  async validatePassword(givenPassword: string, passwordHash: string): Promise<boolean> {
+    return await bcrypt.compare(givenPassword, passwordHash);
+  }
+    
   
 }
