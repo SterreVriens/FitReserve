@@ -22,14 +22,11 @@
       "@fit-reserve/backend/features/auth": [
         "libs/backend/features/auth/src/index.ts"
       ],
-      "@fit-reserve/backend/features/training": [
-        "libs/backend/features/training/src/index.ts"
-      ],
-      "@fit-reserve/backend/features/auth": [
-        "libs/backend/features/auth/src/index.ts"
-      ],
       "@fit-reserve/backend/features/auth/decorator": [
         "libs/backend/features/auth/src/lib/decorator/public.decorator.ts"
+      ],
+      "@fit-reserve/backend/features/training": [
+        "libs/backend/features/training/src/index.ts"
       ],
       "@fit-reserve/fit-reserve/common": [
         "libs/fit-reserve/common/src/index.ts"

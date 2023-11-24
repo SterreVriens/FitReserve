@@ -9,6 +9,9 @@ import { UserDetailComponent } from './user/user-detail/user-detail.component';
 import { TrainingListComponent } from './training/training-list/training-list.component';
 import { TrainingService } from './training/training.service';
 import { UserEditComponent } from './user/user-edit/user-edit.component';
+import { AuthLoginComponent } from './auth/user-login/auth-login/auth-login.component';
+import { AuthService } from './auth/auth.service';
+import { AuthRegisterComponent } from './auth/user-register/auth-register/auth-register.component';
 
 const routes: Routes = [
   { path: 'users', pathMatch: 'full', component: UserListComponent },
@@ -16,12 +19,16 @@ const routes: Routes = [
   { path: 'users/:id/edit', pathMatch: 'full', component: UserEditComponent },
   { path: 'users/:id', pathMatch: 'full', component: UserDetailComponent },
   { path: 'training', pathMatch: 'full', component: TrainingListComponent },
+  { path: 'auth/register', pathMatch: 'full', component: AuthRegisterComponent },
+  { path: 'auth/login', pathMatch: 'full', component: AuthLoginComponent },
+
+
 ];
 
 @NgModule({
   imports: [CommonModule, RouterModule.forChild(routes), HttpClientModule, FormsModule, ReactiveFormsModule], // Include FormsModule here
-  providers: [UserService, TrainingService],
-  declarations: [UserListComponent, UserDetailComponent, TrainingListComponent, UserEditComponent],
-  exports: [UserListComponent, UserDetailComponent, TrainingListComponent, UserEditComponent],
+  providers: [UserService, TrainingService,AuthService],
+  declarations: [UserListComponent, UserDetailComponent, TrainingListComponent, UserEditComponent,AuthLoginComponent,AuthRegisterComponent],
+  exports: [UserListComponent, UserDetailComponent, TrainingListComponent, UserEditComponent,AuthLoginComponent,AuthRegisterComponent],
 })
 export class FeaturesModule {}

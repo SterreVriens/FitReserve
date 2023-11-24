@@ -8,8 +8,8 @@ export interface IUser{
     _id?: Id;
     UserName: string;
     Password: string;
-    Date: Date;
-    Role: Role;
+    Date?: Date;
+    Role?: Role;
 }
 
 export type ICreateUser = Pick<

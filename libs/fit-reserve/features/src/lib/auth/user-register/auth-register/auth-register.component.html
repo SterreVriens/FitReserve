@@ -1,0 +1,51 @@
+<div class="container">
+    <form 
+        #registrationForm="ngForm"
+        name="registrationform"
+        (ngSubmit)="registrationForm.form.valid && onSubmit()"
+        novalidate>
+        <div class="form-group">
+            <label for="Username">Username</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="UserName"
+                placeholder="Enter username"
+                name="UserName"
+                [(ngModel)]="user.UserName"
+                #UserName="ngModel"
+                required>
+        </div>
+        <div class="form-group">
+            <label for="Password">Password</label>
+            <input 
+                type="password" 
+                class="form-control" 
+                id="Password" 
+                placeholder="Password"
+                name="Password"
+                [(ngModel)]="user.Password"
+                #Password="ngModel"
+                required>
+        </div>
+        <div class="form-group">
+            <label for="Role">Role</label>
+            <select 
+                class="form-control" 
+                id="Role"
+                name="Role"
+                [(ngModel)]="user.Role"
+                #Role="ngModel"
+                required>
+                <option value="" disabled>Select a role</option>
+                <option *ngFor="let role of roles | keyvalue" [value]="role.value">
+                    {{role.value | titlecase}}
+                </option>
+            </select>
+        </div>
+        <button 
+            type="submit" 
+            class="btn btn-primary"
+            >Submit</button>
+    </form>
+</div>
