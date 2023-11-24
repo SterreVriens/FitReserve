@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Put } from '@nestjs/common';
+import { Body, Controller, Delete, NotFoundException, Param, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get} from '@nestjs/common';
 import { IUser } from '@fit-reserve/shared/api';
@@ -29,8 +29,15 @@ export class UserController {
         return this.userService.update(data,id)
     }
 
-    @Delete(':id')
-    delete(@Param('id')id: string): string{
-        return this.userService.delete(id)
+
+    @Delete(':_id')
+    async delete(@Param('_id') _id: string): Promise<string> {
+    try {
+        await this.userService.delete(_id);
+        return "User deleted sucesfully";
+    } catch (error) {
+        // Handel de fout af, bijv. retourneer een 404 als de gebruiker niet gevonden is.
+        throw new NotFoundException(error);
     }
+}
 }

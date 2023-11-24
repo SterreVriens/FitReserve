@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { IUser, Role } from '@fit-reserve/shared/api';
 import { BehaviorSubject} from 'rxjs';
 import { Logger } from '@nestjs/common';
@@ -70,6 +70,26 @@ export class UserService{
       Logger.log(`getOne(${username})`, this.TAG);
       return await this.userModel.findOne({ UserName: username }).exec();
     }
+
+    async delete(id: string): Promise<void> {
+      Logger.log(`Delete user - ${id}`, this.TAG);
+    
+      try {
+        // Gebruik Mongoose om de gebruiker te verwijderen op basis van het ID
+        const result = await this.userModel.deleteOne({ _id: id }).exec();
+    
+        // Controleer of de verwijdering succesvol was
+        if (result.deletedCount === 0) {
+          Logger.error(`User with ID ${id} not found`, undefined, this.TAG);
+          throw new NotFoundException(`User could not be found!`);
+        }
+    
+        Logger.log('User deleted successfully', this.TAG);
+      } catch (error) {
+        Logger.error(`Error deleting user with ID ${id}`, error, this.TAG);
+        throw new InternalServerErrorException('Error deleting user');
+      }
+    }
     
 
     async generateHashedPassword(plainTextPassword: string): Promise<string> {
@@ -119,26 +139,6 @@ export class UserService{
         return currentUsers[userIndex];
       }
 
-      delete(id: string): string {
-        Logger.log(`Delete user - ${id}`, this.TAG);
-      
-        const currentUsers = this.users$.value;
-        const userIndex = currentUsers.findIndex((u) => u._id === id);
-      
-        if (userIndex === -1) {
-          Logger.error(`User with ID ${id} not found`, undefined, this.TAG);
-          throw new NotFoundException(`User could not be found!`);
-        }
-      
-        // Remove the user from the array
-        const deletedUser = currentUsers.splice(userIndex, 1)[0];
-      
-        // Update the BehaviorSubject with the modified array
-        this.users$.next([...currentUsers]);
-      
-        Logger.log('User deleted successfully', this.TAG);
-        return `User ${deletedUser.UserName} deleted`;
-      }
       
 
 }
