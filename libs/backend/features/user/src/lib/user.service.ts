@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { IUser, Role } from '@fit-reserve/shared/api';
 import { BehaviorSubject} from 'rxjs';
 import { Logger } from '@nestjs/common';
@@ -90,54 +90,52 @@ export class UserService{
         throw new InternalServerErrorException('Error deleting user');
       }
     }
-    
 
-    async generateHashedPassword(plainTextPassword: string): Promise<string> {
-      const saltOrRounds = 10;
-      return await bcrypt.hash(plainTextPassword, saltOrRounds);
-    }
+    // user.service.ts
 
-    create(user: Pick<IUser,  'Password' | 'UserName'>): IUser {
-        Logger.log('create', this.TAG);
-        const current = this.users$.value;
-    
-        // Use the incoming data, a randomized ID, and default values for other fields
-        const newUser: IUser = {
-            _id: `user-${Math.floor(Math.random() * 10000)}`,
-            UserName: user.UserName || '', // Use the provided value or default to an empty string
-            Password: user.Password || '', // Use the provided value or default to an empty string
-            Role: Role.Trainee,
-            Date: new Date()
-        };
-    
-        this.users$.next([...current, newUser]);
-        return newUser;
-    }
-    
-    update(
-        user: Pick<IUser, 'Password' | 'UserName'>,
-        id: string
-      ): IUser {
-        Logger.log(`Update user with ID ${id}`, this.TAG);
-    
-        const currentUsers = this.users$.value;
-        const userIndex = currentUsers.findIndex((u) => u._id === id);
-    
-        if (userIndex === -1) {
-          Logger.error(`User with ID ${id} not found`, undefined, this.TAG);
-          throw new NotFoundException(`User could not be found!`);
-        }
-    
-        // Update the user properties
-        currentUsers[userIndex].Password = user.Password;
-        currentUsers[userIndex].UserName = user.UserName;
-    
-        // Update the BehaviorSubject with the modified array
-        this.users$.next([...currentUsers]);
-    
-        Logger.log('User updated successfully', this.TAG);
-        return currentUsers[userIndex];
+  async update(user: Pick<IUser, 'Password' | 'UserName'>, id: string, loggedInUserId: string): Promise<IUser> {
+    Logger.log(`Update user with ID ${id}`, this.TAG);
+    try {
+      // Haal de huidige gebruiker op
+      const currentUser = await this.userModel.findById(loggedInUserId).exec();
+
+      // Controleer of de huidige gebruiker bestaat
+      if (!currentUser) {
+        throw new NotFoundException('User not found');
       }
+
+      // Controleer of de huidige gebruiker overeenkomt met de gebruiker die wordt bijgewerkt
+      if (currentUser._id.toString() !== id) {
+        throw new UnauthorizedException('You are not authorized to update this user');
+      }
+
+      // Update de gebruikersgegevens in de database
+      const updatedUser = await this.userModel.findByIdAndUpdate(id, user, { new: true }).exec();
+
+      if (!updatedUser) {
+        throw new NotFoundException('User not found');
+      }
+
+      Logger.log('User updated successfully', this.TAG);
+      return updatedUser.toObject();
+    } catch (error) {
+      Logger.error(`Error updating user with ID ${id}`, error, this.TAG);
+      throw new InternalServerErrorException('Error updating user');
+    }
+  }
+
+    
+
+  async generateHashedPassword(plainTextPassword: string | null): Promise<string> {
+    if (plainTextPassword === null || plainTextPassword === undefined) {
+        throw new Error('Plain text password cannot be null or undefined.');
+    }
+
+    const saltOrRounds = 10;
+    return await bcrypt.hash(plainTextPassword, saltOrRounds);
+}
+
+
 
       
 

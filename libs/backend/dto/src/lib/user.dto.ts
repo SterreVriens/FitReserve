@@ -57,8 +57,5 @@ export class UpdateUserDto implements IUpdateUser {
     @IsNotEmpty()
     UserName!: string;
 
-    @IsString()
-    @IsNotEmpty()
-    Password!: string;
 
 }

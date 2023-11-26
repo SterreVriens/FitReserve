@@ -1,0 +1,79 @@
+<div class="container">
+    <h2>Training Form</h2>
+    <form
+        #trainingForm="ngForm"
+        name="form"
+        (ngSubmit)="trainingForm.form.valid && onSubmit()"
+        novalidate>
+        
+        <div class="form-group">
+            <label for="SessionName">Session Name:</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="SessionName" 
+                placeholder="Enter session name" 
+                [(ngModel)]="training!.SessionName" 
+                name="SessionName" 
+                #sessionName="ngModel"
+                [ngClass]="{
+                    'is-invalid': sessionName.invalid
+                }"
+                required
+                minlength="3">
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="sessionName.invalid" class="invalid-feedback">
+                <div>Session Name cannot be empty and must be at least 3 characters</div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="Description">Description:</label>
+            <textarea 
+                class="form-control" 
+                id="Description" 
+                placeholder="Enter description" 
+                [(ngModel)]="training!.Description" 
+                name="Description" 
+                #description="ngModel"
+                [ngClass]="{
+                    'is-invalid': description.invalid
+                }"
+                required
+                minlength="10">
+            </textarea>
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="description.invalid" class="invalid-feedback">
+                <div>Description cannot be empty and must be at least 10 characters</div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="Date">Date:</label>
+            <input 
+                type="date" 
+                class="form-control" 
+                id="Date" 
+                [(ngModel)]="training!.Date" 
+                name="Date" 
+                #date="ngModel"
+                [ngClass]="{
+                    'is-invalid': date.invalid
+                }"
+                required>
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="date.invalid" class="invalid-feedback">
+                <div>Date is required</div>
+            </div>
+        </div>
+        
+        <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="!trainingForm.valid"
+            [class.pointer-events-none]="trainingForm.invalid"
+            [class.opacity-30]="trainingForm.invalid">
+            Submit
+        </button>
+    </form>
+</div>

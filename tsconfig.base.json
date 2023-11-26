@@ -28,6 +28,9 @@
       "@fit-reserve/backend/features/training": [
         "libs/backend/features/training/src/index.ts"
       ],
+      "@fit-reserve/decorators": [
+        "libs/backend/features/user/src/lib/decorators/public.decorater"
+      ],
       "@fit-reserve/fit-reserve/common": [
         "libs/fit-reserve/common/src/index.ts"
       ],

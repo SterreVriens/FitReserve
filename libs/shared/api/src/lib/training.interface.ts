@@ -10,3 +10,9 @@ export interface ITraining{
     Places: Int16Array;
     //Trainer: User;
 }
+
+export type ICreateTraining = Pick<
+    ITraining,
+    'id'| 'SessionName' | 'Description' | 'Date' 
+>;
+export type IUpdateTraining= Partial<Omit<ITraining, 'id'>>;

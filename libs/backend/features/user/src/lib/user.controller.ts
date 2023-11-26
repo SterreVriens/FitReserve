@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, NotFoundException, Param, Put } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Body, Controller, Delete, NotFoundException, Param, Put, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Get} from '@nestjs/common';
 import { IUser } from '@fit-reserve/shared/api';
@@ -25,8 +26,8 @@ export class UserController {
 
 
     @Put(':id')
-    update(@Body() data: UpdateUserDto, @Param('id') id: string):IUser{
-        return this.userService.update(data,id)
+        async update(@Body() data: UpdateUserDto, @Param('id') id: string, @Req() req: any): Promise<IUser> {
+        return this.userService.update(data, id, req.user.sub);
     }
 
 

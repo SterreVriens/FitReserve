@@ -24,7 +24,7 @@ export class TrainingService {
     constructor(private readonly http: HttpClient) {}
 
     /**
-     * Get all items.
+     * Get all training sessions.
      *
      * @options options - optional URL queryparam options
      */
@@ -44,11 +44,11 @@ export class TrainingService {
     }
 
     /**
-     * Get a single item from the service.
+     * Get a single training session from the service.
      *
      */
     public read(id: string | null, options?: any): Observable<ITraining> {
-        const url = `${this.endpoint}/${id}`; // Update de URL om het ID op te nemen
+        const url = `${this.endpoint}/${id}`; // Update the URL to include the ID
         console.log(`read ${url}`);
     
         return this.http
@@ -58,14 +58,61 @@ export class TrainingService {
             tap(console.log),
             catchError(this.handleError)
           );
-      }
+    }
+
+    /**
+     * Delete a training session.
+     */
+    public delete(id: string | null, options?: any): Observable<ITraining> {
+        const url = `${this.endpoint}/${id}`;
+        console.log(`Delete - ${url}`);
+      
+        return this.http
+          .delete<ApiResponse<ITraining>>(url, { ...httpOptions, ...options })
+          .pipe(
+            map((response: any) => response.results as ITraining),
+            tap(console.log),
+            catchError(this.handleError)
+          );
+    }
 
     /**
      * Handle errors.
      */
     public handleError(error: HttpErrorResponse): Observable<any> {
-        console.log('handleError in userService', error);
+        console.log('handleError in trainingService', error);
 
         return throwError(() => new Error(error.message));
+    }
+
+    /**
+     * Update a training session.
+     */
+    public update(training: ITraining, options?: any): Observable<ITraining> {
+        const url = `${this.endpoint}/${training.id}`;
+        console.log(`Update training - ${url}`);
+
+        return this.http
+            .put<ApiResponse<ITraining>>(url, training, { ...httpOptions, ...options })
+            .pipe(
+                map((response: any) => response.results as ITraining),
+                tap(console.log),
+                catchError(this.handleError)
+            );
+    }
+
+    /**
+     * Create a new training session.
+     */
+    public create(training: ITraining| null,options?: any): Observable<ITraining> {
+        console.log('Create training -', training);
+
+        return this.http
+            .post<ApiResponse<ITraining>>(this.endpoint, training, { ...httpOptions, ...options })
+            .pipe(
+                map((response: any) => response.results as ITraining),
+                tap(console.log),
+                catchError(this.handleError)
+            );
     }
 }

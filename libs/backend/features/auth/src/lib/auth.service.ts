@@ -35,7 +35,7 @@ export class AuthService {
   }
   
   async registerUser(user: Pick<IUser, 'UserName' | 'Password' | 'Role'>): Promise<IUser> {
-    const generatedHash = await this.generateHashedPassword(user.Password);
+    const generatedHash = await this.generateHashedPassword(user.Password ?? null);
   
     const newUser: IUser = {
       UserName: user.UserName || '',
@@ -53,10 +53,14 @@ export class AuthService {
   
 
 
-  async generateHashedPassword(plainTextPassword: string): Promise<string> {
+  async generateHashedPassword(plainTextPassword: string | null): Promise<string> {
+    if (plainTextPassword === null || plainTextPassword === undefined) {
+        throw new Error('Plain text password cannot be null or undefined.');
+    }
+
     const saltOrRounds = 10;
     return await bcrypt.hash(plainTextPassword, saltOrRounds);
-  }
+}
 
   async validatePassword(givenPassword: string, passwordHash: string): Promise<boolean> {
     return await bcrypt.compare(givenPassword, passwordHash);

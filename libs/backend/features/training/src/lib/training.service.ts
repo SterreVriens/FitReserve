@@ -62,4 +62,69 @@ export class TrainingService{
         return meal;
     }
 
+    create(t: Pick<ITraining,  'SessionName' | 'Description' | 'Date'>): ITraining {
+      Logger.log('create', this.TAG);
+      const current = this.training$.value;
+  
+      // Use the incoming data, a randomized ID, and default values for other fields
+      const newT: ITraining = {
+        id: `user-${Math.floor(Math.random() * 10000)}`,
+        SessionName: t.SessionName || '', // Use the provided value or default to an empty string
+        Description: t.Description || '', // Use the provided value or default to an empty string
+        Date: t.Date,
+        Duration: new Float32Array([1.75]),
+        Location: 'HIIT Arena',
+        Places: new Int16Array([25])
+      };
+  
+      this.training$.next([...current, newT]);
+      return newT;
+  }
+
+  update(updatedTraining: Pick<ITraining, 'SessionName' | 'Description'>, id: string): ITraining {
+    Logger.log(`Update training with ID ${id}`, 'TrainingService');
+
+    const currentTrainings = this.training$.value;
+    const trainingIndex = currentTrainings.findIndex((t) => t.id === id);
+
+    if (trainingIndex === -1) {
+        Logger.error(`Training with ID ${id} not found`, undefined, 'TrainingService');
+        throw new NotFoundException(`Training could not be found!`);
+    }
+
+    // Update the training properties
+    const updatedTrainingData: ITraining = {
+        ...currentTrainings[trainingIndex],
+        SessionName: updatedTraining.SessionName || currentTrainings[trainingIndex].SessionName,
+        Description: updatedTraining.Description || currentTrainings[trainingIndex].Description,
+    };
+
+    // Update the BehaviorSubject with the modified array
+    currentTrainings[trainingIndex] = updatedTrainingData;
+    this.training$.next([...currentTrainings]);
+
+    Logger.log('Training updated successfully', 'TrainingService');
+    return updatedTrainingData;
+  }
+
+  delete(id: string): string {
+      Logger.log(`Delete training - ${id}`, 'TrainingService');
+
+      const currentTrainings = this.training$.value;
+      const trainingIndex = currentTrainings.findIndex((t) => t.id === id);
+
+      if (trainingIndex === -1) {
+          Logger.error(`Training with ID ${id} not found`, undefined, 'TrainingService');
+          throw new NotFoundException(`Training could not be found!`);
+      }
+
+      // Remove the training from the array
+      const deletedTraining = currentTrainings.splice(trainingIndex, 1)[0];
+
+      // Update the BehaviorSubject with the modified array
+      this.training$.next([...currentTrainings]);
+
+      Logger.log('Training deleted successfully', 'TrainingService');
+      return `Training ${deletedTraining.SessionName} deleted`;
+  }
 }
