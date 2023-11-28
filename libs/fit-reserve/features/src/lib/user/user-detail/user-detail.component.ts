@@ -48,11 +48,14 @@ export class UserDetailComponent implements OnInit {
       }
     }
 
-  isOwner(): boolean {
-    console.log(this.currentUserID)
-    // Implement logic to compare the IDs (replace 'currentUserID' with the actual ID from your JWT)
-    return this.user?._id === this.currentUserID;
-}
+    isOwner(): boolean {
+      // Retrieve the token from AuthService
+      const user = this.authService.getUserIdFromToken();
+      console.log('Logged in userId:', user);
+  
+      // Implement logic to compare the IDs (replace 'currentUserID' with the actual ID from your JWT)
+      return this.user?._id === user
+    }
   // onSubmit(): void {
   //   console.log('onSubmit - delete');
   

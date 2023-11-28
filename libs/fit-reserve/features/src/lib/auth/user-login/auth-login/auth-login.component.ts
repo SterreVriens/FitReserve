@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -28,15 +29,19 @@ export class AuthLoginComponent{
   onSubmit() {
     console.log(`login user - ${this.user.UserName}`)
     this.authService.login(this.user).subscribe(
-      (success) =>{
-        console.log(success);
-        if(success){
-          this.router.navigate(['..'], {relativeTo:this.route});
+      (success: any) => { // Use 'any' type here
+        const token = success.access_token;
+        console.log("Token:", token);
+        if (success) {
+          // this.router.navigate(['..'], {relativeTo:this.route});
+          sessionStorage.setItem('access_token', token);
         } 
       },
-      (error) =>{
+      (error) => {
         console.error('Error login in user:', error)
       }
     )
-    }
+  }
+  
+  
 }

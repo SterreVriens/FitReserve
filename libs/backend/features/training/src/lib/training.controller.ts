@@ -4,6 +4,7 @@ import { ITraining } from '@fit-reserve/shared/api';
 import { Get} from '@nestjs/common';
 import { Public } from '@fit-reserve/decorators';
 import { CreateTrainingDto, UpdateTrainingDto} from '@fit-reserve/backend/dto'
+import { Training } from './schemas/training.schema';
 
 @Controller('training')
 export class TrainingController {
@@ -11,20 +12,21 @@ export class TrainingController {
 
     @Get('')
     @Public()
-    getAll(): ITraining[]{
+    getAll():Promise<Training[]>{
         return this.trainingService.getAll();
     }
 
     @Get(':id')
     @Public()
-    getOne(@Param('id') id: string): ITraining {
+    getOne(@Param('id') id: string): Promise<Training | null> {
         return this.trainingService.getOne(id);
     }
-
     @Post('')
     @Public()
-    create(@Body() data: CreateTrainingDto): ITraining {
-        return this.trainingService.create(data);
+    async create(@Body() data: CreateTrainingDto): Promise<ITraining> {
+      // Assuming you have some way of getting the username (e.g., from the request)
+      const username = 'username'; // Replace with your actual username retrieval logic
+      return this.trainingService.create(data, username);
     }
 
     @Put(':id')

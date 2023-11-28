@@ -27,18 +27,16 @@ export class AuthService {
     constructor(private readonly http: HttpClient) {}
 
     login(user: IUser | null, options?: any): Observable<IUser> {
-        const url = `${this.endpoint}/login`;
-    
-        return this.http
-          .post<ApiResponse<IUser>>(url, user, { ...httpOptions, ...options })
-          .pipe(
-            map((response: any) => {
+      const url = `${this.endpoint}/login`;
+
+      return this.http.post<ApiResponse<IUser>>(url, user, { ...httpOptions, ...options }).pipe(
+          map((response: any) => {
               return response.results as IUser;
-            }),
-            tap(console.log),
-            catchError(this.handleError)
-          );
-      }
+          }),
+          tap(console.log),
+          catchError(this.handleError)
+      );
+  }
 
     public register(user: IUser | null, options?: any): Observable<IUser> {
         const url = `${this.endpoint}/register`;
@@ -63,8 +61,23 @@ export class AuthService {
             tap(console.log),
             catchError(this.handleError)
           );
-      }
+    }
 
+    getUserIdFromToken(): string | null {
+      const token = sessionStorage.getItem('access_token');
+      if (token) {
+          const decodedToken = this.jwtHelper.decodeToken(token);
+          return decodedToken.sub; // Assuming 'sub' is the property containing the user ID
+      }
+      return null;
+    }
+    getAccessToken(): string | null {
+      return sessionStorage.getItem('access_token');
+    }
+
+    getToken(): string | null {
+        return this.getAccessToken();
+    }
     // public  setAccessToken(token: string): void {
     //     localStorage.setItem('access_token', token);
     //   }

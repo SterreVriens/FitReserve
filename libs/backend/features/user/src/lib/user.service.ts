@@ -1,6 +1,5 @@
 import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { IUser, Role } from '@fit-reserve/shared/api';
-import { BehaviorSubject} from 'rxjs';
 import { Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -43,23 +42,6 @@ export class UserService{
   
     }
   
-
-    private users$ = new BehaviorSubject<IUser[]>([
-        {
-            _id: '0',
-            UserName: "Bob",
-            Password: "Bob123",
-            Date: new Date(),
-            Role: Role.Trainer
-        },
-        {
-            _id: '1',
-            UserName: "Hans",
-            Password: "Hans123",
-            Date: new Date(),
-            Role: Role.Trainee
-        }
-    ]);
 
     async getAll() :Promise<User[]>{
         Logger.log("GetAll", this.TAG)
