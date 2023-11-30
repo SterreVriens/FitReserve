@@ -48,13 +48,14 @@ export class TrainingService {
      *
      */
     public read(id: string | null, options?: any): Observable<ITraining> {
-        const url = `${this.endpoint}/${id}`; // Update the URL to include the ID
+        const url = `${this.endpoint}/full/${id}`;
         console.log(`read ${url}`);
     
         return this.http
           .get<ApiResponse<ITraining>>(url, { ...options, ...httpOptions })
           .pipe(
-            map((response: any) => response.results as ITraining),
+            map((response: any) => 
+            response.results as ITraining),
             tap(console.log),
             catchError(this.handleError)
           );
@@ -89,7 +90,7 @@ export class TrainingService {
      * Update a training session.
      */
     public update(training: ITraining, options?: any): Observable<ITraining> {
-        const url = `${this.endpoint}/${training.id}`;
+        const url = `${this.endpoint}/${training._id}`;
         console.log(`Update training - ${url}`);
 
         return this.http

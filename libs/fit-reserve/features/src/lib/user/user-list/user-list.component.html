@@ -9,7 +9,7 @@
                 <div class="card-text">
                     <p class="color-blue">Rol: {{user.Role }}</p>
                     <p class="color-yellow">Aangemeld:  {{ user.Date| date:'dd-MM-yyyy' }}</p>
-                    <a routerLink="{{ user.UserName }}">Bekijk details</a>
+                    <a routerLink="{{ user._id }}">Bekijk details</a>
                 </div>
             </div>
         </div>

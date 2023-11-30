@@ -18,10 +18,10 @@ export class UserController {
         return this.userService.getAll();
     }
 
-    @Get(':username')
+    @Get(':_id')
     @Public()
-    getOne(@Param('username') username: string): Promise<User | null> {
-        return this.userService.getOne(username);
+    getOne(@Param('_id') _id: string): Promise<User | null> {
+        return this.userService.getOne(_id);
     }
 
 

@@ -1,18 +1,19 @@
 import { Id } from './id.type';
+import {IUser} from './user.interface'
 
 export interface ITraining{
-    id: Id;
+    _id: Id;
     SessionName: string;
     Date: Date;
     Duration: Float32Array;
     Description: string;
     Location: string;
     Places: Int16Array;
-    //Trainer: User;
+    User: IUser;
 }
 
 export type ICreateTraining = Pick<
     ITraining,
-    'id'| 'SessionName' | 'Description' | 'Date' 
+    '_id'| 'SessionName' | 'Description' | 'Date' 
 >;
-export type IUpdateTraining= Partial<Omit<ITraining, 'id'>>;
+export type IUpdateTraining= Partial<Omit<ITraining, '_id'>>;

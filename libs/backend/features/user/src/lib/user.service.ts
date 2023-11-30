@@ -48,9 +48,14 @@ export class UserService{
         return this.userModel.find().exec();
     }
 
-    async getOne(username: string): Promise<User | null> {
-      Logger.log(`getOne(${username})`, this.TAG);
-      return await this.userModel.findOne({ UserName: username }).exec();
+    async getOne(_id: string): Promise<User | null> {
+      Logger.log(`getOne(${_id})`, this.TAG);
+      return await this.userModel.findOne({ _id: _id }).exec();
+    }
+
+    async getOneWithName(UserName: string): Promise<User | null> {
+      Logger.log(`getOne(${UserName})`, this.TAG);
+      return await this.userModel.findOne({ UserName: UserName }).exec();
     }
 
     async delete(id: string): Promise<void> {

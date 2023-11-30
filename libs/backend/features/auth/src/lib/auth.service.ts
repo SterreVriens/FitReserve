@@ -19,7 +19,7 @@ export class AuthService {
 
   async signIn(username: string, pass: string) {
 
-    const user = await this.usersService.getOne(username);
+    const user = await this.usersService.getOneWithName(username);
   
     Logger.log(`username: ${username} trying to authenticate...`);
   

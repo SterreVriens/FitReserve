@@ -28,6 +28,7 @@ export class TrainingDetailComponent implements OnInit {
     if(trainingId){
       this.trainingService.read(trainingId).subscribe(
         (training) => {
+          console.log("aaaa"+this.training);
           this.training = training;
         },
         (error) => {
@@ -41,7 +42,7 @@ export class TrainingDetailComponent implements OnInit {
     console.log('onSubmit - delete');
   
     if(this.training){
-      this.trainingService.delete(this.training.id).subscribe(
+      this.trainingService.delete(this.training._id).subscribe(
         (success: any) => {
           console.log('Delete successful', success);
           this.router.navigate(['..'], { relativeTo: this.route });

@@ -13,7 +13,8 @@ import {
   import { AuthGuard } from './auth.guard';
   import { AuthService } from './auth.service';
   import { Public } from "./decorators/public.decorator";
-  import { IUser } from '@fit-reserve/shared/api';
+  import { IUser, Role } from '@fit-reserve/shared/api';
+import { Roles } from './decorators/roles.decorator';
 
 
   
@@ -51,6 +52,7 @@ import {
   
     @UseGuards(AuthGuard)
     @Get('profile')
+    @Roles(Role.Trainer)
     getProfile(@Request() req:any) {
       return req.user;
     }

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrainingService } from '../training.service';
-import { Id, ITraining } from '@fit-reserve/shared/api';
+import { Id, ITraining, IUser } from '@fit-reserve/shared/api';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,13 +12,14 @@ import { Subscription } from 'rxjs';
 export class TrainingEditComponent implements OnInit, OnDestroy {
   trainingId: Id | null = null;
   training: ITraining = {
-    id: '1',
+    _id: '1',
     SessionName: '',
     Date: new Date(),
     Duration: new Float32Array(),
     Description: '',
     Location: '',
     Places: new Int16Array(),
+    User: {} as IUser
   };
 
   constructor(

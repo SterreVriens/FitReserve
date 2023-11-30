@@ -4,13 +4,16 @@
         <dl>
       
           <dt>Naam training::</dt>
-          <dd>{{ training?.SessionName }}</dd>
+          <dd>{{ training.SessionName }}</dd>
       
           <dt>Beschrijving training::</dt>
-          <dd>{{ training?.Description }}</dd>
+          <dd>{{ training.Description }}</dd>
 
           <dt>Datum training::</dt>
-          <dd>{{ training?.Date }}</dd>
+          <dd>{{ training.Date }}</dd>
+
+          <dt>Trainer::</dt>
+          <dd>{{ training.User.UserName }}</dd>
 
             <a routerLink="edit" class="button">Update</a>
           <div>

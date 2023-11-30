@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { User } from "@fit-reserve/backend/features";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IsMongoId } from "class-validator";
 import * as mongoose from 'mongoose';
@@ -30,8 +32,7 @@ export class Training{
     Places!: number;
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-    userId!: mongoose.Types.ObjectId;
-
+    userId!: string;
 
 }
 
