@@ -25,6 +25,9 @@
       "@fit-reserve/backend/features/auth/decorator": [
         "libs/backend/features/auth/src/lib/decorator/public.decorator.ts"
       ],
+      "@fit-reserve/backend/features/enrollment": [
+        "libs/backend/features/enrollment/src/index.ts"
+      ],
       "@fit-reserve/backend/features/training": [
         "libs/backend/features/training/src/index.ts"
       ],

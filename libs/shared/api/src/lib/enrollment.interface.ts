@@ -8,17 +8,18 @@ export enum Level{
     Experienced = "Experienced"
 }
 
-export interface IEnrollment{
+export interface IEnrollment {
     _id: Id;
     TrainingId: string;
     UserId: string;
     Level: Level;
-    User?: IUser;
-    Training?: ITraining;
+    User: IUser | null;
+    Training: ITraining | null;
 }
+
 
 export type ICreateEnrollment = Pick<
     IEnrollment,
     '_id'| 'TrainingId' | 'UserId' | 'Level'
 >;
-export type IUpdateEnrollmen= Partial<Omit<IEnrollment, '_id'>>;
+export type IUpdateEnrollment= Partial<Omit<IEnrollment, '_id'>>;

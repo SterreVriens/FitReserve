@@ -37,7 +37,7 @@ export class TrainingService{
       training1.Duration= 1.5;
       training1.Description= 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
       training1.Location= 'Gym XYZ';
-      training1.Places= 20;
+      training1.Places= 2;
       training1.UserId= currentUsers[0]._id; // Associate user1 with training1
       const newTraining = new this.trainingModel(training1);
       await newTraining.save();

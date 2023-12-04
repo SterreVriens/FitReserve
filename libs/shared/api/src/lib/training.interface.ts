@@ -5,10 +5,10 @@ export interface ITraining{
     _id: Id;
     SessionName?: string;
     Date?: Date;
-    Duration?: Float32Array;
+    Duration?: number;
     Description?: string;
     Location?: string;
-    Places?: Int16Array;
+    Places?: number;
     UserId: string;
     User?: IUser;
 }
