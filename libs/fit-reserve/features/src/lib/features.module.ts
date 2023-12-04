@@ -21,6 +21,8 @@ const routes: Routes = [
   { path: 'users/:id/edit', pathMatch: 'full', component: UserEditComponent },
   { path: 'users/:id', pathMatch: 'full', component: UserDetailComponent },
   { path: 'training', pathMatch: 'full', component: TrainingListComponent },
+  { path: 'training/create', pathMatch: 'full', component: TrainingEditComponent },
+
   { path: 'training/:id/edit', pathMatch: 'full', component: TrainingEditComponent },
   { path: 'training/:id', pathMatch: 'full', component: TrainingDetailComponent },
   { path: 'auth/register', pathMatch: 'full', component: AuthRegisterComponent },

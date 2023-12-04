@@ -1,5 +1,4 @@
-import { Role } from '@fit-reserve/shared/api';
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from './decorators/roles.decorator';
 
@@ -8,14 +7,24 @@ export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
+    const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
+
     if (!requiredRoles) {
-      return true;
+      // If roles are not explicitly defined, deny access
+      return false;
     }
+
     const { user } = context.switchToHttp().getRequest();
-    return requiredRoles.some((role) => user.roles?.includes(role));
+    console.log(user);
+
+    if (!user || !user.roles) {
+      // If user or user roles are not defined, deny access
+      throw new UnauthorizedException();
+    }
+
+    return requiredRoles.some((Role) => user.roles.includes(Role));
   }
 }

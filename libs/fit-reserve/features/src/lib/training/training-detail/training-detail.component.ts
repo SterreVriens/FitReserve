@@ -42,7 +42,8 @@ export class TrainingDetailComponent implements OnInit {
     console.log('onSubmit - delete');
   
     if(this.training){
-      this.trainingService.delete(this.training._id).subscribe(
+      this.trainingService.delete(this.training._id ).subscribe(
+
         (success: any) => {
           console.log('Delete successful', success);
           this.router.navigate(['..'], { relativeTo: this.route });

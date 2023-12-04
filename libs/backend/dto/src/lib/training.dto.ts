@@ -39,7 +39,7 @@ export class CreateTrainingDto implements ICreateTraining {
     Places!: number;
   
     @IsNotEmpty()
-    userId!: string; 
+    UserId!: string; 
 }
 export class UpdateTrainingDto implements IUpdateTraining {
     @IsString()

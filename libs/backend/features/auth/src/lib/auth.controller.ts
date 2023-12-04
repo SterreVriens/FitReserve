@@ -14,7 +14,8 @@ import {
   import { AuthService } from './auth.service';
   import { Public } from "./decorators/public.decorator";
   import { IUser, Role } from '@fit-reserve/shared/api';
-import { Roles } from './decorators/roles.decorator';
+  import { Roles } from './decorators/roles.decorator';
+  //import { RolesGuard } from './roles.guard';
 
 
   
@@ -47,14 +48,13 @@ import { Roles } from './decorators/roles.decorator';
         }
     }
 
-
-
-  
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard) // Add RolesGuard here
     @Get('profile')
     @Roles(Role.Trainer)
-    getProfile(@Request() req:any) {
+    getProfile(@Request() req: any) {
+      console.log(req.user); // Check the user object in the console
       return req.user;
     }
+    
   }
   

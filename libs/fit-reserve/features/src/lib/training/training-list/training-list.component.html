@@ -1,17 +1,24 @@
 <div class="container">
     <h1 class="color-lightblue">Alle trainingen:</h1>
+  
+    <!-- Conditionally display the "Create Training" button -->
+    <ng-container *ngIf="isTrainer(); ">
+      <a routerLink="create" class="button">Maak een training</a>
+    </ng-container>
 
+  
     <div *ngFor="let training of trainingen"> 
-        <div class="card my-3">
-            <div class="card-body">
-                <h2 class="card-title color-orange">{{training.SessionName}}</h2>
-                <div class="card-text">
-                    <p class="color-darkorange">Beschrijving: {{training.Description }}</p>
-                    <p class="color-blue">Datum: {{training.Date }}</p>
-                    <p class="color-yellow">Duur: {{training.Duration}}</p>
-                    <a routerLink="{{ training._id }}">Bekijk details</a>
-                </div>
-            </div>
+      <div class="card my-3">
+        <div class="card-body">
+          <h2 class="card-title color-orange">{{training.SessionName}}</h2>
+          <div class="card-text">
+            <p class="color-darkorange">Beschrijving: {{training.Description }}</p>
+            <p class="color-blue">Datum: {{training.Date }}</p>
+            <p class="color-yellow">Duur: {{training.Duration}}</p>
+            <a routerLink="{{ training._id }}">Bekijk details</a>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
+  

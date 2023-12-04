@@ -32,7 +32,7 @@ export class Training{
     Places!: number;
 
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-    userId!: string;
+    UserId!: string;
 
 }
 

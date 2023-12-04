@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import {UserService} from '@fit-reserve/backend/features';
 import { Model } from 'mongoose';
 import { ITraining } from '@fit-reserve/shared/api';
+import { UpdateTrainingDto } from '@fit-reserve/backend/dto';
 
 @Injectable()
 export class TrainingService{
@@ -37,7 +38,7 @@ export class TrainingService{
       training1.Description= 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
       training1.Location= 'Gym XYZ';
       training1.Places= 20;
-      training1.userId= currentUsers[0]._id; // Associate user1 with training1
+      training1.UserId= currentUsers[0]._id; // Associate user1 with training1
       const newTraining = new this.trainingModel(training1);
       await newTraining.save();
   
@@ -48,7 +49,7 @@ export class TrainingService{
       training3.Description = 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
       training3.Location = 'Gym XYZ';
       training3.Places = 20;
-      training3.userId =currentUsers[0]._id; // Associate user1 with training1
+      training3.UserId =currentUsers[0]._id; // Associate user1 with training1
       const newTraining3 = new this.trainingModel(training3);
       await newTraining3.save();
 
@@ -59,7 +60,7 @@ export class TrainingService{
       training2.Description = 'Een ontspannende yogasessie om flexibiliteit, balans en innerlijke rust te bevorderen.';
       training2.Location = 'Yoga Studio ABC';
       training2.Places = 15;
-      training2.userId = currentUsers[0]._id; // Associate user2 with training2
+      training2.UserId = currentUsers[0]._id; // Associate user2 with training2
       const newTraining2 = new this.trainingModel(training2);
       await newTraining2.save();
       
@@ -126,10 +127,10 @@ export class TrainingService{
       }
     
       // Haal de gebruikersgegevens op op basis van de userId van de training
-      const user = await this.userService.getOne(training.userId);
+      const user = await this.userService.getOne(training.UserId);
     
       if (!user) {
-        throw new NotFoundException(`User with ID ${training.userId} not found`);
+        throw new NotFoundException(`User with ID ${training.UserId} not found`);
       }
     
       // Creëer een instantie van ITraining en stel de Trainer-eigenschap in op de opgehaalde gebruiker
@@ -142,14 +143,11 @@ export class TrainingService{
     }
     
 
-    async create(training: Training, userId: string): Promise<Training> {
+    async create(training: Training): Promise<Training> {
       Logger.log('create', this.TAG);
     
-    
-        // Use the incoming data, a randomized ID, and values provided by the user
         const newTraining: Training = {
           ...training,
-          userId: userId,
         }
     
         // Save the new training to the database using the Mongoose model
@@ -162,31 +160,28 @@ export class TrainingService{
     
     
 
-  // update(updatedTraining: Pick<ITraining, 'SessionName' | 'Description'>, id: string): ITraining {
-  //   Logger.log(`Update training with ID ${id}`, 'TrainingService');
-
-  //   const currentTrainings = this.training$.value;
-  //   const trainingIndex = currentTrainings.findIndex((t) => t._id === id);
-
-  //   if (trainingIndex === -1) {
-  //       Logger.error(`Training with ID ${id} not found`, undefined, 'TrainingService');
-  //       throw new NotFoundException(`Training could not be found!`);
-  //   }
-
-  //   // Update the training properties
-  //   const updatedTrainingData: ITraining = {
-  //       ...currentTrainings[trainingIndex],
-  //       SessionName: updatedTraining.SessionName || currentTrainings[trainingIndex].SessionName,
-  //       Description: updatedTraining.Description || currentTrainings[trainingIndex].Description,
-  //   };
-
-  //   // Update the BehaviorSubject with the modified array
-  //   currentTrainings[trainingIndex] = updatedTrainingData;
-  //   this.training$.next([...currentTrainings]);
-
-  //   Logger.log('Training updated successfully', 'TrainingService');
-  //   return updatedTrainingData;
-  // }
+    async update(updatedTraining: UpdateTrainingDto, id: string): Promise<Training> {
+      Logger.log(`Update training with ID ${id}`, 'TrainingService');
+    
+      // Find the training in the database
+      const existingTraining = await this.trainingModel.findById(id).exec();
+    
+      if (!existingTraining) {
+        Logger.error(`Training with ID ${id} not found`, undefined, 'TrainingService');
+        throw new NotFoundException(`Training could not be found!`);
+      }
+    
+      // Update the training properties
+      existingTraining.SessionName = updatedTraining.SessionName ?? existingTraining.SessionName;
+      existingTraining.Description = updatedTraining.Description ?? existingTraining.Description;
+    
+      // Save the updated training to the database
+      await existingTraining.save();
+    
+      Logger.log('Training updated successfully', 'TrainingService');
+      return existingTraining.toObject();
+    }
+    
 
   // delete(id: string): string {
   //     Logger.log(`Delete training - ${id}`, 'TrainingService');

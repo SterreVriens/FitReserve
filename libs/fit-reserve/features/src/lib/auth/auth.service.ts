@@ -71,6 +71,14 @@ export class AuthService {
       }
       return null;
     }
+    getUserRoleFromToken(): string | null {
+        const token = sessionStorage.getItem('access_token');
+        if (token) {
+            const decodedToken = this.jwtHelper.decodeToken(token);
+            return decodedToken.Role; // Assuming 'sub' is the property containing the user ID
+        }
+        return null;
+      }
     getAccessToken(): string | null {
       return sessionStorage.getItem('access_token');
     }

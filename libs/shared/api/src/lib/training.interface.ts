@@ -3,13 +3,14 @@ import {IUser} from './user.interface'
 
 export interface ITraining{
     _id: Id;
-    SessionName: string;
-    Date: Date;
-    Duration: Float32Array;
-    Description: string;
-    Location: string;
-    Places: Int16Array;
-    User: IUser;
+    SessionName?: string;
+    Date?: Date;
+    Duration?: Float32Array;
+    Description?: string;
+    Location?: string;
+    Places?: Int16Array;
+    UserId: string;
+    User?: IUser;
 }
 
 export type ICreateTraining = Pick<
