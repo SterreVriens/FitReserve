@@ -71,6 +71,19 @@ export class ProgressService{
         return this.progressModel.find().exec();
     }
 
+    async getAllFromUser(id: string) :Promise<Progress[]>{
+        Logger.log(`GetAllFromUser(${id})`, this.TAG);
+    
+        try {
+            const result = await this.progressModel.find({ UserId: id }).exec();
+    
+            return result || []; // Als resultaat null is, retourneer een lege array
+        } catch (error) {
+            console.error('Error fetching user enrollments:', error);
+            return [];
+        }
+    }
+
     async getOne(id: string): Promise<IProgress | null> {
         Logger.log(`GetOne(${id})`, this.TAG);
         const progress = await this.progressModel.findById(id).exec();

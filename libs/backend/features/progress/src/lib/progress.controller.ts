@@ -18,6 +18,12 @@ export class ProgressController {
         return this.progressService.getAll();
     }
 
+    @Get('user/:id')
+    @Public()
+    getAllFormUser(@Param('id') id: string):Promise<Progress[]>{
+        return this.progressService.getAllFromUser(id);
+    }
+
     @Get(':id')
     @Public()
     getOne(@Param('id') id: string):Promise<IProgress | null>{
