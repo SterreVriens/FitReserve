@@ -22,4 +22,3 @@ export type ICreateEnrollment = Pick<
     IEnrollment,
     '_id'| 'TrainingId' | 'UserId' | 'Level'
 >;
-export type IUpdateEnrollment= Partial<Omit<IEnrollment, '_id'>>;

@@ -8,6 +8,7 @@ import { TrainingModule } from '@fit-reserve/backend/features/training';
 import { MongooseModule } from '@nestjs/mongoose';
 import{AuthModule} from '@fit-reserve/backend/features/auth'
 import { EnrollmentModule } from '@fit-reserve/backend/features/enrollment';
+import { ProgressModule } from '@fit-reserve/backend/features/progress';
 
 @Module({
   imports: 
@@ -15,6 +16,7 @@ import { EnrollmentModule } from '@fit-reserve/backend/features/enrollment';
     TrainingModule,
     AuthModule,
     EnrollmentModule,
+    ProgressModule,
     //ConfigModule.forRoot({isGlobal:true}),
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/fit-reserve-data-api')
   ],

@@ -6,7 +6,6 @@ import {
   
   import {
     ICreateEnrollment,
-    IUpdateEnrollment,
     Id,
     Level,
   } from '@fit-reserve/shared/api';
@@ -27,10 +26,5 @@ import {
     Level!: Level;
   }
   
-  export class UpdateEnrollmentDto implements IUpdateEnrollment {
-  
-    @IsEnum(Level)
-    @IsNotEmpty()
-    Level!: Level;
-  }
+
   

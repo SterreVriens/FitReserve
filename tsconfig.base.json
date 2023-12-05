@@ -28,6 +28,9 @@
       "@fit-reserve/backend/features/enrollment": [
         "libs/backend/features/enrollment/src/index.ts"
       ],
+      "@fit-reserve/backend/features/progress": [
+        "libs/backend/features/progress/src/index.ts"
+      ],
       "@fit-reserve/backend/features/training": [
         "libs/backend/features/training/src/index.ts"
       ],
