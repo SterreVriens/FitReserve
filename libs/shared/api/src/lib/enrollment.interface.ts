@@ -9,12 +9,12 @@ export enum Level{
 }
 
 export interface IEnrollment {
-    _id: Id;
+    _id?: Id;
     TrainingId: string;
     UserId: string;
     Level: Level;
-    User: IUser | null;
-    Training: ITraining | null;
+    User?: IUser | null;
+    Training?: ITraining | null;
 }
 
 

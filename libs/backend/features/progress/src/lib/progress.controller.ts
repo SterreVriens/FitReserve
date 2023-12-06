@@ -14,25 +14,31 @@ export class ProgressController {
 
     @Get('')
     @Public()
-    getAll():Promise<Progress[]>{
+    getAll(): Promise<Progress[]> {
         return this.progressService.getAll();
     }
 
     @Get('user/:id')
     @Public()
-    getAllFormUser(@Param('id') id: string):Promise<Progress[]>{
+    getAllForUser(@Param('id') id: string): Promise<Progress[]> {
         return this.progressService.getAllFromUser(id);
     }
 
     @Get(':id')
     @Public()
-    getOne(@Param('id') id: string):Promise<IProgress | null>{
+    getOne(@Param('id') id: string): Promise<IProgress | null> {
         return this.progressService.getOne(id);
     }
 
     @Post('')
     @Public()
     async create(@Body() data: CreateProgressDto): Promise<Progress> {
-      return this.progressService.create(data);
+        return this.progressService.create(data);
+    }
+
+    @Get('check/:trainingId/:userId') 
+    @Public()
+    async checkOne(@Param('trainingId') trainingId: string, @Param('userId') userId: string): Promise<IProgress | null> {
+        return this.progressService.checkOne(trainingId, userId);
     }
 }

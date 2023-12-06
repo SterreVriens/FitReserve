@@ -2,15 +2,15 @@
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, ITraining } from '@fit-reserve/shared/api';
+import { ApiResponse, IEnrollment, ITraining } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
 
 /**
  * See https://angular.io/guide/http#requesting-data-from-a-server
  */
 export const httpOptions = {
-    observe: 'body',
-    responseType: 'json',
+    observe: 'body' as const, // Cast observe naar het juiste type
+    responseType: 'json' as const, // Cast responseType naar het juiste type
 };
 
 /**
@@ -116,4 +116,40 @@ export class TrainingService {
                 catchError(this.handleError)
             );
     }
+
+    /**
+     * Enroll in training session
+     */
+
+    public enroll(enrollment: IEnrollment| null,options?: any): Observable<IEnrollment> {
+        const url = `http://localhost:3000/api/enrollment/`;
+        console.log('Create enrollment -', enrollment);
+
+        return this.http
+            .post<ApiResponse<ITraining>>(url, enrollment, { ...httpOptions, ...options })
+            .pipe(
+                map((response: any) => response.results as ITraining),
+                tap(console.log),
+                catchError(this.handleError)
+            );
+    }
+
+    /**
+     * Check if user is already enrolled
+     */
+
+    public checkIfUserEnrolled(trainingId: string, userId: string): Observable<boolean> {
+        const url = `http://localhost:3000/api/enrollment/${trainingId}/${userId}`;
+        console.log('Check if user is enrolled');
+      
+        return this.http
+            .get<ApiResponse<boolean>>(url, httpOptions)
+            .pipe(
+                map((response: any) => response.results as boolean),
+                tap(console.log),
+                catchError(this.handleError)
+            );
+    }
+
+    
 }

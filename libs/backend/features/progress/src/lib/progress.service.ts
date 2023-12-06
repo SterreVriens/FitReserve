@@ -104,6 +104,25 @@ export class ProgressService{
         return fullProgress;
     }
 
+    async checkOne(trainingId: string, userId: string): Promise<IProgress | null> {
+        Logger.log(`CheckOne`, this.TAG);
+        const progress = await this.progressModel.findOne({ TrainingId: trainingId, UserId: userId }).exec();
+      
+        if (!progress) {
+          throw new NotFoundException(`Progress not found`);
+        }
+      
+        const training = await this.trainingService.getOne(progress.TrainingId);
+      
+        const fullProgress: IProgress = {
+          ...progress.toObject(),
+          Training: training || null,
+        };
+      
+        return fullProgress;
+      }
+      
+
     private async isUserEnrolled(userId: string, trainingId: string): Promise<boolean> {
         const enrollments = await this.enrollmentService.getAllFromUser(userId);
         let isEnrolled = false;

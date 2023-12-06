@@ -16,10 +16,10 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
     _id: '',
     SessionName: '',
     Date: new Date(),
-    Duration: new Float32Array(),
+    Duration: 0,
     Description: '',
     Location: '',
-    Places: new Int16Array(),
+    Places: 0,
     UserId: '',
     
   };

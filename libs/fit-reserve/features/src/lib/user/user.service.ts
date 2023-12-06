@@ -2,7 +2,7 @@
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, IUser } from '@fit-reserve/shared/api';
+import { ApiResponse, IEnrollment, IProgress, IUser } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 
@@ -106,8 +106,48 @@ export class UserService {
             catchError(this.handleError)
           );
     }
+
+    public getAllEnrollments(id:string | null, options?: any): Observable<IEnrollment[]>{
+        const url = `http://localhost:3000/api/enrollment/user/${id}`;
+        console.log(`getAllEnrollments - ${url}`);
+      
+        return this.http
+          .get<ApiResponse<IEnrollment>>(url, { ...httpOptions, ...options })
+          .pipe(
+            map((response: any) => response.results as IEnrollment),
+            tap(console.log),
+            catchError(this.handleError)
+          );
+    }
     
+    public deleteEnrollment(enrollmentId: string | null, options?: any): Observable<IEnrollment> {
+        const url = `http://localhost:3000/api/enrollment/${enrollmentId}`;
+        console.log(`Delete Enrollment - ${url}`);
     
+        return this.http
+          .delete<ApiResponse<IEnrollment>>(url, { ...httpOptions, ...options })
+          .pipe(
+            map((response: any) => response.results as IEnrollment),
+            tap(console.log),
+            catchError(this.handleError)
+          );
+      }
+    
+      public getProgress(trainingId: string | null, userid: string | null, options?: any): Observable<IProgress> {
+        const url = `http://localhost:3000/api/progress/check/${trainingId}/${userid}`;
+        console.log(`getProgress - ${url}`);
+      
+        // Make the HTTP request and log the response
+        return this.http
+          .get<ApiResponse<IProgress>>(url, { ...httpOptions, ...options })
+          .pipe(
+            tap(console.log),
+            map((response: any) => response.results as IProgress),
+            catchError(this.handleError)
+          );
+      }
+      
+      
       
     /**
      * Handle errors.

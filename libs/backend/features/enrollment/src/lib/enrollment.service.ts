@@ -65,18 +65,29 @@ export class EnrollmentService{
         return this.enrollmentModel.find().exec();
         }
 
-    async getAllFromUser(id: string): Promise<Enrollment[]> {
+    async getAllFromUser(id: string): Promise<IEnrollment[]> {
         Logger.log(`GetAllFromUser(${id})`, this.TAG);
-    
+        
         try {
-            const result = await this.enrollmentModel.find({ UserId: id }).exec();
-    
-            return result || []; // Als resultaat null is, retourneer een lege array
+            const enrollments = await this.enrollmentModel.find({ UserId: id }).exec();
+                
+            // Haal de trainingen op voor elke inschrijving
+            const enrollmentsWithTraining: IEnrollment[] = await Promise.all(enrollments.map(async (enrollment) => {
+                const training = await this.trainingService.getOne(enrollment.TrainingId);
+                    
+                return {
+                    ...enrollment.toObject(),
+                    Training: training || null,
+                };
+            }));
+        
+            return enrollmentsWithTraining || [];
         } catch (error) {
             console.error('Error fetching user enrollments:', error);
             return [];
         }
     }
+        
 
     async getAllFromTraining(id: string): Promise<Enrollment[]> {
         Logger.log(`GetAllFromTraining(${id})`, this.TAG);
@@ -123,6 +134,7 @@ export class EnrollmentService{
 
     async checkIfEnrollmentExists(userId: string, trainingId: string): Promise<boolean> {
         const existingEnrollment = await this.enrollmentModel.findOne({ UserId: userId, TrainingId: trainingId }).exec();
+        
         return !!existingEnrollment;
     }
 
