@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';  // Import the FormsModule
 import { HttpClientModule } from '@angular/common/http';
@@ -15,6 +15,7 @@ import { AuthService } from './auth/auth.service';
 import { AuthRegisterComponent } from './auth/user-register/auth-register/auth-register.component';
 import { TrainingEditComponent } from './training/training-edit/training-edit.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 const routes: Routes = [
   { path: 'users', pathMatch: 'full', component: UserListComponent },
@@ -34,8 +35,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forChild(routes), HttpClientModule, FormsModule, ReactiveFormsModule], // Include FormsModule here
-  providers: [UserService, TrainingService,AuthService],
+  imports: [CommonModule, RouterModule.forChild(routes), HttpClientModule, FormsModule, ReactiveFormsModule,NgbModalModule], // Include FormsModule here
+  providers: [UserService, TrainingService,AuthService,DatePipe],
   declarations: [UserListComponent, UserDetailComponent, TrainingListComponent, UserEditComponent,AuthLoginComponent,AuthRegisterComponent,TrainingDetailComponent,TrainingEditComponent,UserProfileComponent],
   exports: [UserListComponent, UserDetailComponent, TrainingListComponent, UserEditComponent,AuthLoginComponent,AuthRegisterComponent,TrainingDetailComponent,TrainingEditComponent,UserProfileComponent],
 })

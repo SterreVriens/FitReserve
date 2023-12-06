@@ -10,6 +10,7 @@
             <div class="card-body">
               <h5 class="card-title">Training: {{ enrollment?.Training?.SessionName }}</h5>
               <p class="card-text"><strong>Level:</strong> {{ enrollment?.Level }}</p>
+              <p class="card-text"><strong>Date:</strong> {{ formatProgressDate(enrollment?.Training?.Date) }}</p>
               <button *ngIf="enrollment._id" (click)="confirmDelete(enrollment._id)" class="btn btn-danger">Delete Enrollment</button>
               <button *ngIf="enrollment._id" (click)="viewOrFillProgress(enrollment)" class="btn btn-primary">View/Fill Progress</button>
             </div>

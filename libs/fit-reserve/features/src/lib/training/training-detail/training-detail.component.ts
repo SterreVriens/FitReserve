@@ -28,7 +28,6 @@ export class TrainingDetailComponent implements OnInit {
     if(trainingId){
       this.trainingService.read(trainingId).subscribe(
         (training) => {
-          console.log("aaaa"+this.training);
           this.training = training;
         },
         (error) => {

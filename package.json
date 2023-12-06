@@ -26,6 +26,7 @@
     "@nestjs/platform-express": "^10.0.2",
     "@ng-bootstrap/ng-bootstrap": "^15.1.2",
     "@nx/angular": "17.1.1",
+    "@popperjs/core": "^2.11.8",
     "axios": "^1.0.0",
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.2",

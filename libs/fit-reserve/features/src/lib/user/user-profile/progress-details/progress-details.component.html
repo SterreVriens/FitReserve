@@ -1,0 +1,17 @@
+
+  <div class="modal-dialog" data-backdrop="false">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Progress training {{ progress?.Training?.SessionName }}</h4>
+        </div>
+        <div class="modal-body">
+          <p><strong>Reps: </strong>{{ progress?.Reps }}</p>
+          <p><strong>Weight: </strong>{{ progress?.Weight }}</p>
+          <p><strong>Time: </strong>{{ progress?.Duration }}</p>
+          <p><strong>Date filled in: </strong>{{ formatProgressDate( progress?.Date)}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="closeModal()">Close</button>
+        </div>     
+      </div>
+  </div>

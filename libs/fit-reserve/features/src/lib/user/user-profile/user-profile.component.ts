@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { IEnrollment, IUser } from '@fit-reserve/shared/api';
 import { AuthService } from '../../auth/auth.service';
 import { UserService } from '../user.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModal or the modal library you are using
+import { ProgressModalComponent } from './progress-details/progress-details.component';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -17,7 +20,11 @@ export class UserProfileComponent implements OnInit {
   currentUserID: string | null = null; 
   enrollments: IEnrollment[] = [];
 
-  constructor(private authService: AuthService,private userService: UserService,  private router: Router) {}
+  constructor(private authService: AuthService,
+    private userService: UserService,  
+    private router: Router,
+    private modalService: NgbModal,
+    private datePipe: DatePipe) {}
 
   ngOnInit(): void {
     // Check if the user is logged in
@@ -92,21 +99,36 @@ export class UserProfileComponent implements OnInit {
     );
   }
   async viewOrFillProgress(enrollment: IEnrollment): Promise<void> {
-    // Check if the user is already enrolled in the training
     if (enrollment._id) {
       this.currentUserID = this.authService.getUserIdFromToken();
-      // If logged in, fetch user profile
       if (this.isLoggedIn) {
-        console.log(enrollment.TrainingId+this.currentUserID)
-          this.userService.getProgress(enrollment.TrainingId, this.currentUserID).subscribe(
-        (progress) => {
-          console.log('Existing Progress:', progress);
-        },
-        (error) => {
-          console.error('Er is een fout opgetreden bij het ophalen van de gebruiker', error);
-        }
-      );
+        this.userService.getProgress(enrollment.TrainingId, this.currentUserID).subscribe(
+          (progress) => {
+            console.log('Existing Progress:', progress);
+            // Open the modal with progress details only if progress is defined
+            if (progress) {
+              const modalRef = this.modalService.open(ProgressModalComponent, { centered: true, backdrop: false });
+              modalRef.componentInstance.progress = progress;
+            } else {
+              console.warn('Progress is undefined.');
+            }
+          },
+          (error) => {
+            console.error('Error fetching progress:', error);
+          }
+        );
       }
     }
   }
+  
+
+  formatProgressDate(date: Date | undefined): string | null{
+    if (!date) {
+      return ''; // Handle the case where date is undefined
+    }
+
+    // Use DatePipe to format the date
+    return this.datePipe.transform(date, 'medium'); // You can adjust the format as needed
+  }
+  
 }
