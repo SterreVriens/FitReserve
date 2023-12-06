@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put, } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put, } from '@nestjs/common';
 import { TrainingService } from './training.service';
 //import { ITraining } from '@fit-reserve/shared/api';
 import { Get} from '@nestjs/common';
@@ -29,7 +29,7 @@ export class TrainingController {
     }
     @Post('')
     @Public()
-    async create(@Body() data: CreateTrainingDto): Promise<Training> {
+    async create(@Body() data: CreateTrainingDto): Promise<ITraining> {
       console.log("Training create - create controller");
         
       return this.trainingService.create(data);
@@ -42,9 +42,9 @@ export class TrainingController {
     }
 
 
-    // @Delete(':id')
-    // @Public()
-    // delete(@Param('id')id: string): string{
-    //     return this.trainingService.delete(id)
-    // }
+    @Delete(':id')
+    @Public()
+    delete(@Param('id')id: string): Promise<string>{
+        return this.trainingService.delete(id)
+    }
 }

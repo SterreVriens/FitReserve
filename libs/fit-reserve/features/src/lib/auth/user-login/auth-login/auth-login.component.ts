@@ -18,6 +18,7 @@ export class AuthLoginComponent{
   };
 
   private userSubscription: Subscription | undefined;
+  errorMessage: string | undefined;
   
   constructor(
     private route: ActivatedRoute,
@@ -33,12 +34,14 @@ export class AuthLoginComponent{
         const token = success.access_token;
         console.log("Token:", token);
         if (success) {
-          // this.router.navigate(['..'], {relativeTo:this.route});
+          
           sessionStorage.setItem('access_token', token);
+          this.router.navigate(['/feature/users/profile'], {relativeTo:this.route});
         } 
       },
       (error) => {
         console.error('Error login in user:', error)
+        this.errorMessage = 'Invalid username or password';
       }
     )
   }

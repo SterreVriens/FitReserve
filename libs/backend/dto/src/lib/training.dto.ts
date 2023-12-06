@@ -7,14 +7,11 @@ import {
 
 import {
     ICreateTraining,
-    IUpdateTraining,
-    Id,
+    IUpdateTraining
 } from '@fit-reserve/shared/api';
 
 
 export class CreateTrainingDto implements ICreateTraining {
-    _id!: Id;
-  
     @IsString()
     @IsNotEmpty()
     SessionName!: string;

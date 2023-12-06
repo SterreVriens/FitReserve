@@ -2,8 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrainingService } from '../training.service';
 import { AuthService } from '../../auth/auth.service'; // Adjust the path based on your project structure
-import { Id, ITraining } from '@fit-reserve/shared/api';
+import { ICreateTraining, Id } from '@fit-reserve/shared/api';
 import { Subscription } from 'rxjs';
+//import mongoose from 'mongoose';
+// const ObjectId = mongoose.Types.ObjectId;
 
 @Component({
   selector: 'fit-reserve-training-edit',
@@ -12,8 +14,7 @@ import { Subscription } from 'rxjs';
 })
 export class TrainingEditComponent implements OnInit, OnDestroy {
   trainingId: Id | null = null;
-  training: ITraining = {
-    _id: '',
+  training: ICreateTraining = {
     SessionName: '',
     Date: new Date(),
     Duration: 0,
@@ -21,7 +22,6 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
     Location: '',
     Places: 0,
     UserId: '',
-    
   };
 
   constructor(

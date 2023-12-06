@@ -1,5 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { User } from "@fit-reserve/backend/features";
+import { ITraining } from "@fit-reserve/shared/api";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { IsMongoId } from "class-validator";
 import * as mongoose from 'mongoose';
@@ -9,7 +10,7 @@ import { HydratedDocument } from "mongoose";
 export type TrainingDocument = HydratedDocument<Training>
 
 @Schema()
-export class Training{
+export class Training implements ITraining{
     @IsMongoId()
     _id!: string;
 

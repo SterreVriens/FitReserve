@@ -24,20 +24,22 @@ export class EnrollmentController {
     getOne(@Param('id') id: string):Promise<IEnrollment | null>{
         return this.enrollmentService.getOne(id);
     }
-
+    
     @Get('user/:id')
     @Public()
     getAllFromUser(@Param('id') id: string):Promise<IEnrollment[]>{
         return this.enrollmentService.getAllFromUser(id);
     }
-
     @Get(':trainingId/:userId')
     @Public()
-    checkIfEnrolled(@Param('trainingId') trainingId: string, @Param('userId') userId: string): Promise<boolean> {
+    checkIfEnrolled(@Param('trainingId') trainingId: string, @Param('userId') userId: string): Promise<IEnrollment|null> {
         return this.enrollmentService.checkIfEnrollmentExists(trainingId, userId);
     }
 
    
+
+
+    
 
     @Get('training/:id')
     @Public()
@@ -57,5 +59,11 @@ export class EnrollmentController {
     @Public()
     delete(@Param('id')id: string): Promise<string>{
         return this.enrollmentService.delete(id)
+    }
+
+    @Delete('training/:id')
+    @Public()
+    deleteByTraining(@Param('id')id: string): Promise<string>{
+        return this.enrollmentService.deleteEnrollmentsByTrainingId(id)
     }
 }

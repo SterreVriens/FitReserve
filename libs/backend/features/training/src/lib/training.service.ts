@@ -7,7 +7,7 @@ import { Training } from './schemas/training.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import {UserService} from '@fit-reserve/backend/features';
 import { Model } from 'mongoose';
-import { ITraining } from '@fit-reserve/shared/api';
+import { ICreateTraining, ITraining } from '@fit-reserve/shared/api';
 import { UpdateTrainingDto } from '@fit-reserve/backend/dto';
 
 @Injectable()
@@ -103,18 +103,9 @@ export class TrainingService{
     }
     
 
-    async create(training: Training): Promise<Training> {
+    async create(training: ICreateTraining): Promise<ITraining> {
       Logger.log('create', this.TAG);
-    
-        const newTraining: Training = {
-          ...training,
-        }
-    
-        // Save the new training to the database using the Mongoose model
-        const trainingModel = new this.trainingModel(newTraining);
-        await trainingModel.save();
-    
-        return newTraining;
+      return await this.trainingModel.create(training)
      
     }
     
@@ -143,24 +134,24 @@ export class TrainingService{
     }
     
 
-  // delete(id: string): string {
-  //     Logger.log(`Delete training - ${id}`, 'TrainingService');
-
-  //     const currentTrainings = this.training$.value;
-  //     const trainingIndex = currentTrainings.findIndex((t) => t._id === id);
-
-  //     if (trainingIndex === -1) {
-  //         Logger.error(`Training with ID ${id} not found`, undefined, 'TrainingService');
-  //         throw new NotFoundException(`Training could not be found!`);
-  //     }
-
-  //     // Remove the training from the array
-  //     const deletedTraining = currentTrainings.splice(trainingIndex, 1)[0];
-
-  //     // Update the BehaviorSubject with the modified array
-  //     this.training$.next([...currentTrainings]);
-
-  //     Logger.log('Training deleted successfully', 'TrainingService');
-  //     return `Training ${deletedTraining.SessionName} deleted`;
-  // }
+    async delete(id: string): Promise<string> {
+      Logger.log(`Delete training - ${id}`, 'TrainingService');
+    
+      try {
+        // Use Mongoose's deleteOne method to remove the training from the database
+        const result = await this.trainingModel.deleteOne({ _id: id }).exec();
+    
+        if (result.deletedCount === 0) {
+          Logger.error(`Training with ID ${id} not found`, undefined, 'TrainingService');
+          throw new NotFoundException(`Training could not be found!`);
+        }
+    
+        Logger.log('Training deleted successfully', 'TrainingService');
+        return `Training with ID ${id} deleted successfully`;
+      } catch (error) {
+        Logger.error(`Error deleting training with ID ${id}`, error, 'TrainingService');
+        throw new Error('An error occurred while deleting the training');
+      }
+    }
+    
 }

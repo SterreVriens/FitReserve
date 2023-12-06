@@ -57,4 +57,11 @@ export class TrainingDetailComponent implements OnInit {
     else console.error('Er is een fout opgetreden bij het verwijderen van de gebruiker', Error);
      
   }
+
+  isTrainer(): boolean {
+    // Check if the user has the role of a trainer
+    const role = this.authService.getUserRoleFromToken();
+
+    return role === 'Trainer';
+  }
 }

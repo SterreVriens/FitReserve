@@ -172,6 +172,25 @@ export class ProgressService{
         return newProgress;
     }
     
+    async deleteProgressByTrainingId(trainingId: string): Promise<string> {
+        Logger.log(`Delete progress by TrainingId - ${trainingId}`, this.TAG);
+    
+        try {
+          // Find the progress entries with the specified TrainingId
+          const progressToDelete = await this.progressModel.find({ TrainingId: trainingId }).exec();
+    
+          // Delete each progress entry
+          await Promise.all(progressToDelete.map(async (progress) => {
+            await this.progressModel.findByIdAndDelete(progress._id).exec();
+          }));
+    
+          Logger.log('Progress entries deleted successfully', this.TAG);
+          return `Progress entries with TrainingId ${trainingId} deleted successfully`;
+        } catch (error) {
+          Logger.error(`Error deleting progress entries with TrainingId ${trainingId}`, error, this.TAG);
+          throw new Error('An error occurred while deleting the progress entries');
+        }
+    }
     
 
 }

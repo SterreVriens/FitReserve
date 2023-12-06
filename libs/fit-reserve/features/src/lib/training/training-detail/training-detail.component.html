@@ -15,19 +15,22 @@
           <dt>Trainer::</dt>
           <dd>{{ training.User?.UserName }}</dd>
 
+          <ng-container *ngIf="isTrainer(); ">
             <a routerLink="edit" class="button">Update</a>
-          <div>
-            <form 
-              #deleteForm = "ngForm"
-              name="form"
-              (ngSubmit)="onSubmit()"  
-            >
+            <div>
+              <form 
+                #deleteForm = "ngForm"
+                name="form"
+                (ngSubmit)="onSubmit()"  
+              >
 
-              <button type="submit" class="btn btn-danger">
-                Verwijder
-            </button>
-            </form>
-          </div>
+                <button type="submit" class="btn btn-danger">
+                  Verwijder
+              </button>
+              </form>
+            </div>
+          </ng-container>
+          
         </dl>
             
       </div>

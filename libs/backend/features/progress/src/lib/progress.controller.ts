@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { Progress } from './schemas/progres.schema';
 import { ProgressService } from './progress.service';
 import { Public } from '@fit-reserve/decorators';
@@ -40,5 +40,11 @@ export class ProgressController {
     @Public()
     async checkOne(@Param('trainingId') trainingId: string, @Param('userId') userId: string): Promise<IProgress | null> {
         return this.progressService.checkOne(trainingId, userId);
+    }
+
+    @Delete('training/:id')
+    @Public()
+    deleteByTraining(@Param('id')id: string): Promise<string>{
+        return this.progressService.deleteProgressByTrainingId(id)
     }
 }

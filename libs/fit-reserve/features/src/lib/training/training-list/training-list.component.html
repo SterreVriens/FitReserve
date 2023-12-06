@@ -19,20 +19,19 @@
           <a routerLink="{{ training._id }}">Bekijk details</a>
 
           <!-- Check if the user is already enrolled -->
-          <div *ngIf="isUserEnrolled(training._id)">
-            <form (ngSubmit)="enroll(training._id, enrollment.Level)" #enrollForm="ngForm">
-              <label for="levelDropdown">Kies niveau: </label>
-              <select class="form-select" id="levelDropdown" name="level" [(ngModel)]="enrollment.Level" required>
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-                <!-- Add more levels as needed -->
-              </select>
-
-              <button class="btn btn-success" style="margin-left: 1%;" type="submit" [disabled]="!enrollForm.valid">Enroll</button>
-            </form>
+          <div *ngIf="!training.IsEnrolled">
+              <form (ngSubmit)="enroll(training._id, enrollment.Level)" #enrollForm="ngForm">
+                <label for="levelDropdown">Kies niveau: </label>
+                <select class="form-select" id="levelDropdown" name="level" [(ngModel)]="enrollment.Level" required>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                  <!-- Add more levels as needed -->
+                </select>
+  
+                <button class="btn btn-success" style="margin-left: 1%;" type="submit" [disabled]="!enrollForm.valid">Enroll</button>
+              </form>
           </div>
-
         </div>
       </div>
     </div>

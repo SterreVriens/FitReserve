@@ -1,4 +1,7 @@
 <div class="container">
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
     <form 
         #loginForm="ngForm"
         name="loginform"

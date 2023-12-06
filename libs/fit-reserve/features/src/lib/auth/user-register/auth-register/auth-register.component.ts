@@ -34,7 +34,7 @@ export class AuthRegisterComponent {
       (success) =>{
         console.log(success);
         if(success){
-          this.router.navigate(['..'], {relativeTo:this.route});
+          this.router.navigate(['/feature/auth/login'], {relativeTo:this.route});
         } 
       },
       (error) =>{

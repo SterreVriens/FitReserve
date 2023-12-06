@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IEnrollment, ITraining, Level } from '@fit-reserve/shared/api';
 import { TrainingService } from '../training.service';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, Subscription, catchError, map, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { UserService } from '../../user/user.service';
@@ -19,6 +19,7 @@ export class TrainingListComponent implements OnInit, OnDestroy {
     UserId: '',
     Level: Level.Beginner
   };
+
   constructor(
     private route: ActivatedRoute,
     private trainingService: TrainingService,
@@ -30,9 +31,25 @@ export class TrainingListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.trainingService.list().subscribe((results) => {
       console.log(`results: ${results}`);
-      this.trainingen = results;
+      
+      // Controleer of results niet null is voordat je de forEach-loop uitvoert
+      if (results !== null) {
+        this.trainingen = results;
+    
+        // Voer de forEach-loop alleen uit als this.trainingen niet null is
+        this.trainingen.forEach(t => {
+          this.isUserEnrolled(t._id).subscribe((isEnrolled: boolean) => {
+            t.IsEnrolled = isEnrolled;
+            console.log(t._id + " heeft status " + t.IsEnrolled);
+          });
+        });
+      }
     });
   }
+  
+  
+  
+
 
   ngOnDestroy(): void {
     if (this.subscription) this.subscription.unsubscribe();
@@ -47,16 +64,37 @@ export class TrainingListComponent implements OnInit, OnDestroy {
 
   isUserEnrolled(trainingId: string): Observable<boolean> {
     const userId = this.authService.getUserIdFromToken();
-    console.log(`training : ${trainingId} + ${userId}`)
+    console.log(`training : ${trainingId} + ${userId}`);
 
     if (userId) {
-        // Voer een controle uit of de gebruiker al is ingeschreven voor de training
-        console.log(this.trainingService.checkIfUserEnrolled(trainingId, userId))
-        return this.trainingService.checkIfUserEnrolled(trainingId, userId);
-    }
+        return this.trainingService.checkIfUserEnrolled(trainingId, userId).pipe(
+            map((enrollment) => {
+                console.log('Response:', enrollment);
+                const isEnrolled = enrollment;
 
-    return of(false); // Geef een Observable van false terug als userId null is
-}
+                // Check if this.trainingen is not null before using find
+                if (this.trainingen !== null) {
+                    const training = this.trainingen.find(t => t._id === trainingId);
+                    if (training) {
+                        training.IsEnrolled = isEnrolled;
+                    }
+                }
+
+                return isEnrolled;
+            }),
+            catchError((error) => {
+                console.error('Error creating training:', error);
+                return of(true);
+              })
+          );
+      }
+
+      return of(true);
+  }
+
+
+
+
 
   enroll(trainingId: string, level: Level): void {
     console.log(`Enrolling user in training ${trainingId}`);
@@ -74,7 +112,7 @@ export class TrainingListComponent implements OnInit, OnDestroy {
             (success) => {
               console.log('Response:', success);
               if (success) {
-                this.router.navigate([''], { relativeTo: this.route });
+                this.router.navigate([`/feature/training/${trainingId}`], { });
               }
             },
             (error) => {

@@ -2,7 +2,7 @@
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, IEnrollment, ITraining } from '@fit-reserve/shared/api';
+import { ApiResponse, ICreateTraining, IEnrollment, ITraining } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
 
 /**
@@ -89,8 +89,8 @@ export class TrainingService {
     /**
      * Update a training session.
      */
-    public update(training: ITraining, options?: any): Observable<ITraining> {
-        const url = `${this.endpoint}/${training._id}`;
+    public update(training: ICreateTraining,id:string, options?: any): Observable<ITraining> {
+        const url = `${this.endpoint}/${id}`;
         console.log(`Update training - ${url}`);
 
         return this.http
@@ -105,7 +105,7 @@ export class TrainingService {
     /**
      * Create a new training session.
      */
-    public create(training: ITraining| null,options?: any): Observable<ITraining> {
+    public create(training: ICreateTraining| null,options?: any): Observable<ITraining> {
         console.log('Create training -', training);
 
         return this.http
@@ -143,13 +143,13 @@ export class TrainingService {
         console.log('Check if user is enrolled');
       
         return this.http
-            .get<ApiResponse<boolean>>(url, httpOptions)
-            .pipe(
-                map((response: any) => response.results as boolean),
-                tap(console.log),
-                catchError(this.handleError)
-            );
-    }
+          .get<ApiResponse<IEnrollment>>(url, httpOptions)
+          .pipe(
+            map((response: any) => !!response.results), // Convert to boolean
+            tap(console.log),
+            catchError(this.handleError)
+          );
+      }
 
     
 }

@@ -9,12 +9,12 @@ export interface ITraining{
     Description?: string;
     Location?: string;
     Places?: number;
+    IsEnrolled?: boolean;
     UserId: string;
     User?: IUser;
 }
 
 export type ICreateTraining = Pick<
-    ITraining,
-    '_id'| 'SessionName' | 'Description' | 'Date' 
+    ITraining,'SessionName' | 'Description' | 'Date' | 'Duration'| 'Location'| 'Places'| 'UserId'
 >;
 export type IUpdateTraining= Partial<Omit<ITraining, '_id'>>;

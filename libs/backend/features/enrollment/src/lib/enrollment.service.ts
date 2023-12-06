@@ -132,11 +132,12 @@ export class EnrollmentService{
         return enrolledCount < training.Places;
     }
 
-    async checkIfEnrollmentExists(userId: string, trainingId: string): Promise<boolean> {
-        const existingEnrollment = await this.enrollmentModel.findOne({ UserId: userId, TrainingId: trainingId }).exec();
-        
-        return !!existingEnrollment;
+    async checkIfEnrollmentExists(trainingId: string,userId: string): Promise<IEnrollment | null> {
+        Logger.log('checkIfEnrollmentExists', this.TAG);
+        const existingEnrollment = await this.enrollmentModel.findOne({  TrainingId: trainingId,UserId: userId }).exec();
+        return existingEnrollment;
     }
+    
 
     async create(enrollment: Enrollment): Promise<Enrollment> {
         Logger.log('create', this.TAG);
@@ -175,4 +176,23 @@ export class EnrollmentService{
         return(`Enrollment with id ${id} is sucessfully deleted`);
     }
         
+    async deleteEnrollmentsByTrainingId(trainingId: string): Promise<string> {
+        Logger.log(`Delete enrollments by TrainingId - ${trainingId}`, this.TAG);
+    
+        try {
+          // Find the enrollments with the specified TrainingId
+          const enrollmentsToDelete = await this.enrollmentModel.find({ TrainingId: trainingId }).exec();
+    
+          // Delete each enrollment
+          await Promise.all(enrollmentsToDelete.map(async (enrollment) => {
+            await this.enrollmentModel.findByIdAndDelete(enrollment._id).exec();
+          }));
+    
+          Logger.log('Enrollments deleted successfully', this.TAG);
+          return `Enrollments with TrainingId ${trainingId} deleted successfully`;
+        } catch (error) {
+          Logger.error(`Error deleting enrollments with TrainingId ${trainingId}`, error, this.TAG);
+          throw new Error('An error occurred while deleting the enrollments');
+        }
+      }
 }
