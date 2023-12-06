@@ -147,6 +147,18 @@ export class UserService {
           );
       }
       
+      public createProgress(p: IProgress , options?: any):Observable<IProgress>{
+        const url = `http://localhost:3000/api/progress/`;
+        console.log(`Create progress - ${url}`);
+    
+        return this.http
+            .post<ApiResponse<IUser>>(url, p, { ...httpOptions, ...options })
+            .pipe(
+                map((response: any) => response.results as IUser),
+                tap(console.log),
+                catchError(this.handleError)
+            );
+      }
       
       
     /**

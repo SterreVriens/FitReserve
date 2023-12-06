@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IEnrollment, IUser } from '@fit-reserve/shared/api';
+import { IEnrollment, IProgress, IUser } from '@fit-reserve/shared/api';
 import { AuthService } from '../../auth/auth.service';
 import { UserService } from '../user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModal or the modal library you are using
 import { ProgressModalComponent } from './progress-details/progress-details.component';
 import { DatePipe } from '@angular/common';
+import { ProgressCreateComponent } from './progress-create/progress-create.component';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -24,7 +26,8 @@ export class UserProfileComponent implements OnInit {
     private userService: UserService,  
     private router: Router,
     private modalService: NgbModal,
-    private datePipe: DatePipe) {}
+    private datePipe: DatePipe,
+    private location: Location) {}
 
   ngOnInit(): void {
     // Check if the user is logged in
@@ -98,6 +101,8 @@ export class UserProfileComponent implements OnInit {
       }
     );
   }
+
+  
   async viewOrFillProgress(enrollment: IEnrollment): Promise<void> {
     if (enrollment._id) {
       this.currentUserID = this.authService.getUserIdFromToken();
@@ -113,13 +118,33 @@ export class UserProfileComponent implements OnInit {
               console.warn('Progress is undefined.');
             }
           },
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           (error) => {
-            console.error('Error fetching progress:', error);
+            const modalRef = this.modalService.open(ProgressCreateComponent, { centered: true, backdrop: false });
+          
+            // Subscribe to the progressCreated event
+            modalRef.componentInstance.progressCreated.subscribe((newProgress: IProgress) => {
+
+              newProgress.TrainingId=enrollment.TrainingId;
+              newProgress.UserId = this.currentUserID;
+              console.log('New Progress Created:', newProgress);
+              
+              this.userService.createProgress(newProgress).subscribe(
+                (succes) => {
+                  console.log('Progress sucesfully created', succes)
+                  this.location.go(this.location.path());
+                },
+                (error) => {
+                  console.error('Error fetching user enrollments:', error);
+                }
+              );
+            });
           }
         );
       }
     }
   }
+  
   
 
   formatProgressDate(date: Date | undefined): string | null{

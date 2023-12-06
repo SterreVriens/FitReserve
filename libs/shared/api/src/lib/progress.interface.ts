@@ -9,9 +9,9 @@ export interface IProgress{
     Duration: number;
     Date: Date;
     TrainingId: string;
-    UserId: string;
-    User: IUser | null;
-    Training: ITraining | null;
+    UserId: string| null;
+    User?: IUser | null;
+    Training?: ITraining | null;
 }
 
 export type ICreateProgress = Pick<
