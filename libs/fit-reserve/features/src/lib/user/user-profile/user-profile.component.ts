@@ -65,7 +65,7 @@ export class UserProfileComponent implements OnInit {
 
 
   redirectToLogin(): void {
-    this.router.navigate(['/login']); // Replace '/login' with the actual path to your login page
+    this.router.navigate(['/feature/auth/login']); // Replace '/login' with the actual path to your login page
   }
 
   confirmDelete(enrollmentId: string): void {

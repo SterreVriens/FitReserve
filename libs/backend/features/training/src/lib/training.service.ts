@@ -66,46 +66,6 @@ export class TrainingService{
       
   
     }
-
-    // private training$ = new BehaviorSubject<ITraining[]>([
-    //     {
-    //       _id: '1',
-    //       SessionName: 'Krachttraining',
-    //       Date: new Date('2023-11-15T10:00:00'),
-    //       Duration: new Float32Array([1.5]),
-    //       Description: 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.',
-    //       Location: 'Gym XYZ',
-    //       Places: new Int16Array([20]),
-    //     },
-    //     {
-    //       _id: '2',
-    //       SessionName: 'Yoga',
-    //       Date: new Date('2023-11-16T18:30:00'),
-    //       Duration: new Float32Array([1.0]),
-    //       Description: 'Een ontspannende yogasessie om flexibiliteit, balans en innerlijke rust te bevorderen.',
-    //       Location: 'Yoga Studio ABC',
-    //       Places: new Int16Array([15]),
-    //     },
-    //     {
-    //       _id: '3',
-    //       SessionName: 'Cardio Workout',
-    //       Date: new Date('2023-11-17T09:00:00'),
-    //       Duration: new Float32Array([1.25]),
-    //       Description: 'Een energieke cardiotraining met diverse oefeningen om de hartslag te verhogen en calorieën te verbranden.',
-    //       Location: 'Fitness Center 123',
-    //       Places: new Int16Array([25]),
-    //     },
-    //     {
-    //       _id: '4',
-    //       SessionName: 'HIIT Training',
-    //       Date: new Date('2023-11-18T17:15:00'),
-    //       Duration: new Float32Array([1.75]),
-    //       Description: 'High-Intensity Interval Training (HIIT) met afwisselende periodes van intense inspanning en korte rustperiodes.',
-    //       Location: 'HIIT Arena',
-    //       Places: new Int16Array([10]),
-    //     },
-    //   ]);
-
     
     async getAll() :Promise<Training[]>{
         Logger.log("GetAll", this.TAG)

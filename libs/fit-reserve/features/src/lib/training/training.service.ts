@@ -64,7 +64,7 @@ export class TrainingService {
     /**
      * Delete a training session.
      */
-    public delete(id: string | null, options?: any): Observable<ITraining> {
+    public delete(id: string | null, options?: any): Observable<ITraining | null> {
         const url = `${this.endpoint}/${id}`;
         console.log(`Delete - ${url}`);
       
