@@ -10,6 +10,7 @@ export interface ITraining{
     Location?: string;
     Places?: number;
     IsEnrolled?: boolean;
+    AmountEnrolled?: number;
     UserId: string;
     User?: IUser;
 }

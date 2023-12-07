@@ -28,7 +28,6 @@ export class TrainingController {
         return this.trainingService.getOneWithUser(id);
     }
     @Post('')
-    @Public()
     async create(@Body() data: CreateTrainingDto): Promise<ITraining> {
       console.log("Training create - create controller");
         
@@ -36,14 +35,12 @@ export class TrainingController {
     }
 
     @Put(':id')
-    @Public()
     async update(@Body() data: UpdateTrainingDto, @Param('id') id: string): Promise<Training> {
     return this.trainingService.update(data, id);
     }
 
 
     @Delete(':id')
-    @Public()
     delete(@Param('id')id: string): Promise<string>{
         return this.trainingService.delete(id)
     }

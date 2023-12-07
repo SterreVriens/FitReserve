@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Observable, throwError } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
 import { ApiResponse, ICreateTraining, IEnrollment, ITraining } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
@@ -67,9 +67,15 @@ export class TrainingService {
     public delete(id: string | null, options?: any): Observable<ITraining | null> {
         const url = `${this.endpoint}/${id}`;
         console.log(`Delete - ${url}`);
+
+        const token = sessionStorage.getItem('access_token'); // Get the token from session storage
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Set the token in the Authorization header
+        });
       
         return this.http
-          .delete<ApiResponse<ITraining>>(url, { ...httpOptions, ...options })
+          .delete<ApiResponse<ITraining>>(url, { ...httpOptions, ...options,headers })
           .pipe(
             map((response: any) => response.results as ITraining),
             tap(console.log),
@@ -93,8 +99,14 @@ export class TrainingService {
         const url = `${this.endpoint}/${id}`;
         console.log(`Update training - ${url}`);
 
+        const token = sessionStorage.getItem('access_token'); // Get the token from session storage
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Set the token in the Authorization header
+        });
+
         return this.http
-            .put<ApiResponse<ITraining>>(url, training, { ...httpOptions, ...options })
+            .put<ApiResponse<ITraining>>(url, training, { ...httpOptions, ...options,headers })
             .pipe(
                 map((response: any) => response.results as ITraining),
                 tap(console.log),
@@ -108,8 +120,14 @@ export class TrainingService {
     public create(training: ICreateTraining| null,options?: any): Observable<ITraining> {
         console.log('Create training -', training);
 
+        const token = sessionStorage.getItem('access_token'); // Get the token from session storage
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Set the token in the Authorization header
+        });
+
         return this.http
-            .post<ApiResponse<ITraining>>(this.endpoint, training, { ...httpOptions, ...options })
+            .post<ApiResponse<ITraining>>(this.endpoint, training, { ...httpOptions, ...options, headers })
             .pipe(
                 map((response: any) => response.results as ITraining),
                 tap(console.log),
@@ -125,8 +143,14 @@ export class TrainingService {
         const url = `http://localhost:3000/api/enrollment/`;
         console.log('Create enrollment -', enrollment);
 
+        const token = sessionStorage.getItem('access_token'); // Get the token from session storage
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Set the token in the Authorization header
+        });
+
         return this.http
-            .post<ApiResponse<ITraining>>(url, enrollment, { ...httpOptions, ...options })
+            .post<ApiResponse<ITraining>>(url, enrollment, { ...httpOptions, ...options,headers })
             .pipe(
                 map((response: any) => response.results as ITraining),
                 tap(console.log),
@@ -146,6 +170,19 @@ export class TrainingService {
           .get<ApiResponse<IEnrollment>>(url, httpOptions)
           .pipe(
             map((response: any) => !!response.results), // Convert to boolean
+            tap(console.log),
+            catchError(this.handleError)
+          );
+      }
+
+      public getEnrollmentsForTraining(trainingId: string, options?: any): Observable<IEnrollment[] | null> {
+        const url = `http://localhost:3000/api/enrollment/training/${trainingId}`;
+        console.log(`Get enrollments for training - ${url}`);
+      
+        return this.http
+          .get<ApiResponse<IEnrollment[]>>(url, { ...options, ...httpOptions })
+          .pipe(
+            map((response: any) => response.results as IEnrollment[]),
             tap(console.log),
             catchError(this.handleError)
           );

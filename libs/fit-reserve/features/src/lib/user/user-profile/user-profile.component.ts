@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IEnrollment, IProgress, IUser } from '@fit-reserve/shared/api';
+import { IEnrollment, IProgress, ITraining, IUser } from '@fit-reserve/shared/api';
 import { AuthService } from '../../auth/auth.service';
 import { UserService } from '../user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModal or the modal library you are using
@@ -9,6 +9,8 @@ import { ProgressModalComponent } from './progress-details/progress-details.comp
 import { DatePipe } from '@angular/common';
 import { ProgressCreateComponent } from './progress-create/progress-create.component';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { TrainingService } from '../../training/training.service';
 
 
 @Component({
@@ -21,13 +23,16 @@ export class UserProfileComponent implements OnInit {
   user: IUser | null = null;
   currentUserID: string | null = null; 
   enrollments: IEnrollment[] = [];
+  subscription: Subscription | undefined = undefined;
+  trainingen: ITraining[] | null = null;
 
   constructor(private authService: AuthService,
     private userService: UserService,  
     private router: Router,
     private modalService: NgbModal,
     private datePipe: DatePipe,
-    private location: Location) {}
+    private location: Location,
+    private trainingService: TrainingService) {}
 
   ngOnInit(): void {
     // Check if the user is logged in
@@ -53,6 +58,30 @@ export class UserProfileComponent implements OnInit {
                     console.error('Error fetching user profile:', error);
                   }
                 );
+                this.subscription = this.trainingService.list().subscribe((results) => {
+                  console.log(`results: ${results}`);
+                  
+                  // Controleer of results niet null is voordat je de forEach-loop uitvoert
+                  if (results !== null) {
+                    this.trainingen = results;
+                    
+                    // Voer de forEach-loop alleen uit als this.trainingen niet null is
+                    this.trainingen.forEach(t => {
+                      let enrol: IEnrollment[] | null= [];
+                      this.trainingService.getEnrollmentsForTraining(t._id).subscribe(
+                        (enrollments) => {
+                          enrol = enrollments;
+                          if(enrol!==null)
+                          t.AmountEnrolled = enrol.length;
+                        },
+                        (error) => {
+                          console.error('Error fetching enrollments:', error);
+                        }
+                      );
+                    });
+                  }
+                });
+                
                 console.log(u)
                 this.user = user;
             },
@@ -145,7 +174,12 @@ export class UserProfileComponent implements OnInit {
     }
   }
   
-  
+  isTrainer(): boolean {
+    // Check if the user has the role of a trainer
+    const role = this.authService.getUserRoleFromToken();
+
+    return role === 'Trainer';
+  }
 
   formatProgressDate(date: Date | undefined): string | null{
     if (!date) {
@@ -154,6 +188,10 @@ export class UserProfileComponent implements OnInit {
 
     // Use DatePipe to format the date
     return this.datePipe.transform(date, 'medium'); // You can adjust the format as needed
+  }
+
+  isFull(training: ITraining): boolean {
+    return training.AmountEnrolled === training.Places;
   }
   
 }

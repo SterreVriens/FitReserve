@@ -30,25 +30,20 @@ export class EnrollmentController {
     getAllFromUser(@Param('id') id: string):Promise<IEnrollment[]>{
         return this.enrollmentService.getAllFromUser(id);
     }
+    @Get('training/:id')
+    @Public()
+    getAllFromTraining(@Param('id') id: string):Promise<Enrollment[]>{
+        return this.enrollmentService.getAllFromTraining(id);
+    }
     @Get(':trainingId/:userId')
     @Public()
     checkIfEnrolled(@Param('trainingId') trainingId: string, @Param('userId') userId: string): Promise<IEnrollment|null> {
         return this.enrollmentService.checkIfEnrollmentExists(trainingId, userId);
     }
 
-   
-
-
     
 
-    @Get('training/:id')
-    @Public()
-    getAllFromTraining(@Param('id') id: string):Promise<Enrollment[]>{
-        return this.enrollmentService.getAllFromTraining(id);
-    }
-
     @Post('')
-    @Public()
     async create(@Body() data: CreateEnrollmentDto): Promise<Enrollment> {
       console.log("Training create - create controller");
         
@@ -56,13 +51,11 @@ export class EnrollmentController {
     }
 
     @Delete(':id')
-    @Public()
     delete(@Param('id')id: string): Promise<string>{
         return this.enrollmentService.delete(id)
     }
 
     @Delete('training/:id')
-    @Public()
     deleteByTraining(@Param('id')id: string): Promise<string>{
         return this.enrollmentService.deleteEnrollmentsByTrainingId(id)
     }

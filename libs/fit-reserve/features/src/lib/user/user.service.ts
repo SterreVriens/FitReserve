@@ -123,9 +123,15 @@ export class UserService {
     public deleteEnrollment(enrollmentId: string | null, options?: any): Observable<IEnrollment> {
         const url = `http://localhost:3000/api/enrollment/${enrollmentId}`;
         console.log(`Delete Enrollment - ${url}`);
-    
+
+        const token = sessionStorage.getItem('access_token'); // Get the token from session storage
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Set the token in the Authorization header
+        });
+      
         return this.http
-          .delete<ApiResponse<IEnrollment>>(url, { ...httpOptions, ...options })
+          .delete<ApiResponse<IEnrollment>>(url, { ...httpOptions, ...options,headers })
           .pipe(
             map((response: any) => response.results as IEnrollment),
             tap(console.log),
@@ -150,9 +156,15 @@ export class UserService {
       public createProgress(p: IProgress , options?: any):Observable<IProgress>{
         const url = `http://localhost:3000/api/progress/`;
         console.log(`Create progress - ${url}`);
+
+        const token = sessionStorage.getItem('access_token'); // Get the token from session storage
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Set the token in the Authorization header
+        });
     
         return this.http
-            .post<ApiResponse<IUser>>(url, p, { ...httpOptions, ...options })
+            .post<ApiResponse<IUser>>(url, p, { ...httpOptions, ...options,headers })
             .pipe(
                 map((response: any) => response.results as IUser),
                 tap(console.log),

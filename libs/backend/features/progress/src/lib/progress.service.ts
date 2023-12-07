@@ -47,8 +47,8 @@ export class ProgressService{
         progress2.Reps = 5;
         progress2.Duration = 0;
         progress2.Date = new Date();
-        progress2.UserId = currentUsers[3]._id;
-        progress2.TrainingId = currentTrainings[2]._id;
+        progress2.UserId = currentUsers[2]._id;
+        progress2.TrainingId = currentTrainings[1]._id;
         const newProgress2 = new this.progressModel(progress2);
         await newProgress2.save();
 

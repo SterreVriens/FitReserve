@@ -31,7 +31,6 @@ export class ProgressController {
     }
 
     @Post('')
-    @Public()
     async create(@Body() data: CreateProgressDto): Promise<Progress> {
         return this.progressService.create(data);
     }
@@ -43,7 +42,6 @@ export class ProgressController {
     }
 
     @Delete('training/:id')
-    @Public()
     deleteByTraining(@Param('id')id: string): Promise<string>{
         return this.progressService.deleteProgressByTrainingId(id)
     }

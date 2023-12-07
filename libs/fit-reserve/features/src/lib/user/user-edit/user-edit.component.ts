@@ -47,12 +47,6 @@ export class UserEditComponent implements OnInit {
     });
   }
 
-  ngOnDestroy(): void {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-  }
-
 
   onSubmit() {
     console.log('onSubmit - create/update');
@@ -64,7 +58,7 @@ export class UserEditComponent implements OnInit {
           console.log(updatedUser);
   
           // Navigate to the user detail page with the updated UserName
-          this.router.navigate(['feature', 'users', updatedUser.UserName]);
+          this.router.navigate(['feature', 'users', updatedUser._id]);
         },
         (error) => {
           console.error('Error updating user:', error);
