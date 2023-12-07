@@ -1,0 +1,23 @@
+{
+  "name": "backend-features-recommendation",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/backend/features/recommendation/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/backend/features/recommendation/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/backend/features/recommendation/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}
