@@ -16,56 +16,8 @@ export class TrainingService{
 
     constructor(
       @InjectModel(Training.name) private trainingModel: Model<Training>,
-      private userService: UserService){
-      this.seedDb()
-      }
+      private userService: UserService){}
     
-
-    async seedDb() {
-      const currentTrainings = await this.getAll();
-      if (currentTrainings.length > 0) {
-        Logger.log('db already seeded');
-        return;
-      }
-      Logger.log('seeding db');
-
-      const currentUsers = await this.userService.getAll(); 
-      
-      const training1= new Training();
-      training1.SessionName= 'Krachttraining';
-      training1.Date= new Date('2023-11-15T10:00:00');
-      training1.Duration= 1.5;
-      training1.Description= 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
-      training1.Location= 'Gym XYZ';
-      training1.Places= 2;
-      training1.UserId= currentUsers[0]._id; // Associate user1 with training1
-      const newTraining = new this.trainingModel(training1);
-      await newTraining.save();
-  
-      const training3 = new Training();
-      training3.SessionName = 'Krachttraining';
-      training3.Date = new Date('2023-11-15T10:00:00');
-      training3.Duration = 1.5;
-      training3.Description = 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
-      training3.Location = 'Gym XYZ';
-      training3.Places = 20;
-      training3.UserId =currentUsers[0]._id; // Associate user1 with training1
-      const newTraining3 = new this.trainingModel(training3);
-      await newTraining3.save();
-
-      const training2 = new Training();
-      training2.SessionName = 'Yoga';
-      training2.Date = new Date('2023-11-16T18:30:00');
-      training2.Duration = 1.0;
-      training2.Description = 'Een ontspannende yogasessie om flexibiliteit, balans en innerlijke rust te bevorderen.';
-      training2.Location = 'Yoga Studio ABC';
-      training2.Places = 15;
-      training2.UserId = currentUsers[0]._id; // Associate user2 with training2
-      const newTraining2 = new this.trainingModel(training2);
-      await newTraining2.save();
-      
-  
-    }
     
     async getAll() :Promise<Training[]>{
         Logger.log("GetAll", this.TAG)

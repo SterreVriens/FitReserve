@@ -17,54 +17,7 @@ export class ProgressService{
       private userService: UserService,
       private trainingService: TrainingService,
       private enrollmentService: EnrollmentService
-      ){
-      this.seedDb()
-    }
-
-    async seedDb() {
-        const currentProgress = await this.getAll();
-        if (currentProgress.length > 0) {
-          Logger.log('db already seeded');
-          return;
-        }
-        Logger.log('seeding db');
-  
-        const currentUsers = await this.userService.getAll(); 
-        const currentTrainings = await this.trainingService.getAll();
-        
-        const progress1 = new Progress();
-        progress1.Weight = 25;
-        progress1.Reps = 3;
-        progress1.Duration = 0;
-        progress1.Date = new Date();
-        progress1.UserId = currentUsers[3]._id;
-        progress1.TrainingId = currentTrainings[0]._id;
-        const newProgress1 = new this.progressModel(progress1);
-        await newProgress1.save();
-
-        const progress2 = new Progress();
-        progress2.Weight = 30;
-        progress2.Reps = 5;
-        progress2.Duration = 0;
-        progress2.Date = new Date();
-        progress2.UserId = currentUsers[2]._id;
-        progress2.TrainingId = currentTrainings[1]._id;
-        const newProgress2 = new this.progressModel(progress2);
-        await newProgress2.save();
-
-
-        const progress3 = new Progress();
-        progress3.Weight = 20;
-        progress3.Reps = 4;
-        progress3.Duration = 0;
-        progress3.Date = new Date();
-        progress3.UserId = currentUsers[2]._id;
-        progress3.TrainingId = currentTrainings[1]._id;
-        const newProgress3 = new this.progressModel(progress3);
-        await newProgress3.save();
-
-    
-    }
+      ){}
 
     async getAll() :Promise<Progress[]>{
         Logger.log("GetAll", this.TAG)

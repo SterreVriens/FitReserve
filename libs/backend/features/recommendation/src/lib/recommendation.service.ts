@@ -14,7 +14,7 @@ export class RecommendationService {
 
   async createOrUpdateUser(user: IUser) {
     this.logger.log(`Creating user`);
-  
+    
     const result = await this.neo4jService.write(`
       MERGE (u:User {
         _id: $id
@@ -23,23 +23,24 @@ export class RecommendationService {
         u.Username = $Username,
         u.Password = $Password,
         u.Role = $Role,
-        u.Date = $Date,
+        u.Date = $Date
       ON MATCH SET
         u.Username = $Username,
         u.Password = $Password,
         u.Role = $Role,
-        u.Date = $Date,
+        u.Date = $Date
       RETURN u
     `, {
       id: user._id?.toString(),
-      username: user.UserName?.toString(),
-      password: user.Password?.toString(), 
-      role: user.Role?.toString(),
-      date: user.Date?.toString(),
+      Username: user.UserName?.toString(),
+      Password: user.Password?.toString(), 
+      Role: user.Role?.toString(),
+      Date: user.Date?.toString(),
     });
   
     return result;
   }
+  
   
   async deleteUser(id: Id) {
     this.logger.log(`Deleting user`);
@@ -64,11 +65,11 @@ export class RecommendationService {
       ON CREATE SET
         e.TrainingId = $TrainingId,
         e.UserId = $UserId,
-        e.Level = $Level,
+        e.Level = $Level
       ON MATCH SET
         e.TrainingId = $TrainingId,
         e.UserId = $UserId,
-        e.Level = $Level,
+        e.Level = $Level
       RETURN e
     `, {
       id: enrollment._id?.toString(), 
@@ -107,7 +108,7 @@ export class RecommendationService {
         t.Description = $Description,
         t.Location = $Location,
         t.Places = $Places,
-        t.UserId = $UserId,
+        t.UserId = $UserId
       ON MATCH SET
         t.SessionName = $SessionName,
         t.Date = $Date,
@@ -115,7 +116,7 @@ export class RecommendationService {
         t.Description = $Description,
         t.Location = $Location,
         t.Places = $Places,
-        t.UserId = $UserId,
+        t.UserId = $UserId
       RETURN t
     `, {
       id: training._id?.toString(), // Use optional chaining

@@ -10,6 +10,7 @@ import{AuthModule} from '@fit-reserve/backend/features/auth'
 import { EnrollmentModule } from '@fit-reserve/backend/features/enrollment';
 import { ProgressModule } from '@fit-reserve/backend/features/progress';
 import { DataSeederModule } from '@fit-reserve/backend/data-seeder';
+import { RecommendationsModule } from '@fit-reserve/backend/features/recommendation';
 
 @Module({
   imports: 
@@ -30,6 +31,7 @@ import { DataSeederModule } from '@fit-reserve/backend/data-seeder';
           'mongodb://127.0.0.1:27017/fit-reserve-data-api',
       }),
     }),
+    RecommendationsModule
   ],
   controllers: [AppController],
   providers: [AppService],

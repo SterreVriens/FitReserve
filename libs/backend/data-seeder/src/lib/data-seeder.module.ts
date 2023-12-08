@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { DataSeederService } from './data-seeder.service';
 import { RecommendationsModule } from '@fit-reserve/backend/features/recommendation';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Enrollment, EnrollmentSchema } from '@fit-reserve/backend/features/enrollment';
-import { Training, TrainingSchema } from '@fit-reserve/backend/features/training';
-import { User, UserSchema } from '@fit-reserve/backend/features';
-import { Progress, ProgressSchema } from '@fit-reserve/backend/features/progress';
+import { Enrollment, EnrollmentModule, EnrollmentSchema } from '@fit-reserve/backend/features/enrollment';
+import { Training, TrainingModule, TrainingSchema } from '@fit-reserve/backend/features/training';
+import { User, UserModule, UserSchema } from '@fit-reserve/backend/features';
+import { Progress, ProgressModule, ProgressSchema } from '@fit-reserve/backend/features/progress';
 
 @Module({
   imports: [
@@ -15,7 +15,11 @@ import { Progress, ProgressSchema } from '@fit-reserve/backend/features/progress
       { name: User.name, schema: UserSchema },
       { name: Progress.name, schema: ProgressSchema }
     ]),
-    RecommendationsModule
+    RecommendationsModule,
+    UserModule,
+    EnrollmentModule,
+    ProgressModule,
+    TrainingModule
   ],
   providers: [DataSeederService],
   exports: [DataSeederService],
