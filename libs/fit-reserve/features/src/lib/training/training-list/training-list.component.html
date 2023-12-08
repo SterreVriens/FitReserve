@@ -1,9 +1,6 @@
-<!-- training-list.component.html -->
 
 <div class="container">
   <h1 class="color-lightblue">Alle trainingen:</h1>
-
-  <!-- Conditionally display the "Create Training" button -->
   <ng-container *ngIf="isTrainer(); ">
     <a routerLink="create" class="button">Maak een training</a>
   </ng-container>
@@ -23,14 +20,12 @@
           <a routerLink="{{ training._id }}">Bekijk details</a>
 
           <div *ngIf=" !training.IsEnrolled && !isFull(training)">
-            <!-- Form content -->
             <form (ngSubmit)="enroll(training._id, enrollment.Level)" #enrollForm="ngForm">
               <label for="levelDropdown">Kies niveau: </label>
               <select class="form-select" id="levelDropdown" name="level" [(ngModel)]="enrollment.Level" required>
                 <option value="Beginner">Beginner</option>
                 <option value="Intermediate">Intermediate</option>
                 <option value="Advanced">Advanced</option>
-                <!-- Add more levels as needed -->
               </select>
           
               <button class="btn btn-success" style="margin-left: 1%;" type="submit" [disabled]="!enrollForm.valid">Enroll</button>

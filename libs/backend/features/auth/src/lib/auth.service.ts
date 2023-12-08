@@ -49,9 +49,9 @@ export class AuthService {
     const userModel = new this.userModel(newUser);
     const savedUser = await userModel.save();
 
-    // const n4jResult = await this.recommendationsService.createOrUpdateUser(savedUser);
+    // const neo4jR = await this.recommendationsService.createOrUpdateUser(savedUser);
 
-    // if (!n4jResult) {
+    // if (!neo4jR) {
     //   await this.userModel.findByIdAndDelete(savedUser._id).exec();
     //   return null;
     // }

@@ -8,27 +8,12 @@
           <dt>Gebruikersnaam:</dt>
           <dd>{{ user.UserName }}</dd>
       
-          <!-- Conditionally display the "Update" button -->
           <ng-container *ngIf="isOwner(); else updateButtonTemplate">
             <a routerLink="edit" class="button">Update</a>
           </ng-container>
-
-          <!-- Template for cases where the current user is not the owner -->
           <ng-template #updateButtonTemplate>
             <p>You are not authorized to update this user.</p>
           </ng-template>
-          <!-- <div>
-            <form 
-              #deleteForm = "ngForm"
-              name="form"
-              (ngSubmit)="onSubmit()"  
-            >
-
-              <button type="submit" class="btn btn-danger">
-                Verwijder
-            </button>
-            </form>
-          </div> -->
         </dl>
             
       </div>

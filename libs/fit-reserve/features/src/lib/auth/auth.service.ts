@@ -93,17 +93,6 @@ export class AuthService {
     getToken(): string | null {
         return this.getAccessToken();
     }
-    // public  setAccessToken(token: string): void {
-    //     localStorage.setItem('access_token', token);
-    //   }
-    
-    // public  getAccessToken(): string | null {
-    //     return localStorage.getItem('access_token');
-    //   }
-
-    // public  getPayloadFromToken(token: string): any {
-    //     return this.jwtHelper.decodeToken(token);
-    //   }
 
     public handleError(error: HttpErrorResponse): Observable<any> {
         console.log('handleError in authService', error);

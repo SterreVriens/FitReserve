@@ -114,7 +114,6 @@ export class TrainingService{
     async update(updatedTraining: UpdateTrainingDto, id: string): Promise<Training> {
       Logger.log(`Update training with ID ${id}`, 'TrainingService');
     
-      // Find the training in the database
       const existingTraining = await this.trainingModel.findById(id).exec();
     
       if (!existingTraining) {
@@ -122,11 +121,9 @@ export class TrainingService{
         throw new NotFoundException(`Training could not be found!`);
       }
     
-      // Update the training properties
       existingTraining.SessionName = updatedTraining.SessionName ?? existingTraining.SessionName;
       existingTraining.Description = updatedTraining.Description ?? existingTraining.Description;
     
-      // Save the updated training to the database
       await existingTraining.save();
     
       Logger.log('Training updated successfully', 'TrainingService');
@@ -138,7 +135,7 @@ export class TrainingService{
       Logger.log(`Delete training - ${id}`, 'TrainingService');
     
       try {
-        // Use Mongoose's deleteOne method to remove the training from the database
+
         const result = await this.trainingModel.deleteOne({ _id: id }).exec();
     
         if (result.deletedCount === 0) {

@@ -31,11 +31,11 @@ export class RecommendationService {
         u.Date = $Date,
       RETURN u
     `, {
-      id: user._id?.toString(), // Use optional chaining
-      username: user.UserName?.toString(), // Use optional chaining
-      password: user.Password?.toString(), // Use optional chaining
-      role: user.Role?.toString(), // Use optional chaining
-      date: user.Date?.toString(), // Use optional chaining
+      id: user._id?.toString(),
+      username: user.UserName?.toString(),
+      password: user.Password?.toString(), 
+      role: user.Role?.toString(),
+      date: user.Date?.toString(),
     });
   
     return result;

@@ -34,7 +34,7 @@ import {
 
     @Public()
     @Post('register')
-    async register(@Body() user: Record<string, any>): Promise<IUser> {
+    async register(@Body() user: Record<string, any>): Promise<IUser|null> {
         try {
             const newUser = await this.authService.registerUser({
                 UserName: user['UserName'],
@@ -48,11 +48,11 @@ import {
         }
     }
 
-    @UseGuards(AuthGuard) // Add RolesGuard here
+    @UseGuards(AuthGuard) 
     @Get('profile')
     @Roles(Role.Trainer)
     getProfile(@Request() req: any) {
-      console.log(req.user); // Check the user object in the console
+      console.log(req.user); 
       return req.user;
     }
     
