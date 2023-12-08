@@ -78,14 +78,13 @@ export class UserService{
       Logger.log(`Delete user - ${id}`, this.TAG);
     
       try {
-        // Gebruik Mongoose om de gebruiker te verwijderen op basis van het ID
         const result = await this.userModel.deleteOne({ _id: id }).exec();
     
-        // Controleer of de verwijdering succesvol was
-        if (result.deletedCount === 0) {
+        if (!result) {
           Logger.error(`User with ID ${id} not found`, undefined, this.TAG);
           throw new NotFoundException(`User could not be found!`);
         }
+        
     
         Logger.log('User deleted successfully', this.TAG);
       } catch (error) {
@@ -99,22 +98,17 @@ export class UserService{
   async update(user: Pick<IUser, 'Password' | 'UserName'>, id: string, loggedInUserId: string): Promise<IUser> {
     Logger.log(`Update user with ID ${id}`, this.TAG);
     try {
-      // Haal de huidige gebruiker op
+
       const currentUser = await this.userModel.findById(loggedInUserId).exec();
 
-      // Controleer of de huidige gebruiker bestaat
       if (!currentUser) {
         throw new NotFoundException('User not found');
       }
 
-      // Controleer of de huidige gebruiker overeenkomt met de gebruiker die wordt bijgewerkt
       if (currentUser._id.toString() !== id) {
         throw new UnauthorizedException('You are not authorized to update this user');
       }
-
-      // Update de gebruikersgegevens in de database
       const updatedUser = await this.userModel.findByIdAndUpdate(id, user, { new: true }).exec();
-
       if (!updatedUser) {
         throw new NotFoundException('User not found');
       }

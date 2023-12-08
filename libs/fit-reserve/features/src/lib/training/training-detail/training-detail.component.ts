@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ITraining } from '@fit-reserve/shared/api';
 import { AuthService } from '../../auth/auth.service';
 import { TrainingService } from '../training.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'fit-reserve-training-detail',
@@ -19,6 +20,7 @@ export class TrainingDetailComponent implements OnInit {
     private route: ActivatedRoute, 
     private authService: AuthService,
     private trainingService: TrainingService,
+    private datePipe: DatePipe,
      private router: Router,) 
   {}
 
@@ -46,12 +48,9 @@ export class TrainingDetailComponent implements OnInit {
         (success: any) => {
           console.log('Delete successful', success);
           this.router.navigate(['..'], { relativeTo: this.route });
-          // Handle any additional logic after successful deletion
         },
         (error: any) => {
-          console.error('Error deleting user:', error);
-          // Handle errors, display a message, or perform any other necessary actions
-        }
+          console.error('Error deleting user:', error)        }
       );
     }
     else console.error('Er is een fout opgetreden bij het verwijderen van de gebruiker', Error);
@@ -59,9 +58,16 @@ export class TrainingDetailComponent implements OnInit {
   }
 
   isTrainer(): boolean {
-    // Check if the user has the role of a trainer
     const role = this.authService.getUserRoleFromToken();
 
     return role === 'Trainer';
+  }
+
+  formatProgressDate(date: Date | undefined): string | null{
+    if (!date) {
+      return ''; 
+    }
+
+    return this.datePipe.transform(date, 'medium');
   }
 }

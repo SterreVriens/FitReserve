@@ -1,8 +1,8 @@
 
 import { Injectable, Logger } from "@nestjs/common";
-// import { CreateRecommendationDto } from './dto/create-recommendation.dto';
-// import { UpdateRecommendationDto } from './dto/update-recommendation.dto';
+
 import { Neo4jService } from "nest-neo4j/dist";
+import {IEnrollment, ITraining, IUser, Id} from '@fit-reserve/shared/api' 
 
 @Injectable()
 export class RecommendationService {
@@ -11,38 +11,152 @@ export class RecommendationService {
 
   constructor(private readonly neo4jService: Neo4jService) {
   }
-//   create(createRecommendationDto: CreateRecommendationDto) {
-//     return 'This action adds a new recommendation';
-//   }
 
-  async findAll() {
-    return this.findAllMeals();
+  async createOrUpdateUser(user: IUser) {
+    this.logger.log(`Creating user`);
+  
+    const result = await this.neo4jService.write(`
+      MERGE (u:User {
+        _id: $id
+      })
+      ON CREATE SET
+        u.Username = $Username,
+        u.Password = $Password,
+        u.Role = $Role,
+        u.Date = $Date,
+      ON MATCH SET
+        u.Username = $Username,
+        u.Password = $Password,
+        u.Role = $Role,
+        u.Date = $Date,
+      RETURN u
+    `, {
+      id: user._id?.toString(), // Use optional chaining
+      username: user.UserName?.toString(), // Use optional chaining
+      password: user.Password?.toString(), // Use optional chaining
+      role: user.Role?.toString(), // Use optional chaining
+      date: user.Date?.toString(), // Use optional chaining
+    });
+  
+    return result;
+  }
+  
+  async deleteUser(id: Id) {
+    this.logger.log(`Deleting user`);
+  
+    const result = await this.neo4jService.write(`
+      MATCH (u:User {_id: $id})
+      DETACH DELETE u
+    `, {
+      id,
+    });
+  
+    return result;
   }
 
-  async findAllMeals() {
-    const result = await this.neo4jService.read('match(meal:Meal) return meal',{});
-    this.logger.log(`got result: ${JSON.stringify(result)}`);
+  async createOrUpdateEnrollment(enrollment: IEnrollment) {
+    this.logger.log(`Creating enrollment`);
 
-    return result?.records;
+    const result = await this.neo4jService.write(`
+      MERGE (e:Enrollment {
+        _id: $id
+      })
+      ON CREATE SET
+        e.TrainingId = $TrainingId,
+        e.UserId = $UserId,
+        e.Level = $Level,
+      ON MATCH SET
+        e.TrainingId = $TrainingId,
+        e.UserId = $UserId,
+        e.Level = $Level,
+      RETURN e
+    `, {
+      id: enrollment._id?.toString(), 
+      TrainingId: enrollment.TrainingId.toString(),
+      UserId: enrollment.UserId.toString(),
+      Level: enrollment.Level.toString(),
+    });
+
+    return result;
   }
 
-  async findMealsByType(mealType: string) {
-    const query = `match(meal:Meal) where meal.type = '${mealType}' return meal`;
+  async deleteEnrollment(id: Id) {
+    this.logger.log(`Deleting enrollment`);
 
-    const result = await this.neo4jService.read(query,{});
+    const result = await this.neo4jService.write(`
+      MATCH (e:Enrollment {_id: $id})
+      DETACH DELETE e
+    `, {
+      id,
+    });
 
-    return result?.records;
+    return result;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} recommendation`;
+  async createOrUpdateTraining(training: ITraining) {
+    this.logger.log(`Creating training`);
+
+    const result = await this.neo4jService.write(`
+      MERGE (t:Training {
+        _id: $id
+      })
+      ON CREATE SET
+        t.SessionName = $SessionName,
+        t.Date = $Date,
+        t.Duration = $Duration,
+        t.Description = $Description,
+        t.Location = $Location,
+        t.Places = $Places,
+        t.UserId = $UserId,
+      ON MATCH SET
+        t.SessionName = $SessionName,
+        t.Date = $Date,
+        t.Duration = $Duration,
+        t.Description = $Description,
+        t.Location = $Location,
+        t.Places = $Places,
+        t.UserId = $UserId,
+      RETURN t
+    `, {
+      id: training._id?.toString(), // Use optional chaining
+      SessionName: training.SessionName?.toString(),
+      Date: training.Date?.toString(),
+      Duration: training.Duration?.toString(),
+      Description: training.Description?.toString(),
+      Location: training.Location?.toString(),
+      Places: training.Places?.toString(),
+      UserId: training.UserId?.toString(),
+    });
+
+    return result;
   }
 
-//   update(id: number, updateRecommendationDto: UpdateRecommendationDto) {
-//     return `This action updates a #${id} recommendation`;
-//   }
+  async deleteTraining(id: Id) {
+    this.logger.log(`Deleting training`);
 
-  remove(id: number) {
-    return `This action removes a #${id} recommendation`;
+    const result = await this.neo4jService.write(`
+      MATCH (t:Training {_id: $id})
+      DETACH DELETE t
+    `, {
+      id,
+    });
+
+    return result;
   }
+
+  async getRecommendations(enrollment: IEnrollment) {
+    this.logger.log(`Getting recommendations for user with enrollment ${enrollment._id}`);
+
+    const result = await this.neo4jService.read(`
+      MATCH (e:Enrollment {TrainingId: $trainingId})<-[:FOR_TRAINING]-(t:Training)<-[:ENROLLED_IN]-(u:User)
+      MATCH (u)-[:ENROLLED_IN]->(otherEnrollment:Enrollment)-[:FOR_TRAINING]->(otherTraining:Training)
+      WHERE e <> otherEnrollment
+      RETURN DISTINCT otherTraining
+    `, {
+      trainingId: enrollment.TrainingId,
+    });
+
+    return result.records.map(record => record.get('otherTraining').properties as ITraining);
+  }
+  
 }

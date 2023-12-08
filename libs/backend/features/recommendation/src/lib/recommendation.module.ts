@@ -9,12 +9,10 @@ import { Neo4jConfig } from 'nest-neo4j/dist/interfaces/neo4j-config.interface';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     Neo4jModule.forRootAsync({
-      imports: [
-      ],
       inject: [ ConfigService ],
       useFactory: (configService: ConfigService): Neo4jConfig => ({
         scheme: configService.get('NEO4J_SCHEME') || 'neo4j',
-        host: configService.get('NEO4J_HOST') || 'localhost',
+        host: configService.get('NEO4J_HOST') || '127.0.0.1',
         port: configService.get('NEO4J_PORT') || 7687,
         username: configService.get('NEO4J_USERNAME') || 'neo4j',
         password: configService.get('NEO4J_PASSWORD') || '',
@@ -23,5 +21,6 @@ import { Neo4jConfig } from 'nest-neo4j/dist/interfaces/neo4j-config.interface';
   ],
   controllers: [RecommendationController],
   providers: [RecommendationService],
+  exports: [RecommendationService],
 })
 export class RecommendationsModule {}

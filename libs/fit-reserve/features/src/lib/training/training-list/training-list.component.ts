@@ -4,7 +4,7 @@ import { TrainingService } from '../training.service';
 import { Observable, Subscription, catchError, map, of } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
-import { UserService } from '../../user/user.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'fit-reserve-training-list',
@@ -25,7 +25,7 @@ export class TrainingListComponent implements OnInit, OnDestroy {
     private trainingService: TrainingService,
     private router: Router,
     private authService: AuthService,
-    private userService: UserService
+    private datePipe: DatePipe,
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +42,19 @@ export class TrainingListComponent implements OnInit, OnDestroy {
             t.IsEnrolled = isEnrolled;
             console.log(t._id + " heeft status " + t.IsEnrolled);
           });
+
+          let enrol: IEnrollment[] | null= [];
+          this.trainingService.getEnrollmentsForTraining(t._id).subscribe(
+            (enrollments) => {
+              enrol = enrollments;
+              if(enrol!==null)
+              t.AmountEnrolled = enrol.length;
+            },
+            (error) => {
+              console.error('Error fetching enrollments:', error);
+            }
+          );
+
         });
       }
     });
@@ -60,6 +73,18 @@ export class TrainingListComponent implements OnInit, OnDestroy {
     const role = this.authService.getUserRoleFromToken();
 
     return role === 'Trainer';
+  }
+
+  isFull(training: ITraining): boolean {
+    return training.AmountEnrolled === training.Places;
+  }
+
+  formatProgressDate(date: Date | undefined): string | null{
+    if (!date) {
+      return ''; 
+    }
+
+    return this.datePipe.transform(date, 'medium');
   }
 
   isUserEnrolled(trainingId: string): Observable<boolean> {

@@ -32,10 +32,11 @@
               <h2 class="card-title color-orange">{{ training.SessionName }}</h2>
               <div class="card-text">
                 <p class="color-darkorange">Beschrijving: {{ training.Description }}</p>
-                <p class="color-blue">Datum: {{ training.Date }}</p>
+                <p class="color-blue">Datum: {{  formatProgressDate(training.Date) }}</p>
                 <p class="color-yellow">Duur: {{ training.Duration }}</p>
                 <p>{{training.AmountEnrolled}} / {{training.Places}}</p>
                 <p class="color-darkorange" *ngIf="isFull(training)">This training is full!</p>
+                <a routerLink="/feature/training/{{ training._id }}">Bekijk details</a>
               </div>
             </div>
           </div>

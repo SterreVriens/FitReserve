@@ -61,11 +61,9 @@ export class UserProfileComponent implements OnInit {
                 this.subscription = this.trainingService.list().subscribe((results) => {
                   console.log(`results: ${results}`);
                   
-                  // Controleer of results niet null is voordat je de forEach-loop uitvoert
                   if (results !== null) {
                     this.trainingen = results;
-                    
-                    // Voer de forEach-loop alleen uit als this.trainingen niet null is
+                  
                     this.trainingen.forEach(t => {
                       let enrol: IEnrollment[] | null= [];
                       this.trainingService.getEnrollmentsForTraining(t._id).subscribe(
@@ -87,14 +85,19 @@ export class UserProfileComponent implements OnInit {
             },
             (error) => {
                 console.error('Error fetching user profile:', error);
+                this.redirectToLogin();
+                return; 
             }
         );
+    }else{
+        this.redirectToLogin();
+        return; 
     }
   }
 
 
   redirectToLogin(): void {
-    this.router.navigate(['/feature/auth/login']); // Replace '/login' with the actual path to your login page
+    this.router.navigate(['/feature/auth/login']); 
   }
 
   confirmDelete(enrollmentId: string): void {
@@ -106,11 +109,9 @@ export class UserProfileComponent implements OnInit {
   }
 
   deleteEnrollment(enrollmentId: string): void {
-    // Hier kun je de logica toevoegen om de inschrijving daadwerkelijk te verwijderen
     this.userService.deleteEnrollment(enrollmentId).subscribe(
       (response) => {
         console.log(response);
-        // Vernieuw de lijst met inschrijvingen na succesvol verwijderen
         this.refreshEnrollments();
       },
       (error) => {
@@ -139,7 +140,6 @@ export class UserProfileComponent implements OnInit {
         this.userService.getProgress(enrollment.TrainingId, this.currentUserID).subscribe(
           (progress) => {
             console.log('Existing Progress:', progress);
-            // Open the modal with progress details only if progress is defined
             if (progress) {
               const modalRef = this.modalService.open(ProgressModalComponent, { centered: true, backdrop: false });
               modalRef.componentInstance.progress = progress;
@@ -151,7 +151,6 @@ export class UserProfileComponent implements OnInit {
           (error) => {
             const modalRef = this.modalService.open(ProgressCreateComponent, { centered: true, backdrop: false });
           
-            // Subscribe to the progressCreated event
             modalRef.componentInstance.progressCreated.subscribe((newProgress: IProgress) => {
 
               newProgress.TrainingId=enrollment.TrainingId;
@@ -175,7 +174,7 @@ export class UserProfileComponent implements OnInit {
   }
   
   isTrainer(): boolean {
-    // Check if the user has the role of a trainer
+
     const role = this.authService.getUserRoleFromToken();
 
     return role === 'Trainer';
@@ -183,11 +182,10 @@ export class UserProfileComponent implements OnInit {
 
   formatProgressDate(date: Date | undefined): string | null{
     if (!date) {
-      return ''; // Handle the case where date is undefined
+      return ''; 
     }
 
-    // Use DatePipe to format the date
-    return this.datePipe.transform(date, 'medium'); // You can adjust the format as needed
+    return this.datePipe.transform(date, 'medium');
   }
 
   isFull(training: ITraining): boolean {

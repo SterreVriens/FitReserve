@@ -14,24 +14,30 @@
         <h2 class="card-title color-orange">{{ training.SessionName }}</h2>
         <div class="card-text">
           <p class="color-darkorange">Beschrijving: {{ training.Description }}</p>
-          <p class="color-blue">Datum: {{ training.Date }}</p>
+          <p class="color-blue">Datum:  {{  formatProgressDate(training.Date) }}</p>
           <p class="color-yellow">Duur: {{ training.Duration }}</p>
+          <p class="color-darkorange" *ngIf="isFull(training); else notFull" >This training is full!</p>
+          <ng-template #notFull>
+          <p>{{ training.AmountEnrolled }} / {{ training.Places }}</p>
+          </ng-template>
           <a routerLink="{{ training._id }}">Bekijk details</a>
 
-          <!-- Check if the user is already enrolled -->
-          <div *ngIf="!training.IsEnrolled">
-              <form (ngSubmit)="enroll(training._id, enrollment.Level)" #enrollForm="ngForm">
-                <label for="levelDropdown">Kies niveau: </label>
-                <select class="form-select" id="levelDropdown" name="level" [(ngModel)]="enrollment.Level" required>
-                  <option value="Beginner">Beginner</option>
-                  <option value="Intermediate">Intermediate</option>
-                  <option value="Advanced">Advanced</option>
-                  <!-- Add more levels as needed -->
-                </select>
-  
-                <button class="btn btn-success" style="margin-left: 1%;" type="submit" [disabled]="!enrollForm.valid">Enroll</button>
-              </form>
+          <div *ngIf=" !training.IsEnrolled && !isFull(training)">
+            <!-- Form content -->
+            <form (ngSubmit)="enroll(training._id, enrollment.Level)" #enrollForm="ngForm">
+              <label for="levelDropdown">Kies niveau: </label>
+              <select class="form-select" id="levelDropdown" name="level" [(ngModel)]="enrollment.Level" required>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+                <!-- Add more levels as needed -->
+              </select>
+          
+              <button class="btn btn-success" style="margin-left: 1%;" type="submit" [disabled]="!enrollForm.valid">Enroll</button>
+            </form>
           </div>
+          
+          
         </div>
       </div>
     </div>

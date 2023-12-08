@@ -10,7 +10,7 @@
           <dd>{{ training.Description }}</dd>
 
           <dt>Datum training::</dt>
-          <dd>{{ training.Date }}</dd>
+          <dd> {{  formatProgressDate(training.Date) }}</dd>
 
           <dt>Trainer::</dt>
           <dd>{{ training.User?.UserName }}</dd>
