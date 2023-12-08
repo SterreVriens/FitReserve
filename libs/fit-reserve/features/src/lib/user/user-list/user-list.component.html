@@ -1,7 +1,5 @@
 <div class="container">
     <h1 class="color-lightblue">Alle gebruikers:</h1>
-    <a  class="button" routerLink="/feature/users/create">Maak nieuwe gebruiker</a>
-
     <div *ngFor="let user of users"> 
         <div class="card my-3">
             <div class="card-body">
@@ -9,7 +7,7 @@
                 <div class="card-text">
                     <p class="color-blue">Rol: {{user.Role }}</p>
                     <p class="color-yellow">Aangemeld:  {{ user.Date| date:'dd-MM-yyyy' }}</p>
-                    <a routerLink="{{ user.id }}">Bekijk details</a>
+                    <a routerLink="{{ user._id }}">Bekijk details</a>
                 </div>
             </div>
         </div>

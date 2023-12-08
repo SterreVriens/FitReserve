@@ -1,0 +1,44 @@
+<div class="container">
+    <div *ngIf="training; else loadingTemplate">
+        <h2>User Details</h2>
+        <dl>
+      
+          <dt>Naam training::</dt>
+          <dd>{{ training.SessionName }}</dd>
+      
+          <dt>Beschrijving training::</dt>
+          <dd>{{ training.Description }}</dd>
+
+          <dt>Datum training::</dt>
+          <dd> {{  formatProgressDate(training.Date) }}</dd>
+
+          <dt>Trainer::</dt>
+          <dd>{{ training.User?.UserName }}</dd>
+
+          <ng-container *ngIf="isTrainer(); ">
+            <a routerLink="edit" class="button">Update</a>
+            <div>
+              <form 
+                #deleteForm = "ngForm"
+                name="form"
+                (ngSubmit)="onSubmit()"  
+              >
+
+                <button type="submit" class="btn btn-danger">
+                  Verwijder
+              </button>
+              </form>
+            </div>
+          </ng-container>
+          
+        </dl>
+            
+      </div>
+      
+      <ng-template #loadingTemplate>
+        <p>Training niet gevonden</p>
+      </ng-template>
+      
+</div>
+
+

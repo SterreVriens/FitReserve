@@ -1,0 +1,51 @@
+<div class="container">
+    <div *ngIf="isLoggedIn; else loginRedirect">
+      <h2>User Profile</h2>
+      <p>Welcome, {{ user?.UserName }}!</p>
+  
+      <div *ngIf="enrollments.length > 0; else noEnrollments">
+        <h3>Your Enrollments:</h3>
+        <div class="row">
+          <div *ngFor="let enrollment of enrollments" class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Training: {{ enrollment?.Training?.SessionName }}</h5>
+                <p class="card-text"><strong>Level:</strong> {{ enrollment?.Level }}</p>
+                <p class="card-text"><strong>Date:</strong> {{ formatProgressDate(enrollment?.Training?.Date) }}</p>
+                <button *ngIf="enrollment._id" (click)="confirmDelete(enrollment._id)" class="btn btn-danger">Delete Enrollment</button>
+                <button *ngIf="enrollment._id" (click)="viewOrFillProgress(enrollment)" class="btn btn-primary">View/Fill Progress</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noEnrollments>
+        <p>No enrollments found.</p>
+      </ng-template>
+    </div>
+    <ng-container *ngIf="isTrainer(); ">
+      <h2>Alle trainingen:</h2>
+      <div class="row">
+        <div *ngFor="let training of trainingen" class="col-md-6">
+          <div class="card my-3">
+            <div class="card-body">
+              <h2 class="card-title color-orange">{{ training.SessionName }}</h2>
+              <div class="card-text">
+                <p class="color-darkorange">Beschrijving: {{ training.Description }}</p>
+                <p class="color-blue">Datum: {{  formatProgressDate(training.Date) }}</p>
+                <p class="color-yellow">Duur: {{ training.Duration }}</p>
+                <p>{{training.AmountEnrolled}} / {{training.Places}}</p>
+                <p class="color-darkorange" *ngIf="isFull(training)">This training is full!</p>
+                <a routerLink="/feature/training/{{ training._id }}">Bekijk details</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #loginRedirect>
+      <p>Please log in to view your profile.</p>
+      <button (click)="redirectToLogin()">Go to Login</button>
+    </ng-template>
+  </div>
+  

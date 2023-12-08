@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 export class UserEditComponent implements OnInit {
   userId: Id | null = null;
   user: IUser = {
-    id: '1',
+    _id: '1',
     UserName: '',
     Password: '',
     Role: Role.Trainee,
@@ -47,22 +47,18 @@ export class UserEditComponent implements OnInit {
     });
   }
 
-  ngOnDestroy(): void {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-  }
-
 
   onSubmit() {
     console.log('onSubmit - create/update');
   
     if (this.userId) {
-      console.log(`Update user - ${this.userId}`)
-      this.userService.update(this.user,this.userId).subscribe(
-        (success) => {
-          console.log(success);
-          this.router.navigate(['..'], { relativeTo: this.route });
+      console.log(`Update user - ${this.userId}`);
+      this.userService.update(this.user).subscribe(
+        (updatedUser) => {
+          console.log(updatedUser);
+  
+          // Navigate to the user detail page with the updated UserName
+          this.router.navigate(['feature', 'users', updatedUser._id]);
         },
         (error) => {
           console.error('Error updating user:', error);
@@ -72,18 +68,16 @@ export class UserEditComponent implements OnInit {
       // New user: Create the user
       console.log('Create user -', this.user);
       this.userService.create(this.user).subscribe(
-        (success) => {
-          console.log(success);
-          if (success) {
-            this.router.navigate(['..'], { relativeTo: this.route });
-          }
+        (newUser) => {
+          console.log(newUser);
+  
+          // Navigate to the user detail page with the new UserName
+          this.router.navigate(['feature', 'users', newUser.UserName]);
         },
         (error) => {
           console.error('Error creating user:', error);
         }
       );
     }
-  }
-  
-  
+  }  
 }

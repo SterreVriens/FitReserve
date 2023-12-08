@@ -1,65 +1,157 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ITraining } from '@fit-reserve/shared/api';
-import { BehaviorSubject} from 'rxjs';
+//import { ITraining } from '@fit-reserve/shared/api';
+//import { BehaviorSubject} from 'rxjs';
 import { Logger } from '@nestjs/common';
-
+import { Training } from './schemas/training.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import {UserService} from '@fit-reserve/backend/features';
+import { Model } from 'mongoose';
+import { ICreateTraining, ITraining } from '@fit-reserve/shared/api';
+import { UpdateTrainingDto } from '@fit-reserve/backend/dto';
 
 @Injectable()
 export class TrainingService{
     TAG = 'TrainingService';
 
-    private training$ = new BehaviorSubject<ITraining[]>([
-        {
-          id: '1',
-          SessionName: 'Krachttraining',
-          Date: new Date('2023-11-15T10:00:00'),
-          Duration: new Float32Array([1.5]),
-          Description: 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.',
-          Location: 'Gym XYZ',
-          Places: new Int16Array([20]),
-        },
-        {
-          id: '2',
-          SessionName: 'Yoga',
-          Date: new Date('2023-11-16T18:30:00'),
-          Duration: new Float32Array([1.0]),
-          Description: 'Een ontspannende yogasessie om flexibiliteit, balans en innerlijke rust te bevorderen.',
-          Location: 'Yoga Studio ABC',
-          Places: new Int16Array([15]),
-        },
-        {
-          id: '3',
-          SessionName: 'Cardio Workout',
-          Date: new Date('2023-11-17T09:00:00'),
-          Duration: new Float32Array([1.25]),
-          Description: 'Een energieke cardiotraining met diverse oefeningen om de hartslag te verhogen en calorieën te verbranden.',
-          Location: 'Fitness Center 123',
-          Places: new Int16Array([25]),
-        },
-        {
-          id: '4',
-          SessionName: 'HIIT Training',
-          Date: new Date('2023-11-18T17:15:00'),
-          Duration: new Float32Array([1.75]),
-          Description: 'High-Intensity Interval Training (HIIT) met afwisselende periodes van intense inspanning en korte rustperiodes.',
-          Location: 'HIIT Arena',
-          Places: new Int16Array([10]),
-        },
-      ]);
-
+    constructor(
+      @InjectModel(Training.name) private trainingModel: Model<Training>,
+      private userService: UserService){
+      this.seedDb()
+      }
     
-    getAll() :ITraining[]{
+
+    async seedDb() {
+      const currentTrainings = await this.getAll();
+      if (currentTrainings.length > 0) {
+        Logger.log('db already seeded');
+        return;
+      }
+      Logger.log('seeding db');
+
+      const currentUsers = await this.userService.getAll(); 
+      
+      const training1= new Training();
+      training1.SessionName= 'Krachttraining';
+      training1.Date= new Date('2023-11-15T10:00:00');
+      training1.Duration= 1.5;
+      training1.Description= 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
+      training1.Location= 'Gym XYZ';
+      training1.Places= 2;
+      training1.UserId= currentUsers[0]._id; // Associate user1 with training1
+      const newTraining = new this.trainingModel(training1);
+      await newTraining.save();
+  
+      const training3 = new Training();
+      training3.SessionName = 'Krachttraining';
+      training3.Date = new Date('2023-11-15T10:00:00');
+      training3.Duration = 1.5;
+      training3.Description = 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
+      training3.Location = 'Gym XYZ';
+      training3.Places = 20;
+      training3.UserId =currentUsers[0]._id; // Associate user1 with training1
+      const newTraining3 = new this.trainingModel(training3);
+      await newTraining3.save();
+
+      const training2 = new Training();
+      training2.SessionName = 'Yoga';
+      training2.Date = new Date('2023-11-16T18:30:00');
+      training2.Duration = 1.0;
+      training2.Description = 'Een ontspannende yogasessie om flexibiliteit, balans en innerlijke rust te bevorderen.';
+      training2.Location = 'Yoga Studio ABC';
+      training2.Places = 15;
+      training2.UserId = currentUsers[0]._id; // Associate user2 with training2
+      const newTraining2 = new this.trainingModel(training2);
+      await newTraining2.save();
+      
+  
+    }
+    
+    async getAll() :Promise<Training[]>{
         Logger.log("GetAll", this.TAG)
-        return this.training$.value;
+        return this.trainingModel.find().exec();
     }
 
-    getOne(id: string): ITraining {
+    async getOne(id: string): Promise<Training | null> {
         Logger.log(`getOne(${id})`, this.TAG);
-        const meal = this.training$.value.find((td) => td.id === id);
-        if (!meal) {
-            throw new NotFoundException(`Training could not be found!`);
-        }
-        return meal;
+        return await this.trainingModel.findOne({ _id: id }).exec();
+
     }
 
+    async getOneWithUser(id: string): Promise<ITraining | null> {
+      Logger.log(`getOne(${id})`, this.TAG);
+      const training = await this.trainingModel.findById(id).exec();
+    
+      if (!training) {
+        throw new NotFoundException(`Training with ID ${id} not found`);
+      }
+    
+      // Haal de gebruikersgegevens op op basis van de userId van de training
+      const user = await this.userService.getOne(training.UserId);
+    
+      if (!user) {
+        throw new NotFoundException(`User with ID ${training.UserId} not found`);
+      }
+    
+      // Creëer een instantie van ITraining en stel de Trainer-eigenschap in op de opgehaalde gebruiker
+      const trainingWithUser: ITraining = {
+        ...training.toObject(),
+        User: user,
+      };
+    
+      return trainingWithUser;
+    }
+    
+
+    async create(training: ICreateTraining): Promise<ITraining> {
+      Logger.log('create', this.TAG);
+      return await this.trainingModel.create(training)
+     
+    }
+    
+    
+
+    async update(updatedTraining: UpdateTrainingDto, id: string): Promise<Training> {
+      Logger.log(`Update training with ID ${id}`, 'TrainingService');
+    
+      // Find the training in the database
+      const existingTraining = await this.trainingModel.findById(id).exec();
+    
+      if (!existingTraining) {
+        Logger.error(`Training with ID ${id} not found`, undefined, 'TrainingService');
+        throw new NotFoundException(`Training could not be found!`);
+      }
+    
+      // Update the training properties
+      existingTraining.SessionName = updatedTraining.SessionName ?? existingTraining.SessionName;
+      existingTraining.Description = updatedTraining.Description ?? existingTraining.Description;
+    
+      // Save the updated training to the database
+      await existingTraining.save();
+    
+      Logger.log('Training updated successfully', 'TrainingService');
+      return existingTraining.toObject();
+    }
+    
+
+    async delete(id: string): Promise<string> {
+      Logger.log(`Delete training - ${id}`, 'TrainingService');
+    
+      try {
+        // Use Mongoose's deleteOne method to remove the training from the database
+        const result = await this.trainingModel.deleteOne({ _id: id }).exec();
+    
+        if (result.deletedCount === 0) {
+          Logger.error(`Training with ID ${id} not found`, undefined, 'TrainingService');
+          throw new NotFoundException(`Training could not be found!`);
+        }
+    
+        Logger.log('Training deleted successfully', 'TrainingService');
+        return `Training with ID ${id} deleted successfully`;
+      } catch (error) {
+        Logger.error(`Error deleting training with ID ${id}`, error, 'TrainingService');
+        throw new Error('An error occurred while deleting the training');
+      }
+    }
+    
 }

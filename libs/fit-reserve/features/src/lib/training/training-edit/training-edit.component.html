@@ -1,0 +1,149 @@
+<div class="container">
+    <h2>Training Form</h2>
+    <form
+        #trainingForm="ngForm"
+        name="form"
+        (ngSubmit)="trainingForm.form.valid && onSubmit()"
+        novalidate>
+
+        <!-- Session Name -->
+        <div class="form-group">
+            <label for="SessionName">Session Name:</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="SessionName" 
+                placeholder="Enter session name" 
+                [(ngModel)]="training!.SessionName" 
+                name="SessionName" 
+                #sessionName="ngModel"
+                [ngClass]="{
+                    'is-invalid': sessionName.invalid
+                }"
+                required
+                minlength="3">
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="sessionName.invalid" class="invalid-feedback">
+                <div>Session Name cannot be empty and must be at least 3 characters</div>
+            </div>
+        </div>
+        
+        <!-- Description -->
+        <div class="form-group">
+            <label for="Description">Description:</label>
+            <textarea 
+                class="form-control" 
+                id="Description" 
+                placeholder="Enter description" 
+                [(ngModel)]="training!.Description" 
+                name="Description" 
+                #description="ngModel"
+                [ngClass]="{
+                    'is-invalid': description.invalid
+                }"
+                required
+                minlength="10">
+            </textarea>
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="description.invalid" class="invalid-feedback">
+                <div>Description cannot be empty and must be at least 10 characters</div>
+            </div>
+        </div>
+
+        <!-- Date -->
+        <div class="form-group" >
+            <label for="Date">Date:</label>
+            <input 
+                type="date" 
+                class="form-control" 
+                id="Date" 
+                [(ngModel)]="training!.Date" 
+                name="Date" 
+                #date="ngModel"
+                [ngClass]="{
+                    'is-invalid': date.invalid
+                }"
+                required>
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="date.invalid" class="invalid-feedback">
+                <div>Date is required</div>
+            </div>
+        </div>
+
+        <!-- Duration -->
+        <div class="form-group" >
+            <label for="Duration">Duration (hours):</label>
+            <input 
+                type="number" 
+                class="form-control" 
+                id="Duration" 
+                placeholder="Enter duration" 
+                [(ngModel)]="training!.Duration" 
+                name="Duration" 
+                #duration="ngModel"
+                [ngClass]="{
+                    'is-invalid': duration.invalid
+                }"
+                required
+                min="0.5" 
+                step="0.5"> <!-- Allow increments of 0.5 hours -->
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="duration.invalid" class="invalid-feedback">
+                <div>Duration is required and must be a valid number</div>
+            </div>
+        </div>
+
+        <!-- Location -->
+        <div class="form-group" >
+            <label for="Location">Location:</label>
+            <input 
+                type="text" 
+                class="form-control" 
+                id="Location" 
+                placeholder="Enter location" 
+                [(ngModel)]="training!.Location" 
+                name="Location" 
+                #location="ngModel"
+                [ngClass]="{
+                    'is-invalid': location.invalid
+                }"
+                required
+                minlength="3">
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="location.invalid" class="invalid-feedback">
+                <div>Location cannot be empty and must be at least 3 characters</div>
+            </div>
+        </div>
+
+        <!-- Places -->
+        <div class="form-group" >
+            <label for="Places">Available Places:</label>
+            <input 
+                type="number" 
+                class="form-control" 
+                id="Places" 
+                placeholder="Enter available places" 
+                [(ngModel)]="training!.Places" 
+                name="Places" 
+                #places="ngModel"
+                [ngClass]="{
+                    'is-invalid': places.invalid
+                }"
+                required
+                min="1"> <!-- Set a minimum value as per your application requirements -->
+            <!-- Display validation error message if the field is touched and not valid -->
+            <div *ngIf="places.invalid" class="invalid-feedback">
+                <div>Available places is required and must be a valid number</div>
+            </div>
+        </div>
+
+        <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="!trainingForm.valid"
+            [class.pointer-events-none]="trainingForm.invalid"
+            [class.opacity-30]="trainingForm.invalid">
+            Submit
+        </button>
+    </form>
+</div>

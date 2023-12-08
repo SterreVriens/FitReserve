@@ -3,13 +3,21 @@
         <h2>User Details</h2>
         <dl>
           <dt>ID:</dt>
-          <dd>{{ user.id }}</dd>
+          <dd>{{ user._id }}</dd>
       
           <dt>Gebruikersnaam:</dt>
           <dd>{{ user.UserName }}</dd>
       
-          <a routerLink="edit" class="button">Update</a>
-          <div>
+          <!-- Conditionally display the "Update" button -->
+          <ng-container *ngIf="isOwner(); else updateButtonTemplate">
+            <a routerLink="edit" class="button">Update</a>
+          </ng-container>
+
+          <!-- Template for cases where the current user is not the owner -->
+          <ng-template #updateButtonTemplate>
+            <p>You are not authorized to update this user.</p>
+          </ng-template>
+          <!-- <div>
             <form 
               #deleteForm = "ngForm"
               name="form"
@@ -20,8 +28,9 @@
                 Verwijder
             </button>
             </form>
-          </div>
+          </div> -->
         </dl>
+            
       </div>
       
       <ng-template #loadingTemplate>

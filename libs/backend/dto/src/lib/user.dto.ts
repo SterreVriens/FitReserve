@@ -18,7 +18,7 @@ import {
 export class CreateUserDto implements ICreateUser {
     @IsString()
     @IsNotEmpty()
-    id!: Id ;
+    _id!: Id ;
 
     @IsString()
     @IsNotEmpty()
@@ -57,8 +57,5 @@ export class UpdateUserDto implements IUpdateUser {
     @IsNotEmpty()
     UserName!: string;
 
-    @IsString()
-    @IsNotEmpty()
-    Password!: string;
 
 }

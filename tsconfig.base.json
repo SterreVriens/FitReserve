@@ -19,8 +19,26 @@
       "@fit-reserve/backend/features": [
         "libs/backend/features/user/src/index.ts"
       ],
+      "@fit-reserve/backend/features/auth": [
+        "libs/backend/features/auth/src/index.ts"
+      ],
+      "@fit-reserve/backend/features/auth/decorator": [
+        "libs/backend/features/auth/src/lib/decorator/public.decorator.ts"
+      ],
+      "@fit-reserve/backend/features/enrollment": [
+        "libs/backend/features/enrollment/src/index.ts"
+      ],
+      "@fit-reserve/backend/features/progress": [
+        "libs/backend/features/progress/src/index.ts"
+      ],
+      "@fit-reserve/backend/features/recommendation": [
+        "libs/backend/features/recommendation/src/index.ts"
+      ],
       "@fit-reserve/backend/features/training": [
         "libs/backend/features/training/src/index.ts"
+      ],
+      "@fit-reserve/decorators": [
+        "libs/backend/features/user/src/lib/decorators/public.decorater"
       ],
       "@fit-reserve/fit-reserve/common": [
         "libs/fit-reserve/common/src/index.ts"
@@ -32,7 +50,6 @@
         "libs/fit-reserve/ui/src/lib/footer/src/index.ts"
       ],
       "@fit-reserve/shared/api": ["libs/shared/api/src/index.ts"],
-      
       "@fit-reserve/static": ["libs/fit-reserve/static/src/index.ts"],
       "@fit-reserve/ui": ["libs/fit-reserve/ui/src/index.ts"]
     }
