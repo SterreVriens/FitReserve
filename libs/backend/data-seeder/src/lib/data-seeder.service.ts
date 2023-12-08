@@ -161,6 +161,8 @@ export class DataSeederService {
             await this.rcmndService.createOrUpdateTraining(newTraining5)
 
             const currentTrainings = await this.trainingService.getAll();
+
+            this.progressModel.deleteMany({}).exec();
         
             const progress1 = new Progress();
             progress1.Weight = 25;
@@ -212,6 +214,8 @@ export class DataSeederService {
             progress5.TrainingId = currentTrainings[1]._id;
             const newProgress5 = new this.progressModel(progress5);
             await newProgress5.save();
+
+            this.enrollmentModel.deleteMany({}).exec();
 
             const enrollment1 = new Enrollment();
             enrollment1.UserId = currentUsers[3]._id;

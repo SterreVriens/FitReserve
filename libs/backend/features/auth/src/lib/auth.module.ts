@@ -8,18 +8,18 @@ import { APP_GUARD } from "@nestjs/core";
 import { AuthGuard } from "./auth.guard";
 import {ConfigModule} from "@nestjs/config";
 import { UserModule } from '@fit-reserve/backend/features';
-//import { RecommendationsModule } from '@fit-reserve/backend/features/recommendation';
+import {  RecommendationsModule } from '@fit-reserve/backend/features/recommendation';
 
 @Module({
   imports: [
     ConfigModule,
-    //RecommendationsModule,
     UserModule, 
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '3600s' },
     }),
+    RecommendationsModule
   ],
   providers: [AuthService, { provide: APP_GUARD, useClass: AuthGuard }],
   controllers: [AuthController],

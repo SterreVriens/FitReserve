@@ -70,6 +70,9 @@ export class RecommendationService {
         e.TrainingId = $TrainingId,
         e.UserId = $UserId,
         e.Level = $Level
+      WITH e
+        MERGE (u:User { _id: $UserId })-[:ENROLLED_IN]->(e)
+        MERGE (t:Training { _id: $TrainingId })<-[:FOR_TRAINING]-(e)
       RETURN e
     `, {
       id: enrollment._id?.toString(), 
@@ -77,6 +80,7 @@ export class RecommendationService {
       UserId: enrollment.UserId.toString(),
       Level: enrollment.Level.toString(),
     });
+
 
     return result;
   }
@@ -97,40 +101,40 @@ export class RecommendationService {
   async createOrUpdateTraining(training: ITraining) {
     this.logger.log(`Creating training`);
 
-    const result = await this.neo4jService.write(`
-      MERGE (t:Training {
-        _id: $id
-      })
-      ON CREATE SET
-        t.SessionName = $SessionName,
-        t.Date = $Date,
-        t.Duration = $Duration,
-        t.Description = $Description,
-        t.Location = $Location,
-        t.Places = $Places,
-        t.UserId = $UserId
-      ON MATCH SET
-        t.SessionName = $SessionName,
-        t.Date = $Date,
-        t.Duration = $Duration,
-        t.Description = $Description,
-        t.Location = $Location,
-        t.Places = $Places,
-        t.UserId = $UserId
-      RETURN t
-    `, {
-      id: training._id?.toString(), // Use optional chaining
-      SessionName: training.SessionName?.toString(),
-      Date: training.Date?.toString(),
-      Duration: training.Duration?.toString(),
-      Description: training.Description?.toString(),
-      Location: training.Location?.toString(),
-      Places: training.Places?.toString(),
-      UserId: training.UserId?.toString(),
-    });
+  const result = await this.neo4jService.write(`
+  MERGE (t:Training { _id: $id })
+    ON CREATE SET
+      t.SessionName = $SessionName,
+      t.Date = $Date,
+      t.Duration = $Duration,
+      t.Description = $Description,
+      t.Location = $Location,
+      t.Places = $Places,
+      t.UserId = $UserId
+    ON MATCH SET
+      t.SessionName = $SessionName,
+      t.Date = $Date,
+      t.Duration = $Duration,
+      t.Description = $Description,
+      t.Location = $Location,
+      t.Places = $Places,
+      t.UserId = $UserId
+    WITH t
+    MERGE (u:User { _id: $UserId })-[:CREATED]->(t)
+    RETURN t
+  `, {
+    id: training._id?.toString(),
+    SessionName: training.SessionName?.toString(),
+    Date: training.Date?.toString(),
+    Duration: training.Duration?.toString(),
+    Description: training.Description?.toString(),
+    Location: training.Location?.toString(),
+    Places: training.Places?.toString(),
+    UserId: training.UserId?.toString(),
+  });
 
-    return result;
-  }
+  return result;
+}
 
   async deleteTraining(id: Id) {
     this.logger.log(`Deleting training`);
@@ -145,8 +149,8 @@ export class RecommendationService {
     return result;
   }
 
-  async getRecommendations(enrollment: IEnrollment) {
-    this.logger.log(`Getting recommendations for user with enrollment ${enrollment._id}`);
+  async getRecommendations(id: string) {
+    this.logger.log(`Getting recommendations for user with enrollment ${id}`);
 
     const result = await this.neo4jService.read(`
       MATCH (e:Enrollment {TrainingId: $trainingId})<-[:FOR_TRAINING]-(t:Training)<-[:ENROLLED_IN]-(u:User)
@@ -154,7 +158,7 @@ export class RecommendationService {
       WHERE e <> otherEnrollment
       RETURN DISTINCT otherTraining
     `, {
-      trainingId: enrollment.TrainingId,
+      trainingId: id,
     });
 
     return result.records.map(record => record.get('otherTraining').properties as ITraining);

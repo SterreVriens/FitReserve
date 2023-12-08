@@ -4,7 +4,8 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { UserService } from "@fit-reserve/backend/features";
 import { TrainingService } from "@fit-reserve/backend/features/training";
-import { IEnrollment, Level } from "@fit-reserve/shared/api";
+import { IEnrollment } from "@fit-reserve/shared/api";
+import { RecommendationService } from "@fit-reserve/backend/features/recommendation";
 
 @Injectable()
 export class EnrollmentService{
@@ -14,51 +15,9 @@ export class EnrollmentService{
     constructor(
         @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>,
         private userService: UserService,
-        private trainingService: TrainingService
-        ){
-        this.seedDb()
-    }
-
-    async seedDb() {
-        const currentEnrollment = await this.getAll();
-        if (currentEnrollment.length > 0) {
-          Logger.log('db already seeded');
-          return;
-        }
-        Logger.log('seeding db');
-  
-        const currentUsers = await this.userService.getAll(); 
-        const currentTrainings = await this.trainingService.getAll();
-        
-        const enrollment1 = new Enrollment();
-        enrollment1.UserId = currentUsers[0]._id;
-        enrollment1.TrainingId = currentTrainings[0]._id;
-        enrollment1.Level = Level.Beginner;
-        const newEnrollment1 = new this.enrollmentModel(enrollment1);
-        await newEnrollment1.save();
-
-        const enrollment2 = new Enrollment();
-        enrollment2.UserId = currentUsers[1]._id;
-        enrollment2.TrainingId = currentTrainings[0]._id;
-        enrollment2.Level = Level.Experienced;
-        const newEnrollment2 = new this.enrollmentModel(enrollment2);
-        await newEnrollment2.save();
-
-        const enrollment3 = new Enrollment();
-        enrollment3.UserId = currentUsers[0]._id;
-        enrollment3.TrainingId = currentTrainings[1]._id;
-        enrollment3.Level = Level.Beginner;
-        const newEnrollment3 = new this.enrollmentModel(enrollment3);
-        await newEnrollment3.save();
-
-        const enrollment4 = new Enrollment();
-        enrollment4.UserId = currentUsers[1]._id;
-        enrollment4.TrainingId = currentTrainings[1]._id;
-        enrollment4.Level = Level.Experienced;
-        const newEnrollment4 = new this.enrollmentModel(enrollment4);
-        await newEnrollment4.save();
-    
-    }
+        private trainingService: TrainingService,
+        private readonly recommendationsService: RecommendationService,
+        ){}
 
     async getAll() :Promise<Enrollment[]>{
         Logger.log("GetAll", this.TAG)
@@ -139,7 +98,7 @@ export class EnrollmentService{
     }
     
 
-    async create(enrollment: Enrollment): Promise<Enrollment> {
+    async create(enrollment: Enrollment): Promise<Enrollment|null> {
         Logger.log('create', this.TAG);
 
         const isAvailable = await this.checkAvailability(enrollment.TrainingId);
@@ -159,6 +118,13 @@ export class EnrollmentService{
         const enrollmentModel = new this.enrollmentModel(newEnrollment);
         await enrollmentModel.save();
 
+        const neo4jR = await this.recommendationsService.createOrUpdateEnrollment(enrollmentModel);
+
+        if (!neo4jR) {
+        await this.enrollmentModel.findByIdAndDelete(enrollmentModel._id).exec();
+            return null;
+        }
+
         return newEnrollment;
     }
 
@@ -173,6 +139,12 @@ export class EnrollmentService{
 
         // Verwijder de enrollment
         await this.enrollmentModel.findByIdAndDelete(id).exec();
+
+        const n4jResult = this.recommendationsService.deleteEnrollment(id);
+
+        if (!n4jResult) {
+        throw new Error('Could not delete hour scheme');
+        }
         return(`Enrollment with id ${id} is sucessfully deleted`);
     }
         

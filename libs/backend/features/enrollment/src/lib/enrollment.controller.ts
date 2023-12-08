@@ -44,7 +44,7 @@ export class EnrollmentController {
     
 
     @Post('')
-    async create(@Body() data: CreateEnrollmentDto): Promise<Enrollment> {
+    async create(@Body() data: CreateEnrollmentDto): Promise<Enrollment|null> {
       console.log("Training create - create controller");
         
       return this.enrollmentService.create(data);

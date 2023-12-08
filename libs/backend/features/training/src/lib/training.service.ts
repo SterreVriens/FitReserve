@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Injectable, NotFoundException } from '@nestjs/common';
-//import { ITraining } from '@fit-reserve/shared/api';
-//import { BehaviorSubject} from 'rxjs';
 import { Logger } from '@nestjs/common';
 import { Training } from './schemas/training.schema';
 import { InjectModel } from '@nestjs/mongoose';
@@ -9,12 +7,15 @@ import {UserService} from '@fit-reserve/backend/features';
 import { Model } from 'mongoose';
 import { ICreateTraining, ITraining } from '@fit-reserve/shared/api';
 import { UpdateTrainingDto } from '@fit-reserve/backend/dto';
+import { RecommendationService } from "@fit-reserve/backend/features/recommendation";
+
 
 @Injectable()
 export class TrainingService{
     TAG = 'TrainingService';
 
     constructor(
+      private readonly recommendationsService: RecommendationService,
       @InjectModel(Training.name) private trainingModel: Model<Training>,
       private userService: UserService){}
     
@@ -55,15 +56,22 @@ export class TrainingService{
     }
     
 
-    async create(training: ICreateTraining): Promise<ITraining> {
+    async create(training: ICreateTraining): Promise<ITraining|null> {
       Logger.log('create', this.TAG);
-      return await this.trainingModel.create(training)
+      const t = await this.trainingModel.create(training)
      
+      const neo4jR = await this.recommendationsService.createOrUpdateTraining(t);
+
+      if (!neo4jR) {
+      await this.trainingModel.findByIdAndDelete(t._id).exec();
+      return null;
+      }
+      return t.toObject();
     }
     
     
 
-    async update(updatedTraining: UpdateTrainingDto, id: string): Promise<Training> {
+    async update(updatedTraining: UpdateTrainingDto, id: string): Promise<Training|null> {
       Logger.log(`Update training with ID ${id}`, 'TrainingService');
     
       const existingTraining = await this.trainingModel.findById(id).exec();
@@ -79,6 +87,14 @@ export class TrainingService{
       await existingTraining.save();
     
       Logger.log('Training updated successfully', 'TrainingService');
+
+      const neo4jR = await this.recommendationsService.createOrUpdateTraining(existingTraining);
+
+      if (!neo4jR) {
+      await this.trainingModel.findByIdAndDelete(existingTraining._id).exec();
+        return null;
+      }
+
       return existingTraining.toObject();
     }
     
@@ -96,6 +112,13 @@ export class TrainingService{
         }
     
         Logger.log('Training deleted successfully', 'TrainingService');
+
+        const n4jResult = this.recommendationsService.deleteTraining(id);
+
+        if (!n4jResult) {
+          throw new Error('Could not delete hour scheme');
+        }
+
         return `Training with ID ${id} deleted successfully`;
       } catch (error) {
         Logger.error(`Error deleting training with ID ${id}`, error, 'TrainingService');

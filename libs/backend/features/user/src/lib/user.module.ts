@@ -3,10 +3,11 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { User, UserSchema } from './schemas/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
+import {RecommendationsModule } from '@fit-reserve/backend/features/recommendation';
 //import { RecommendationsModule } from '@fit-reserve/backend/features/recommendation';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
+  imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), RecommendationsModule],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService, MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])], 

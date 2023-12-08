@@ -6,7 +6,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { User } from "@fit-reserve/backend/features";
 import * as bcrypt from 'bcrypt';
-// import { RecommendationService } from "@fit-reserve/backend/features/recommendation";
+import { RecommendationService } from "@fit-reserve/backend/features/recommendation";
 
 
 @Injectable()
@@ -15,7 +15,7 @@ export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService,
-    //private readonly recommendationsService: RecommendationService,
+    private readonly recommendationsService: RecommendationService,
     @InjectModel(User.name) private userModel: Model<User>
   ) {}
 
@@ -49,12 +49,12 @@ export class AuthService {
     const userModel = new this.userModel(newUser);
     const savedUser = await userModel.save();
 
-    // const neo4jR = await this.recommendationsService.createOrUpdateUser(savedUser);
+    const neo4jR = await this.recommendationsService.createOrUpdateUser(savedUser);
 
-    // if (!neo4jR) {
-    //   await this.userModel.findByIdAndDelete(savedUser._id).exec();
-    //   return null;
-    // }
+    if (!neo4jR) {
+      await this.userModel.findByIdAndDelete(savedUser._id).exec();
+      return null;
+    }
   
     return savedUser.toObject();
 

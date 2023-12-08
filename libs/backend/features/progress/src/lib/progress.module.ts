@@ -6,13 +6,15 @@ import { Training, TrainingSchema, TrainingService } from '@fit-reserve/backend/
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProgressService } from './progress.service';
 import { Enrollment, EnrollmentSchema, EnrollmentService } from '@fit-reserve/backend/features/enrollment';
+import { RecommendationsModule } from '@fit-reserve/backend/features/recommendation';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Progress.name, schema: ProgressSchema }]),
     MongooseModule.forFeature([{ name: Training.name, schema: TrainingSchema }]),
     MongooseModule.forFeature([{ name: Enrollment.name, schema: EnrollmentSchema }]),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    RecommendationsModule
   ],
   controllers: [ProgressController],
   providers: [ProgressService,UserService,TrainingService,EnrollmentService],

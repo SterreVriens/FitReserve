@@ -5,6 +5,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
 import * as bcrypt from 'bcrypt';
+import { RecommendationService } from "@fit-reserve/backend/features/recommendation";
+
 
 
 
@@ -12,7 +14,8 @@ import * as bcrypt from 'bcrypt';
 export class UserService{
     TAG = 'UserService';
 
-    constructor(@InjectModel(User.name) private userModel: Model<User>){ }
+    constructor(@InjectModel(User.name) private userModel: Model<User>,
+    private readonly recommendationsService: RecommendationService,){ }
 
     async getAll() :Promise<User[]>{
         Logger.log("GetAll", this.TAG)
@@ -40,7 +43,12 @@ export class UserService{
           throw new NotFoundException(`User could not be found!`);
         }
         
-    
+        const n4jResult = this.recommendationsService.deleteUser(id);
+
+        if (!n4jResult) {
+          throw new Error('Could not delete hour scheme');
+        }
+
         Logger.log('User deleted successfully', this.TAG);
       } catch (error) {
         Logger.error(`Error deleting user with ID ${id}`, error, this.TAG);
@@ -50,7 +58,7 @@ export class UserService{
 
     // user.service.ts
 
-  async update(user: Pick<IUser, 'Password' | 'UserName'>, id: string, loggedInUserId: string): Promise<IUser> {
+  async update(user: Pick<IUser, 'Password' | 'UserName'>, id: string, loggedInUserId: string): Promise<IUser|null> {
     Logger.log(`Update user with ID ${id}`, this.TAG);
     try {
 
@@ -69,6 +77,13 @@ export class UserService{
       }
 
       Logger.log('User updated successfully', this.TAG);
+
+      const neo4jR = await this.recommendationsService.createOrUpdateUser(updatedUser);
+
+      if (!neo4jR) {
+      await this.userModel.findByIdAndDelete(updatedUser._id).exec();
+      return null;
+      }
       return updatedUser.toObject();
     } catch (error) {
       Logger.error(`Error updating user with ID ${id}`, error, this.TAG);
