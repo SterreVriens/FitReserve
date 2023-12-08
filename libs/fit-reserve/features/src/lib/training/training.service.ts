@@ -4,6 +4,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { map, catchError, tap } from 'rxjs/operators';
 import { ApiResponse, ICreateTraining, IEnrollment, ITraining } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
+import { environment } from '@fit-reserve/shared/environment';
 
 /**
  * See https://angular.io/guide/http#requesting-data-from-a-server
@@ -19,7 +20,7 @@ export const httpOptions = {
  */
 @Injectable()
 export class TrainingService {
-    endpoint = 'http://localhost:3000/api/training';
+    endpoint = `${environment.dataApiUrl}/api/training`;
 
     constructor(private readonly http: HttpClient) {}
 
@@ -140,7 +141,7 @@ export class TrainingService {
      */
 
     public enroll(enrollment: IEnrollment| null,options?: any): Observable<IEnrollment> {
-        const url = `http://localhost:3000/api/enrollment/`;
+        const url = `${environment.dataApiUrl}/api/enrollment/`;
         console.log('Create enrollment -', enrollment);
 
         const token = sessionStorage.getItem('access_token'); // Get the token from session storage
@@ -163,7 +164,7 @@ export class TrainingService {
      */
 
     public checkIfUserEnrolled(trainingId: string, userId: string): Observable<boolean> {
-        const url = `http://localhost:3000/api/enrollment/${trainingId}/${userId}`;
+        const url = `${environment.dataApiUrl}/api/enrollment/${trainingId}/${userId}`;
         console.log('Check if user is enrolled');
       
         return this.http
@@ -176,7 +177,7 @@ export class TrainingService {
       }
 
       public getEnrollmentsForTraining(trainingId: string, options?: any): Observable<IEnrollment[] | null> {
-        const url = `http://localhost:3000/api/enrollment/training/${trainingId}`;
+        const url = `${environment.dataApiUrl}/api/enrollment/training/${trainingId}`;
         console.log(`Get enrollments for training - ${url}`);
       
         return this.http

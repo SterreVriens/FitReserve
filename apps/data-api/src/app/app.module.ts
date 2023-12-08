@@ -9,10 +9,13 @@ import { MongooseModule } from '@nestjs/mongoose';
 import{AuthModule} from '@fit-reserve/backend/features/auth'
 import { EnrollmentModule } from '@fit-reserve/backend/features/enrollment';
 import { ProgressModule } from '@fit-reserve/backend/features/progress';
+import { DataSeederModule } from '@fit-reserve/backend/data-seeder';
 
 @Module({
   imports: 
-    [UserModule, 
+    [
+    DataSeederModule,
+    UserModule, 
     TrainingModule,
     AuthModule,
     EnrollmentModule,

@@ -15,7 +15,7 @@ import { Neo4jConfig } from 'nest-neo4j/dist/interfaces/neo4j-config.interface';
         host: configService.get('NEO4J_HOST') || '127.0.0.1',
         port: configService.get('NEO4J_PORT') || 7687,
         username: configService.get('NEO4J_USERNAME') || 'neo4j',
-        password: configService.get('NEO4J_PASSWORD') || '',
+        password: configService.get('NEO4J_PASSWORD') || 'ikhaatkaas',
         database: configService.get('NEO4J_DATABASE') || 'neo4j',
       })}),
   ],

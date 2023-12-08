@@ -5,6 +5,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { ApiResponse, IEnrollment, IProgress, IUser } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
+import { environment } from '@fit-reserve/shared/environment';
 
 /**
  * See https://angular.io/guide/http#requesting-data-from-a-server
@@ -20,7 +21,7 @@ export const httpOptions = {
  */
 @Injectable()
 export class UserService {
-    endpoint = 'http://localhost:3000/api/user';
+    endpoint = `${environment.dataApiUrl}/api/user`;
 
     constructor(private readonly http: HttpClient,
       private readonly authService: AuthService,) {}
@@ -108,7 +109,7 @@ export class UserService {
     }
 
     public getAllEnrollments(id:string | null, options?: any): Observable<IEnrollment[]>{
-        const url = `http://localhost:3000/api/enrollment/user/${id}`;
+        const url = `${environment.dataApiUrl}/api/enrollment/user/${id}`;
         console.log(`getAllEnrollments - ${url}`);
       
         return this.http
@@ -121,7 +122,7 @@ export class UserService {
     }
     
     public deleteEnrollment(enrollmentId: string | null, options?: any): Observable<IEnrollment> {
-        const url = `http://localhost:3000/api/enrollment/${enrollmentId}`;
+        const url = `${environment.dataApiUrl}/api/enrollment/${enrollmentId}`;
         console.log(`Delete Enrollment - ${url}`);
 
         const token = sessionStorage.getItem('access_token'); // Get the token from session storage
@@ -140,7 +141,7 @@ export class UserService {
       }
     
       public getProgress(trainingId: string | null, userid: string | null, options?: any): Observable<IProgress> {
-        const url = `http://localhost:3000/api/progress/check/${trainingId}/${userid}`;
+        const url = `${environment.dataApiUrl}/api/progress/check/${trainingId}/${userid}`;
         console.log(`getProgress - ${url}`);
       
         // Make the HTTP request and log the response
@@ -154,7 +155,7 @@ export class UserService {
       }
       
       public createProgress(p: IProgress , options?: any):Observable<IProgress>{
-        const url = `http://localhost:3000/api/progress/`;
+        const url = `${environment.dataApiUrl}/api/progress/`;
         console.log(`Create progress - ${url}`);
 
         const token = sessionStorage.getItem('access_token'); // Get the token from session storage

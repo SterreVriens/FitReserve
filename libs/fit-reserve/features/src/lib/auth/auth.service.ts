@@ -5,6 +5,7 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { ApiResponse, IUser } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '@fit-reserve/shared/environment';
 
 
 /**
@@ -22,7 +23,7 @@ export const httpOptions = {
 @Injectable()
 export class AuthService {
     private jwtHelper: JwtHelperService = new JwtHelperService();
-    endpoint = 'http://localhost:3000/api/auth';
+    endpoint = `${environment.dataApiUrl}/api/auth`;
 
     constructor(private readonly http: HttpClient) {}
 
