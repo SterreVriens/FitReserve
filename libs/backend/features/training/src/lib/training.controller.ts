@@ -28,14 +28,14 @@ export class TrainingController {
         return this.trainingService.getOneWithUser(id);
     }
     @Post('')
-    async create(@Body() data: CreateTrainingDto): Promise<ITraining> {
+    async create(@Body() data: CreateTrainingDto): Promise<ITraining|null> {
       console.log("Training create - create controller");
         
       return this.trainingService.create(data);
     }
 
     @Put(':id')
-    async update(@Body() data: UpdateTrainingDto, @Param('id') id: string): Promise<Training> {
+    async update(@Body() data: UpdateTrainingDto, @Param('id') id: string): Promise<Training|null> {
     return this.trainingService.update(data, id);
     }
 

@@ -1,29 +1,47 @@
 <div class="container">
     <div *ngIf="isLoggedIn; else loginRedirect">
-      <h2>User Profile</h2>
-      <p>Welcome, {{ user?.UserName }}!</p>
+      <h2>Gebruikers profiel</h2>
+      <p>Welkom, {{ user?.UserName }}!</p>
   
       <div *ngIf="enrollments.length > 0; else noEnrollments">
-        <h3>Your Enrollments:</h3>
+        <h3>Jou aanmeldingen:</h3>
         <div class="row">
           <div *ngFor="let enrollment of enrollments" class="col-md-6">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Training: {{ enrollment?.Training?.SessionName }}</h5>
-                <p class="card-text"><strong>Level:</strong> {{ enrollment?.Level }}</p>
-                <p class="card-text"><strong>Date:</strong> {{ formatProgressDate(enrollment?.Training?.Date) }}</p>
-                <button *ngIf="enrollment._id" (click)="confirmDelete(enrollment._id)" class="btn btn-danger">Delete Enrollment</button>
-                <button *ngIf="enrollment._id" (click)="viewOrFillProgress(enrollment)" class="btn btn-primary">View/Fill Progress</button>
+                <p class="card-text"><strong>Niveau:</strong> {{ enrollment?.Level }}</p>
+                <p class="card-text"><strong>Wanneer?:</strong> {{ formatProgressDate(enrollment?.Training?.Date) }}</p>
+                <p class="card-text"><strong>Waar?:</strong> {{ enrollment?.Training?.Location }}</p>
+                
+                <button *ngIf="enrollment._id" (click)="confirmDelete(enrollment._id)" class="btn btn-danger">Verwijder aanmelding</button>
+                <button *ngIf="enrollment._id" (click)="viewOrFillProgress(enrollment)" class="btn btn-primary">Bekijk jou progressie</button>
               </div>
             </div>
           </div>
         </div>
       </div>
       <ng-template #noEnrollments>
-        <p>No enrollments found.</p>
+        <p>Jij bent nog nergens voor aangemeld.</p>
       </ng-template>
     </div>
     <ng-container *ngIf="isTrainer(); ">
+
+      <h2>Alle gemaakte trainingen:</h2>
+      <div class="row">
+        <div *ngFor="let training of createdTrainingen" class="col-md-6">
+          <div class="card my-3">
+            <div class="card-body">
+              <h2 class="card-title color-orange">{{ training.SessionName }}</h2>
+              <div class="card-text">
+                <p > <strong class="color-darkorange">Beschrijving: </strong>{{ training.Description }}</p>
+                <p > <strong class="color-darkorange">Datum:</strong> {{  formatProgressDate(training.Date) }}</p>
+                <p > <strong class="color-darkorange">Duur: </strong> {{ training.Duration }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <h2>Alle trainingen:</h2>
       <div class="row">
         <div *ngFor="let training of trainingen" class="col-md-6">
@@ -31,12 +49,12 @@
             <div class="card-body">
               <h2 class="card-title color-orange">{{ training.SessionName }}</h2>
               <div class="card-text">
-                <p class="color-darkorange">Beschrijving: {{ training.Description }}</p>
-                <p class="color-blue">Datum: {{  formatProgressDate(training.Date) }}</p>
-                <p class="color-yellow">Duur: {{ training.Duration }}</p>
+                <p > <strong class="color-darkorange">Beschrijving: </strong>{{ training.Description }}</p>
+                <p > <strong class="color-darkorange">Datum:</strong> {{  formatProgressDate(training.Date) }}</p>
+                <p > <strong class="color-darkorange">Duur: </strong> {{ training.Duration }}</p>
                 <p>{{training.AmountEnrolled}} / {{training.Places}}</p>
                 <p class="color-darkorange" *ngIf="isFull(training)">This training is full!</p>
-                <a routerLink="/feature/training/{{ training._id }}">Bekijk details</a>
+                <a class="btn btn-primary" routerLink="/feature/training/{{ training._id }}">Bekijk details</a>
               </div>
             </div>
           </div>

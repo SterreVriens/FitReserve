@@ -1,38 +1,40 @@
 <div class="container">
     <div *ngIf="training; else loadingTemplate">
-        <h2>User Details</h2>
-        <dl>
-      
-          <dt>Naam training::</dt>
-          <dd>{{ training.SessionName }}</dd>
-      
-          <dt>Beschrijving training::</dt>
-          <dd>{{ training.Description }}</dd>
+        <h2 class="color-yellow">Details van training: {{training.SessionName}}</h2>
 
-          <dt>Datum training::</dt>
-          <dd> {{  formatProgressDate(training.Date) }}</dd>
+        <div>
+          <h3>Wat gaan we doen?</h3>
+          <p>{{training.Description}}</p>
+        </div>
 
-          <dt>Trainer::</dt>
-          <dd>{{ training.User?.UserName }}</dd>
+        <div>
+          <h3>Wanneer gaan we dat doen?</h3>
+          <p>{{formatProgressDate(training.Date) }}</p>
+        </div>
 
-          <ng-container *ngIf="isTrainer(); ">
-            <a routerLink="edit" class="button">Update</a>
-            <div>
-              <form 
-                #deleteForm = "ngForm"
-                name="form"
-                (ngSubmit)="onSubmit()"  
-              >
+        <div>
+          <h3>Wie geeft deze training?</h3>
+          <p>{{ training.User?.UserName }}</p>
+        </div>
 
-                <button type="submit" class="btn btn-danger">
-                  Verwijder
-              </button>
-              </form>
-            </div>
+
+       <div class="row">
+          <ng-container  *ngIf="isTrainer(); ">
+              <a class="col-md-6" routerLink="edit" class="btn btn-primary">Update</a>
+              <div class="col-md-6">
+                <form 
+                  #deleteForm = "ngForm"
+                  name="form"
+                  (ngSubmit)="onSubmit()"  
+                  >
+                  <button type="submit" class="btn btn-danger">
+                    Verwijder
+                  </button>
+                </form>
+              </div>
           </ng-container>
+       </div>
           
-        </dl>
-            
       </div>
       
       <ng-template #loadingTemplate>

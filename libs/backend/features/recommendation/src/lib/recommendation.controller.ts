@@ -12,8 +12,8 @@ export class RecommendationController {
   ) {}
 
   @Get(':id')
-  getAll(@Param('id') id: string):Promise<ITraining[]>{
-      return this.recommendationsService.getRecommendations(id);
+  getAll(@Param('id') id: string|null):Promise<ITraining[]>{
+      return this.recommendationsService.getTrainingFromUser(id);
   }
 
 }

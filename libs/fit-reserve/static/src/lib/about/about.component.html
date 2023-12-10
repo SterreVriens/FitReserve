@@ -71,21 +71,190 @@
 
     <div>
         <h2 class="display-5 color-darkorange">Datamodel / ERD</h2>
-    <div>
-        <img src="assets/images/ERD.png" alt="ERD" class="w-full" />
+        <div class="row">
+            <div class="col-md-6">
+                <img src="assets/images/ERD.png" alt="ERD" class="w-full" />
+            </div>
+            <div class="col-md-6">
+                <h3>Uitleg</h3>
+                <p>Gebruikers kunnen zich inschrijven voor de app. Een gebruiker met de rol trainer kan een nieuwe training aanmaken. 
+                    Alle gebruikers kunnen zich aanmelden voor een training, maar gebruikers kunnen zich alleen inschrijven voor cursussen die bestaan.
+                    Een gebruiker kan bij een inschrijving ook aangeven wat zijn/haar niveau is. Een gebruiker kan ook zijn voortgang van een training opslaan.
+                </p>
+                <h4>Associaties</h4>
+                <p>Inschrijvingen is een zwakke associatieve entiteit omdat deze geen eigen identiteit heeft buiten de relatie tussen User en trainingen.</p>
+            </div>
+        </div>
+        <h3>Entiteiten</h3>
+        <div class="cards-columns row">
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <div class="">
+                        <div class="card-title">
+                            <h5 class="color-darkorange">User</h5>
+                        </div>
+                        <div class="card-text">
+                            <p>De user entiteit is in deze applicatie de plek waar gebruikers staan opgeslagen.
+                                Een nieuwe User maak je aan door je te registreren.
+                                Ook kun je zodra je bent ingelogd jou eigen User aanpassen.
+                            </p>
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>Attribuut naam</th>
+                                    <th>Attribuut waarde</th>
+                                </thead>
+                                <tbody>
+                                    <td>Gebruikersnaam</td>
+                                    <td>String</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Wachtwoord</td>
+                                    <td>String</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Registratie datum</td>
+                                    <td>Date</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Rol</td>
+                                    <td>Role enum</td>
+                                </tbody>
+                            </table>
+                            </div>
+                
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <div class="">
+                        <div class="card-title">
+                            <h5 class="color-darkorange">Training</h5>
+                        </div>
+                        <div class="card-text">
+                            <p>De Training entiteit is de plaats waar alle trainingen worden opgeslagen.
+                                Een training kan worden aangemaakt door een user met de trainer rol.
+                                Deze user kan ook alle trainingen aanpassen en verwijderen
+                            </p>
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>Attribuut naam</th>
+                                    <th>Attribuut waarde</th>
+                                </thead>
+                                <tbody>
+                                    <td>Sessie naam</td>
+                                    <td>String</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Datum</td>
+                                    <td>Date</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Tijdstip</td>
+                                    <td>Number</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Duur</td>
+                                    <td>Number/td>
+                                </tbody>
+                                <tbody>
+                                    <td>Beschrijving</td>
+                                    <td>String</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Locatie</td>
+                                    <td>String</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Aantal plaatsen</td>
+                                    <td>Number</td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <div class="">
+                        <div class="card-title">
+                            <h5 class="color-darkorange">Inschrijving</h5>
+                        </div>
+                        <div class="card-text">
+                            <p>De Inschrijving entiteit gaat over de inschrijvingen die worden gedaan bij een training.
+                                Een inglogde gebruiker kan zich bij een training inschrijven wanneer er nog plekken over zijn bij de training
+                                of wanneer hij nog niet bij deze is ingelogd. Ook word bij de inschrijving bijgehouden op welk level je de
+                                training wilt gaan volgen.
+                            </p>
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>Attribuut naam</th>
+                                    <th>Attribuut waarde</th>
+                                </thead>
+                                <tbody>
+                                    <td>Gebruiker</td>
+                                    <td>String</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Training</td>
+                                    <td>String</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Niveau</td>
+                                    <td>Level enum</td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card p-3">
+                    <div class="">
+                        <div class="card-title">
+                            <h5 class="color-darkorange">Voortgang</h5>
+                        </div>
+                        <div class="card-text">
+                            <p>Het voortgangs entiteit kan een ingelogde user invullen wanneer hij zich heeft aangemeld voor een training.
+                                In de voortgang kan een user bijhouden hoe de training ging en kan hij dit later vergelijken met andere.
+                                De voortgang van een training word niet verwijderd zodra een training word verwijderd, zo kan de gebruiker 
+                                altijd nog zijn voortgang zien
+                            </p>
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>Attribuut naam</th>
+                                    <th>Attribuut waarde</th>
+                                </thead>
+                                <tbody>
+                                    <td>Gewicht</td>
+                                    <td>number</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Reps</td>
+                                    <td>Number</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Duur</td>
+                                    <td>Number</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Datum</td>
+                                    <td>Date</td>
+                                </tbody>
+                                <tbody>
+                                    <td>User</td>
+                                    <td>String</td>
+                                </tbody>
+                                <tbody>
+                                    <td>Training</td>
+                                    <td>String</td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <h2>Uitleg</h2>
-        <p> Gebruikers kunnen zich inschrijven voor de app. Een gebruiker met de rol trainer kan een nieuwe training aanmaken. 
-            Alle gebruikers kunnen zich aanmelden voor een training, maar gebruikers kunnen zich alleen inschrijven voor cursussen die bestaan.
-            Een gebruiker kan bij een inschrijving ook aangeven wat zijn/haar niveau is.  Een gebruiker kan ook zijn voortgang van een training opslaan.
-        </p>
-        <h3>Associaties</h3>
-        <p>
-            Inschrijvingen is een zwakke associatieve entiteit omdat deze geen eigen identiteit heeft buiten de relatie tussen User en trainingen.
-        </p>
-    </div>
-    </div>
-    
     
 </div>

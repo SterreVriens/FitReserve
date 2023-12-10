@@ -79,7 +79,6 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
           }
         );
       } else {
-        // New training: Create the training
         console.log('Create training -', this.training);
         this.trainingService.create(this.training).subscribe(
           (success) => {

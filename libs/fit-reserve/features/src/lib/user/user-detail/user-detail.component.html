@@ -1,25 +1,21 @@
 <div class="container">
     <div *ngIf="user; else loadingTemplate">
-        <h2>User Details</h2>
-        <dl>
-          <dt>ID:</dt>
-          <dd>{{ user._id }}</dd>
-      
-          <dt>Gebruikersnaam:</dt>
-          <dd>{{ user.UserName }}</dd>
-      
+        <h2 class="color-blue">Gebruiker: {{user.UserName}}</h2>
+        <div>
+          <p>Lid sinds: <strong class="color-darkorange"> {{formatDate(user.Date)}}</strong></p>
+          <p>Deze gebruiker is een : <strong class="color-darkorange">{{user.Role}}</strong></p>
           <ng-container *ngIf="isOwner(); else updateButtonTemplate">
-            <a routerLink="edit" class="button">Update</a>
+            <a routerLink="edit" class="btn btn-primary ">Update</a>
           </ng-container>
           <ng-template #updateButtonTemplate>
-            <p>You are not authorized to update this user.</p>
+            <p>Jij hebt geen toestemming om deze gebruiker aan te passen</p>
           </ng-template>
-        </dl>
-            
+        </div>
       </div>
       
       <ng-template #loadingTemplate>
-        <p>Loading...</p>
+        <p class="color-orange">Er ging iets fout :(</p>
+        <p>Probeer om de pagina te refreshen</p>
       </ng-template>
       
 </div>

@@ -1,13 +1,13 @@
 
 <div class="modal-header">
-  <h4 class="modal-title">Create Progress</h4>
+  <h4 class="modal-title">Maak een progressie aan:</h4>
 </div>
 <div class="modal-body">
   <form 
     #progressCreate="ngForm"
     (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="weight">Weight (kg):</label>
+      <label for="weight">Gewicht (kg):</label>
       <input type="number" class="form-control" id="Weight" [(ngModel)]="progress.Weight" name="Weight" required>
     </div>
     <div class="form-group">
@@ -15,12 +15,12 @@
       <input type="number" class="form-control" id="Reps" [(ngModel)]="progress.Reps" name="Reps" required>
     </div>
     <div class="form-group">
-      <label for="duration">Duration:</label>
+      <label for="duration">Tijdsduur:</label>
       <input type="number" class="form-control" id="Duration" [(ngModel)]="progress.Duration" name="Duration" required>
     </div>
-    <button type="submit" class="btn btn-primary" [disabled]="!progressCreate.form.valid">Create Progress</button>
+    <button type="submit" class="btn btn-primary" [disabled]="!progressCreate.form.valid">Maak aan</button>
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="activeModal.dismiss()">Close</button>
+  <button type="button" class="btn btn-default" (click)="activeModal.dismiss()">Terug</button>
 </div>

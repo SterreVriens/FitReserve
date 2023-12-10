@@ -2,7 +2,7 @@
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, IEnrollment, IProgress, IUser } from '@fit-reserve/shared/api';
+import { ApiResponse, IEnrollment, IProgress, ITraining, IUser } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '@fit-reserve/shared/environment';
@@ -154,6 +154,28 @@ export class UserService {
           );
       }
       
+      public getTrainingFromUser( userid: string| null, options?: any): Observable<ITraining[]> {
+        const url = `${environment.dataApiUrl}/api/recommendations/${userid}`;
+        console.log(`getTrainingFromUser - ${url}`);
+
+        const token = sessionStorage.getItem('access_token'); // Get the token from session storage
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Set the token in the Authorization header
+        });
+      
+      
+        // Make the HTTP request and log the response
+        return this.http
+          .get<ApiResponse<ITraining>>(url, { ...httpOptions, ...options,headers })
+          .pipe(
+            tap(console.log),
+            map((response: any) => response.results as ITraining),
+            catchError(this.handleError)
+          );
+      }
+      
+
       public createProgress(p: IProgress , options?: any):Observable<IProgress>{
         const url = `${environment.dataApiUrl}/api/progress/`;
         console.log(`Create progress - ${url}`);

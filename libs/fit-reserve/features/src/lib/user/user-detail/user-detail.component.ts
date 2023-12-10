@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { IUser } from '@fit-reserve/shared/api';
 import { AuthService } from '../../auth/auth.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'fit-reserve-user-detail',
@@ -19,7 +20,9 @@ export class UserDetailComponent implements OnInit {
     private route: ActivatedRoute, 
     private userService: UserService,
     private authService: AuthService,
-     private router: Router,) {}
+     private router: Router,
+    private datePipe: DatePipe,
+    ) {}
 
      ngOnInit(): void {
       // Fetch the current user's profile
@@ -49,12 +52,19 @@ export class UserDetailComponent implements OnInit {
     }
 
     isOwner(): boolean {
-      // Retrieve the token from AuthService
       const user = this.authService.getUserIdFromToken();
       console.log('Logged in userId:', user);
   
-      // Implement logic to compare the IDs (replace 'currentUserID' with the actual ID from your JWT)
       return this.user?._id === user
     }
+
+    formatDate(date: Date | undefined): string | null{
+      if (!date) {
+        return ''; 
+      }
+  
+      return this.datePipe.transform(date, 'medium');
+    }
+  
   
 }

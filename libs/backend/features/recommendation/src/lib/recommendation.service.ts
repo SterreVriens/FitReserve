@@ -149,19 +149,17 @@ export class RecommendationService {
     return result;
   }
 
-  async getRecommendations(id: string) {
-    this.logger.log(`Getting recommendations for user with enrollment ${id}`);
-
+  async getTrainingFromUser(id: string|null) {
+    this.logger.log(`Getting trainings for user with enrollment ${id}`);
+  
     const result = await this.neo4jService.read(`
-      MATCH (e:Enrollment {TrainingId: $trainingId})<-[:FOR_TRAINING]-(t:Training)<-[:ENROLLED_IN]-(u:User)
-      MATCH (u)-[:ENROLLED_IN]->(otherEnrollment:Enrollment)-[:FOR_TRAINING]->(otherTraining:Training)
-      WHERE e <> otherEnrollment
-      RETURN DISTINCT otherTraining
+      MATCH (trainer:User{\`_id\`: $userId })-[:CREATED]->(t:Training)
+      RETURN t
     `, {
-      trainingId: id,
+      userId: id,
     });
-
-    return result.records.map(record => record.get('otherTraining').properties as ITraining);
+  
+    return result.records.map(record => record.get('t').properties as ITraining);
   }
   
 }

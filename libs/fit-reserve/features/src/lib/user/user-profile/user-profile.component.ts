@@ -25,6 +25,7 @@ export class UserProfileComponent implements OnInit {
   enrollments: IEnrollment[] = [];
   subscription: Subscription | undefined = undefined;
   trainingen: ITraining[] | null = null;
+  createdTrainingen: ITraining[] | null = null;
 
   constructor(private authService: AuthService,
     private userService: UserService,  
@@ -35,9 +36,7 @@ export class UserProfileComponent implements OnInit {
     private trainingService: TrainingService) {}
 
   ngOnInit(): void {
-    // Check if the user is logged in
     this.isLoggedIn = !!this.authService.getUserIdFromToken();
-    // If logged in, fetch user profile
     if (this.isLoggedIn) {
         this.authService.getProfile().subscribe(
             (user) => {
@@ -45,6 +44,16 @@ export class UserProfileComponent implements OnInit {
                 this.userService.read(u).subscribe(
                   (succes) =>{
                     this.user = succes
+
+                    this.userService.getTrainingFromUser(u).subscribe(
+                      (e) =>{
+                        this.createdTrainingen = e
+                      },
+                      (error) => {
+                        console.error('Error fetching user trainingen:', error);
+                      }
+                    )
+
                     this.userService.getAllEnrollments(u).subscribe(
                       (enrollments) => {
                         this.enrollments = enrollments;
