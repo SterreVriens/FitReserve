@@ -8,7 +8,7 @@
           <dt>Gebruikersnaam:</dt>
           <dd>{{ user.UserName }}</dd>
       
-          <ng-container *ngIf="isOwner(); else updateButtonTemplate">
+            <ng-container *ngIf="isOwner() || isTrainer(); else updateButtonTemplate">
             <a routerLink="edit" class="button">Update</a>
           </ng-container>
           <ng-template #updateButtonTemplate>

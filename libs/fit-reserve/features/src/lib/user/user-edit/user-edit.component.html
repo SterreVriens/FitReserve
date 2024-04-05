@@ -30,7 +30,7 @@
         
         
         
-        <div class="form-group">
+        <div *ngIf= isTrainer(); class="form-group">
             <label for="role">Role:</label>
             <select class="form-control" id="role" [(ngModel)]="user.Role" name="role" required>
                 <option value="" disabled>Select a role</option>

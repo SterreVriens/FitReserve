@@ -14,10 +14,9 @@ export class AuthRegisterComponent {
   user: IUser = {
     UserName: '',
     Password: '',
-    Role: undefined
+    Role: Role.Trainee
   };
-  roles = Role;
-  selectedRole: Role | undefined;
+  
 
 
   private userSubscription: Subscription | undefined;

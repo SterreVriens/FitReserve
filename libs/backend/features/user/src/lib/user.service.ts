@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { IUser } from '@fit-reserve/shared/api';
+import { IUser, Role } from '@fit-reserve/shared/api';
 import { Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -46,7 +46,7 @@ export class UserService{
         const n4jResult = this.recommendationsService.deleteUser(id);
 
         if (!n4jResult) {
-          throw new Error('Could not delete hour scheme');
+          throw new Error('Could not delete user from Neo4j database!');
         }
 
         Logger.log('User deleted successfully', this.TAG);
@@ -100,6 +100,42 @@ export class UserService{
 
     const saltOrRounds = 10;
     return await bcrypt.hash(plainTextPassword, saltOrRounds);
+}
+
+//Update een user rol
+//Check wel dat de persoon die de user wil updaten admin is
+
+async updateRole(user: Pick<IUser, 'Role'>, id: string, loggedInUserId: string): Promise<IUser|null> {
+  Logger.log(`Update user with ID ${id}`, this.TAG);
+  try {
+
+    const currentUser = await this.userModel.findById(loggedInUserId).exec();
+
+    if (!currentUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (currentUser.Role !== Role.Trainer) {
+      throw new UnauthorizedException('You are not authorized to update this user');
+    }
+    const updatedUser = await this.userModel.findByIdAndUpdate(id, user, { new: true }).exec();
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
+    }
+
+    Logger.log('User updated successfully', this.TAG);
+
+    const neo4jR = await this.recommendationsService.createOrUpdateUser(updatedUser);
+
+    if (!neo4jR) {
+    await this.userModel.findByIdAndDelete(updatedUser._id).exec();
+    return null;
+    }
+    return updatedUser.toObject();
+  } catch (error) {
+    Logger.error(`Error updating user with ID ${id}`, error, this.TAG);
+    throw new InternalServerErrorException('Error updating user');
+  }
 }
 
 

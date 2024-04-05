@@ -2,7 +2,7 @@
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, IUser } from '@fit-reserve/shared/api';
+import { ApiResponse, IUser, Role } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '@fit-reserve/shared/environment';
@@ -79,11 +79,11 @@ export class AuthService {
       }
       return null;
     }
-    getUserRoleFromToken(): string | null {
+    getUserRoleFromToken(): Role | null {
         const token = sessionStorage.getItem('access_token');
         if (token) {
             const decodedToken = this.jwtHelper.decodeToken(token);
-            return decodedToken.Role; // Assuming 'sub' is the property containing the user ID
+            return decodedToken.Role; 
         }
         return null;
       }
