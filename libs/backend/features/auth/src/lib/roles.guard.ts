@@ -1,30 +1,61 @@
-import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { ROLES_KEY } from './decorators/roles.decorator';
+import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from './constants';
+import { Request } from 'express';
+import { Role } from '@fit-reserve/shared/api';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(private jwtService: JwtService, private reflector: Reflector) {}
 
-  canActivate(context: ExecutionContext): boolean {
-    const requiredRoles = this.reflector.getAllAndOverride<string[]>(ROLES_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const requiredRole = Role.Trainer; // Specify the role that grants access to the route
 
-    if (!requiredRoles) {
-      // If roles are not explicitly defined, deny access
-      return false;
+    const request = context.switchToHttp().getRequest();
+    const token = this.extractTokenFromHeader(request);
+
+    if (!token) {
+      throw new UnauthorizedException('No token provided');
     }
 
-    const { user } = context.switchToHttp().getRequest();
-    console.log(user);
+    try {
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: jwtConstants.secret,
+      });
 
-    if (!user || !user.roles) {
-      // If user or user roles are not defined, deny access
-      throw new UnauthorizedException();
+      const userRole: Role = payload.Role; // Assuming role is stored in the payload
+
+
+      if (!userRole) {
+        throw new UnauthorizedException('User has no role');
+      }
+
+      if (userRole !== requiredRole) {
+        throw new UnauthorizedException('User is not authorized');
+      }
+
+      request.user = payload; // Set user payload to request object
+    } catch (error) {
+      throw new UnauthorizedException('User is not authorized');
     }
 
-    return requiredRoles.some((Role) => user.roles.includes(Role));
+    return true;
+  }
+
+  private extractTokenFromHeader(request: Request): string | undefined {
+    const authHeader = request.headers.authorization;
+
+    if (!authHeader || typeof authHeader !== 'string') {
+      return undefined;
+    }
+
+    const [type, token] = authHeader.split(' ');
+
+    if (type !== 'Bearer' || !token) {
+      return undefined;
+    }
+
+    return token;
   }
 }

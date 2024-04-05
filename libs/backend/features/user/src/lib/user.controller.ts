@@ -26,9 +26,9 @@ export class UserController {
 
 
     @Put(':id')
-        async update(@Body() data: UpdateUserDto, @Param('id') id: string, @Req() req: any): Promise<IUser> {
-        return this.userService.update(data, id, req.user.sub);
-    }
+        async update(@Body() data: UpdateUserDto, @Param('id') id: string, @Req() req: any): Promise<IUser | null> {
+            return this.userService.update(data, id, req.user.sub);
+        }
 
 
     @Delete(':_id')
