@@ -1,7 +1,7 @@
 import { Id } from "./id.type";
 
 export interface ILocation {
-    _id: Id;
+    _id?: Id;
     Name?: string;
     Description?: string;
     Address?: string;

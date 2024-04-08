@@ -1,0 +1,35 @@
+
+<div class="modal-header">
+    <h4 class="modal-title">Maak een locatie aan</h4>
+  </div>
+  <div class="modal-body">
+    <form 
+      #locationCreate="ngForm"
+      (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Naam:</label>
+        <input type="string" class="form-control" id="Name" [(ngModel)]="location.Name" name="Name" required>
+      </div>
+      <div class="form-group">
+        <label for="Description">Beschrijving:</label>
+        <input type="string" class="form-control" id="Description" [(ngModel)]="location.Description" name="Description" required>
+      </div>
+      <div class="form-group">
+        <label for="Address">Address:</label>
+        <input type="string" class="form-control" id="Address" [(ngModel)]="location.Address" name="Address" required>
+      </div>
+      <div class="form-group">
+        <label for="City">Stad:</label>
+        <input type="string" class="form-control" id="City" [(ngModel)]="location.City" name="City" required>
+      </div>
+      <div class="form-group">
+        <label for="Country">Land:</label>
+        <input type="string" class="form-control" id="Country" [(ngModel)]="location.Country" name="Country" required>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="!locationCreate.form.valid">Create Progress</button>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="activeModal.dismiss()">Close</button>
+  </div>
+  

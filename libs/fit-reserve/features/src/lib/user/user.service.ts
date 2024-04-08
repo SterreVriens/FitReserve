@@ -2,7 +2,7 @@
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, IEnrollment, IProgress, IUser } from '@fit-reserve/shared/api';
+import { ApiResponse, IEnrollment, ILocation, IProgress, IUser } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { environment } from '@fit-reserve/shared/environment';
@@ -173,7 +173,42 @@ export class UserService {
             );
       }
       
+    public getAllLocations(options?: any): Observable<ILocation[]> {
+        const url = `${environment.dataApiUrl}/api/location`;
+        
+        const token = sessionStorage.getItem('access_token'); // Get the token from session storage
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Set the token in the Authorization header
+        });
       
+        return this.http
+          .get<ApiResponse<ILocation>>(url, { ...httpOptions, ...options,headers })
+          .pipe(
+            map((response: any) => response.results as ILocation),
+            tap(console.log),
+            catchError(this.handleError)
+          );
+      
+    } 
+
+    public createLocation(location: ILocation | null, options?: any): Observable<ILocation> {
+        const url = `${environment.dataApiUrl}/api/location`;
+        
+        const token = sessionStorage.getItem('access_token'); // Get the token from session storage
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Set the token in the Authorization header
+        });
+
+        return this.http
+            .post<ApiResponse<ILocation>>(url, location, { ...httpOptions, ...options,headers })
+            .pipe(
+                map((response: any) => response.results as ILocation),
+                tap(console.log),
+                catchError(this.handleError)
+            );
+    }
     /**
      * Handle errors.
      */

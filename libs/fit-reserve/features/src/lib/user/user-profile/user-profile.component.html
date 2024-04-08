@@ -12,6 +12,7 @@
                 <h5 class="card-title">Training: {{ enrollment?.Training?.SessionName }}</h5>
                 <p class="card-text"><strong>Level:</strong> {{ enrollment?.Level }}</p>
                 <p class="card-text"><strong>Date:</strong> {{ formatProgressDate(enrollment?.Training?.Date) }}</p>
+                <p class="card-text"><strong>Locatie: </strong>{{enrollment?.Location?.Name}}</p>
                 <button *ngIf="enrollment._id" (click)="confirmDelete(enrollment._id)" class="btn btn-danger">Delete Enrollment</button>
                 <button *ngIf="enrollment._id" (click)="viewOrFillProgress(enrollment)" class="btn btn-primary">View/Fill Progress</button>
               </div>
@@ -24,6 +25,20 @@
       </ng-template>
     </div>
     <ng-container *ngIf="isTrainer(); ">
+      <button (click)="fillLocation()"  class="btn btn-primary">Nieuwe locatie</button>
+      <div class="row">
+        <div *ngFor="let location of locations" class="col-md-3">
+          <div class="card my-3">
+            <div class="card-body">
+              <h4 class="card-title">{{ location.Name }}</h4>
+              <div class="card-text">
+                <p class="color-darkorange">Adress: {{ location.Address }}</p>
+                <p class="color-blue">Stad: {{ location.City }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <h2>Alle trainingen:</h2>
       <div class="row">
         <div *ngFor="let training of trainingen" class="col-md-6">
