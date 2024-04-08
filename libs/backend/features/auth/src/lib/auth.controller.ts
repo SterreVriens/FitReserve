@@ -14,9 +14,7 @@ import {
   import { AuthService } from './auth.service';
   import { Public } from "./decorators/public.decorator";
   import { IUser } from '@fit-reserve/shared/api';
-  import { Trainer } from './decorators/roles.decorator';
-import { RolesGuard } from './roles.guard';
-  //import { RolesGuard } from './roles.guard';
+
 
 
   
@@ -48,9 +46,8 @@ import { RolesGuard } from './roles.guard';
             throw new HttpException('Registration failed', HttpStatus.BAD_REQUEST);
         }
     }
-
+//nog de roles guard weghalen
     @UseGuards(AuthGuard) 
-    @UseGuards(RolesGuard)
     @Get('profile')
     getProfile(@Request() req: any) {
       console.log(req.user); 

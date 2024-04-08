@@ -6,16 +6,18 @@ import { Training, TrainingSchema, TrainingService } from '@fit-reserve/backend/
 import { Enrollment, EnrollmentSchema } from './schemas/enrollment.schemas';
 import { EnrollmentService } from './enrollment.service';
 import { RecommendationsModule } from '@fit-reserve/backend/features/recommendation';
+import { LocationSchema, LocationService, Location } from '@fit-reserve/backend/features/location';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Enrollment.name, schema: EnrollmentSchema }]),
     MongooseModule.forFeature([{ name: Training.name, schema: TrainingSchema }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    RecommendationsModule
+    MongooseModule.forFeature([{ name: Location.name, schema: LocationSchema }]),
+    RecommendationsModule,
   ],
   controllers: [EnrollmentController],
-  providers: [EnrollmentService,UserService,TrainingService],
+  providers: [EnrollmentService,UserService,TrainingService,LocationService],
   exports: [
     EnrollmentService,
     MongooseModule.forFeature([{ name: Enrollment.name, schema: EnrollmentSchema }])

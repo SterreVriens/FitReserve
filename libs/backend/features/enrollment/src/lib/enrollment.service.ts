@@ -6,6 +6,7 @@ import { UserService } from "@fit-reserve/backend/features";
 import { TrainingService } from "@fit-reserve/backend/features/training";
 import { IEnrollment } from "@fit-reserve/shared/api";
 import { RecommendationService } from "@fit-reserve/backend/features/recommendation";
+import { LocationService } from "@fit-reserve/backend/features/location";
 
 @Injectable()
 export class EnrollmentService{
@@ -15,6 +16,7 @@ export class EnrollmentService{
     constructor(
         @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>,
         private userService: UserService,
+        private locationService: LocationService,
         private trainingService: TrainingService,
         private readonly recommendationsService: RecommendationService,
         ){}
@@ -64,14 +66,14 @@ export class EnrollmentService{
     async getOne(id: string): Promise<IEnrollment | null> {
         Logger.log(`GetOne(${id})`, this.TAG);
         const enrollment = await this.enrollmentModel.findById(id).exec();
-    
+
         if (!enrollment) {
             throw new NotFoundException(`Enrollment with ID ${id} not found`);
         }
-    
+
         const user = await this.userService.getOne(enrollment.UserId);
         const training = await this.trainingService.getOne(enrollment.TrainingId);
-    
+
         const fullEnrollment: IEnrollment = {
             ...enrollment.toObject(),
             User: user || null, // Gebruik null als fallback als user null is

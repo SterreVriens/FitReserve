@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ProgressService } from './progress.service';
 import { Enrollment, EnrollmentSchema, EnrollmentService } from '@fit-reserve/backend/features/enrollment';
 import { RecommendationsModule } from '@fit-reserve/backend/features/recommendation';
+import { LocationSchema, LocationService, Location } from '@fit-reserve/backend/features/location';
 
 @Module({
   imports: [
@@ -14,10 +15,11 @@ import { RecommendationsModule } from '@fit-reserve/backend/features/recommendat
     MongooseModule.forFeature([{ name: Training.name, schema: TrainingSchema }]),
     MongooseModule.forFeature([{ name: Enrollment.name, schema: EnrollmentSchema }]),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: Location.name, schema: LocationSchema }]),
     RecommendationsModule
   ],
   controllers: [ProgressController],
-  providers: [ProgressService,UserService,TrainingService,EnrollmentService],
+  providers: [ProgressService,UserService,TrainingService,EnrollmentService,LocationService],
   exports: [ProgressService,
     MongooseModule.forFeature([{ name: Progress.name, schema: ProgressSchema }])
   ],

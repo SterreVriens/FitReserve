@@ -4,6 +4,7 @@ import { Logger } from '@nestjs/common';
 import { Training } from './schemas/training.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import {UserService} from '@fit-reserve/backend/features';
+import {LocationService} from '@fit-reserve/backend/features/location';
 import { Model } from 'mongoose';
 import { ICreateTraining, ITraining } from '@fit-reserve/shared/api';
 import { UpdateTrainingDto } from '@fit-reserve/backend/dto';
@@ -17,7 +18,8 @@ export class TrainingService{
     constructor(
       private readonly recommendationsService: RecommendationService,
       @InjectModel(Training.name) private trainingModel: Model<Training>,
-      private userService: UserService){}
+      private userService: UserService,
+      private locationService: LocationService){}
     
     
     async getAll() :Promise<Training[]>{
@@ -45,11 +47,18 @@ export class TrainingService{
       if (!user) {
         throw new NotFoundException(`User with ID ${training.UserId} not found`);
       }
+
+      const location = await this.locationService.getOne(training.LocationId);
+      
+      if (!location) {
+        throw new NotFoundException(`Location with ID ${training.LocationId} not found`);
+      }
     
       // Creëer een instantie van ITraining en stel de Trainer-eigenschap in op de opgehaalde gebruiker
       const trainingWithUser: ITraining = {
         ...training.toObject(),
         User: user,
+        Location: location
       };
     
       return trainingWithUser;

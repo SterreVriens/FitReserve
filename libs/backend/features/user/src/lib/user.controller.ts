@@ -6,6 +6,7 @@ import { IUser } from '@fit-reserve/shared/api';
 import { UpdateUserDto} from '@fit-reserve/backend/dto'
 import { User } from './schemas/user.schema';
 import { Public } from './decorators/public.decorater';
+import { Trainer } from './decorators/roles.decorator';
 
 
 @Controller('user')
@@ -24,13 +25,14 @@ export class UserController {
         return this.userService.getOne(_id);
     }
 
-
+    @Trainer()
     @Put(':id')
         async update(@Body() data: UpdateUserDto, @Param('id') id: string, @Req() req: any): Promise<IUser | null> {
             return this.userService.update(data, id, req.user.sub);
         }
 
 
+    @Trainer()
     @Delete(':_id')
     async delete(@Param('_id') _id: string): Promise<string> {
     try {

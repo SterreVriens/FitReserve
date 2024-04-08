@@ -62,13 +62,14 @@ export class UserService{
     Logger.log(`Update user with ID ${id}`, this.TAG);
     try {
 
-      const currentUser = await this.userModel.findById(loggedInUserId).exec();
+      const currentUser = await this.getOne(loggedInUserId);
+      Logger.log(currentUser?.Role);
 
       if (!currentUser) {
         throw new NotFoundException('User not found');
       }
 
-      if (currentUser._id.toString() !== id) {
+      if (currentUser._id.toString() !== id && currentUser.Role === Role.Trainee) {
         throw new UnauthorizedException('You are not authorized to update this user');
       }
       const updatedUser = await this.userModel.findByIdAndUpdate(id, user, { new: true }).exec();
@@ -101,45 +102,4 @@ export class UserService{
     const saltOrRounds = 10;
     return await bcrypt.hash(plainTextPassword, saltOrRounds);
 }
-
-//Update een user rol
-//Check wel dat de persoon die de user wil updaten admin is
-
-async updateRole(user: Pick<IUser, 'Role'>, id: string, loggedInUserId: string): Promise<IUser|null> {
-  Logger.log(`Update user with ID ${id}`, this.TAG);
-  try {
-
-    const currentUser = await this.userModel.findById(loggedInUserId).exec();
-
-    if (!currentUser) {
-      throw new NotFoundException('User not found');
-    }
-
-    if (currentUser.Role !== Role.Trainer) {
-      throw new UnauthorizedException('You are not authorized to update this user');
-    }
-    const updatedUser = await this.userModel.findByIdAndUpdate(id, user, { new: true }).exec();
-    if (!updatedUser) {
-      throw new NotFoundException('User not found');
-    }
-
-    Logger.log('User updated successfully', this.TAG);
-
-    const neo4jR = await this.recommendationsService.createOrUpdateUser(updatedUser);
-
-    if (!neo4jR) {
-    await this.userModel.findByIdAndDelete(updatedUser._id).exec();
-    return null;
-    }
-    return updatedUser.toObject();
-  } catch (error) {
-    Logger.error(`Error updating user with ID ${id}`, error, this.TAG);
-    throw new InternalServerErrorException('Error updating user');
-  }
-}
-
-
-
-      
-
 }

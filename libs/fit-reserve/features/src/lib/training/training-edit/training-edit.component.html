@@ -86,21 +86,20 @@
 
         <div class="form-group" >
             <label for="Location">Location:</label>
-            <input 
-                type="text" 
+            <select 
                 class="form-control" 
                 id="Location" 
-                placeholder="Enter location" 
-                [(ngModel)]="training!.Location" 
-                name="Location" 
+                [(ngModel)]="training!.LocationId" 
+                name="LocationId" 
                 #location="ngModel"
                 [ngClass]="{
                     'is-invalid': location.invalid
                 }"
-                required
-                minlength="3">
+                required>
+                <option *ngFor="let location of locations" [value]="location._id">{{location.Name}}</option>
+            </select>
             <div *ngIf="location.invalid" class="invalid-feedback">
-                <div>Location cannot be empty and must be at least 3 characters</div>
+                <div>Location is required</div>
             </div>
         </div>
 

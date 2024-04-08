@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrainingService } from '../training.service';
 import { AuthService } from '../../auth/auth.service'; // Adjust the path based on your project structure
-import { ICreateTraining, Id } from '@fit-reserve/shared/api';
+import { ICreateTraining, Id, ILocation } from '@fit-reserve/shared/api';
 import { Subscription } from 'rxjs';
 //import mongoose from 'mongoose';
 // const ObjectId = mongoose.Types.ObjectId;
@@ -13,13 +13,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./training-edit.component.css'],
 })
 export class TrainingEditComponent implements OnInit, OnDestroy {
+  locations: ILocation[] | null = null;
   trainingId: Id | null = null;
   training: ICreateTraining = {
     SessionName: '',
     Date: new Date(),
     Duration: 0,
     Description: '',
-    Location: '',
+    LocationId: '',
     Places: 0,
     UserId: '',
   };
@@ -35,6 +36,16 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(async (params) => {
+      this.trainingSubscription = await this.trainingService.listLocations().subscribe(
+        (locations) => {
+          console.log('Locations:', locations);
+          this.locations = locations;
+        },
+        (error) => {
+          console.error('Error fetching locations:', error);
+        }
+      
+      );
       this.trainingId = params.get('id') ?? null;
       if (this.trainingId) {
         // Existing training

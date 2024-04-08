@@ -8,6 +8,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import * as bcrypt from 'bcrypt';
 import { RecommendationService } from "@fit-reserve/backend/features/recommendation";
+import { Location } from "@fit-reserve/backend/features/location";
 
 @Injectable()
 export class DataSeederService {
@@ -22,6 +23,8 @@ export class DataSeederService {
         private userModel: Model<User>,
         @InjectModel(Enrollment.name)
         private enrollmentModel: Model<Enrollment>,
+        @InjectModel(Location.name)
+        private locationModel: Model<Location>,
         private userService: UserService,
         private trainingService: TrainingService,
         private rcmndService: RecommendationService
@@ -36,12 +39,14 @@ export class DataSeederService {
         const trainings  = await this.trainingModel.find().exec();
         const users = await this.userModel.find().exec();
         const enrollments = await this.enrollmentModel.find().exec();
+        const locations = await this.locationModel.find().exec();
 
         if(
             progresses.length >= 6 &&
             trainings.length >= 5 &&
             users.length >= 5 &&
-            enrollments.length >= 5
+            enrollments.length >= 5 &&
+            locations.length >= 5
         ) {
             this.logger.log(`Data already seeded, skipping...`);
             return;
@@ -96,16 +101,60 @@ export class DataSeederService {
             await newSeedUser5.save();
             await this.rcmndService.createOrUpdateUser(newSeedUser5)
 
+            this.locationModel.deleteMany({}).exec();
+
+            const location1 = new Location();
+            location1.Name = 'Gym XYZ';
+            location1.Address = 'Kerkstraat 1, 1000 Brussel';
+            location1.City = 'Brussel';
+            location1.Country = 'België';
+            const newLocation1 = new this.locationModel(location1);
+            await newLocation1.save();
+
+            const location2 = new Location();
+            location2.Name = 'Yoga Studio ABC';
+            location2.Address = 'Kerkstraat 2, 1000 Brussel';
+            location2.City = 'Brussel';
+            location2.Country = 'België';
+            const newLocation2 = new this.locationModel(location2);
+            await newLocation2.save();
+
+            const location3 = new Location();
+            location3.Name = 'Fitness Center DEF';
+            location3.Address = 'Kerkstraat 3, 1000 Brussel';
+            location3.City = 'Brussel';
+            location3.Country = 'België';
+            const newLocation3 = new this.locationModel(location3);
+            await newLocation3.save();
+
+            const location4 = new Location();
+            location4.Name = 'Pilates Studio GHI';
+            location4.Address = 'Kerkstraat 4, 1000 Brussel';
+            location4.City = 'Brussel';
+            location4.Country = 'België';
+            const newLocation4 = new this.locationModel(location4);
+            await newLocation4.save();
+
+            const location5 = new Location();
+            location5.Name = 'Boxing Club JKL';
+            location5.Address = 'Kerkstraat 5, 1000 Brussel';
+            location5.City = 'Brussel';
+            location5.Country = 'België';
+            const newLocation5 = new this.locationModel(location5);
+            await newLocation5.save();
+
+
             this.trainingModel.deleteMany({}).exec();
 
             const currentUsers = await this.userService.getAll(); 
+            const currentLocations = await this.locationModel.find().exec();
       
             const training1= new Training();
             training1.SessionName= 'Krachttraining';
             training1.Date= new Date('2023-11-15T10:00:00');
             training1.Duration= 1.5;
             training1.Description= 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
-            training1.Location= 'Gym XYZ';
+            training1.LocationId= currentLocations[1].id;
             training1.Places= 2;
             training1.UserId= currentUsers[4]._id; // Associate user1 with training1
             const newTraining = new this.trainingModel(training1);
@@ -117,7 +166,7 @@ export class DataSeederService {
             training3.Date = new Date('2023-11-15T10:00:00');
             training3.Duration = 1.5;
             training3.Description = 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
-            training3.Location = 'Gym XYZ';
+            training3.LocationId = currentLocations[3].id;
             training3.Places = 20;
             training3.UserId =currentUsers[4]._id; // Associate user1 with training1
             const newTraining3 = new this.trainingModel(training3);
@@ -129,7 +178,7 @@ export class DataSeederService {
             training2.Date = new Date('2023-11-16T18:30:00');
             training2.Duration = 1.0;
             training2.Description = 'Een ontspannende yogasessie om flexibiliteit, balans en innerlijke rust te bevorderen.';
-            training2.Location = 'Yoga Studio ABC';
+            training2.LocationId = currentLocations[0].id;
             training2.Places = 15;
             training2.UserId = currentUsers[4]._id; // Associate user2 with training2
             const newTraining2 = new this.trainingModel(training2);
@@ -141,7 +190,7 @@ export class DataSeederService {
             training4.Date = new Date('2023-12-16T18:30:00');
             training4.Duration = 1.0;
             training4.Description = 'Weight lifting, ook wel bekend als krachttraining of gewichtheffen, is een vorm van lichaamsbeweging waarbij weerstand wordt gebruikt om spieren te versterken, de algehele fysieke conditie te verbeteren en vaak ook specifieke fitnessdoelen te bereiken. Deze vorm van training kan variëren van het tillen van halters en dumbbells tot het gebruik van machines met gewichten.';
-            training4.Location = 'Gym XYZ';
+            training4.LocationId = currentLocations[1].id;
             training4.Places = 15;
             training4.UserId = currentUsers[4]._id; // Associate user2 with training2
             const newTraining4 = new this.trainingModel(training4);
@@ -154,7 +203,7 @@ export class DataSeederService {
             training5.Duration = 1.0;
             training5.Description = 'Gymnastics, of gymnastiek, is een fysieke discipline die zich richt op het uitvoeren van gestileerde oefeningen en bewegingen die vaak vereisen dat het lichaam kracht, flexibiliteit, coördinatie, balans en lenigheid combineert. Gymnastiek kan zowel als sport op zichzelf worden beoefend als een aanvullende training voor andere sporten. '
             training5.Places = 15;
-            training5.Location = 'Gym XYZ';
+            training5.LocationId = currentLocations[2].id;
             training5.UserId = currentUsers[4]._id; // Associate user2 with training2
             const newTraining5 = new this.trainingModel(training5);
             await newTraining5.save();
