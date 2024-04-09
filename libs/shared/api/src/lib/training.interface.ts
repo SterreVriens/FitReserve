@@ -1,5 +1,6 @@
 import { Id } from './id.type';
 import {IUser} from './user.interface'
+import {ILocation} from './location.interface'
 
 export interface ITraining{
     _id: Id;
@@ -7,7 +8,8 @@ export interface ITraining{
     Date?: Date;
     Duration?: number;
     Description?: string;
-    Location?: string;
+    LocationId: string;
+    Location?: ILocation;
     Places?: number;
     IsEnrolled?: boolean;
     AmountEnrolled?: number;
@@ -16,6 +18,6 @@ export interface ITraining{
 }
 
 export type ICreateTraining = Pick<
-    ITraining,'SessionName' | 'Description' | 'Date' | 'Duration'| 'Location'| 'Places'| 'UserId'
+    ITraining,'SessionName' | 'Description' | 'Date' | 'Duration'| 'LocationId'| 'Places'| 'UserId'
 >;
 export type IUpdateTraining= Partial<Omit<ITraining, '_id'>>;

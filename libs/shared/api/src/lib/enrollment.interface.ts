@@ -1,4 +1,5 @@
 import { Id } from './id.type';
+import { ILocation } from './location.interface';
 import { ITraining } from './training.interface';
 import {IUser} from './user.interface'
 
@@ -15,6 +16,7 @@ export interface IEnrollment {
     Level: Level;
     User?: IUser | null;
     Training?: ITraining | null;
+    Location?: ILocation | null;
 }
 
 

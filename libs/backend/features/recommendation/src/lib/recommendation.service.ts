@@ -128,7 +128,7 @@ export class RecommendationService {
     Date: training.Date?.toString(),
     Duration: training.Duration?.toString(),
     Description: training.Description?.toString(),
-    Location: training.Location?.toString(),
+    Location: training.LocationId?.toString(),
     Places: training.Places?.toString(),
     UserId: training.UserId?.toString(),
   });

@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { Id, Role, IUser } from '@fit-reserve/shared/api';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../auth/auth.service';
+
 
 @Component({
   selector: 'fit-reserve-user-edit',
@@ -22,6 +24,7 @@ export class UserEditComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private authService: AuthService,
     private userService: UserService
   ) {}
 
@@ -79,5 +82,12 @@ export class UserEditComponent implements OnInit {
         }
       );
     }
-  }  
+  }
+  
+  //check if user has role trainer
+  isTrainer(): boolean {
+    const userRole = this.authService.getUserRoleFromToken();
+    console.log('Logged in userRole:', userRole);
+    return userRole === Role.Trainer;
+  }
 }

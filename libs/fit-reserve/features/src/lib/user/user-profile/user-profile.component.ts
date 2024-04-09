@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IEnrollment, IProgress, ITraining, IUser } from '@fit-reserve/shared/api';
+import { IEnrollment, ILocation, IProgress, ITraining, IUser } from '@fit-reserve/shared/api';
 import { AuthService } from '../../auth/auth.service';
 import { UserService } from '../user.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'; // Import NgbModal or the modal library you are using
@@ -11,6 +11,7 @@ import { ProgressCreateComponent } from './progress-create/progress-create.compo
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TrainingService } from '../../training/training.service';
+import { LocationCreateComponent } from './location-create/location-create.component';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class UserProfileComponent implements OnInit {
   enrollments: IEnrollment[] = [];
   subscription: Subscription | undefined = undefined;
   trainingen: ITraining[] | null = null;
+  locations: ILocation[] | null = null;
   createdTrainingen: ITraining[] | null = null;
 
   constructor(private authService: AuthService,
@@ -88,6 +90,14 @@ export class UserProfileComponent implements OnInit {
                     });
                   }
                 });
+                this.subscription = this.userService.getAllLocations().subscribe((results) => {
+                  console.log(`results: ${results}`);
+                  
+                  if (results !== null) {
+                    this.locations = results;
+
+                  }
+                });
                 
                 console.log(u)
                 this.user = user;
@@ -141,6 +151,17 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  refreshLocations(): void {
+    this.userService.getAllLocations().subscribe(
+      (locations) => {
+        this.locations = locations;
+      },
+      (error) => {
+        console.error('Error fetching user locations:', error);
+      }
+    );
+  }
+
   
   async viewOrFillProgress(enrollment: IEnrollment): Promise<void> {
     if (enrollment._id) {
@@ -179,6 +200,28 @@ export class UserProfileComponent implements OnInit {
           }
         );
       }
+    }
+  }
+
+  async fillLocation(): Promise<void> {
+    
+      if (this.isLoggedIn) {
+            const modalRef = this.modalService.open(LocationCreateComponent, { centered: true, backdrop: false });
+          
+            modalRef.componentInstance.locationCreated.subscribe((newLocation: ILocation) => {
+              
+              this.userService.createLocation(newLocation).subscribe(
+                () => {
+                  this.refreshLocations();
+                  this.location.go(this.location.path());
+                },
+                (error) => {
+                  console.error('Error fetching user enrollments:', error);
+                }
+              );
+          }
+        );
+      
     }
   }
   

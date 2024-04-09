@@ -13,9 +13,8 @@ import {
   import { AuthGuard } from './auth.guard';
   import { AuthService } from './auth.service';
   import { Public } from "./decorators/public.decorator";
-  import { IUser, Role } from '@fit-reserve/shared/api';
-  import { Roles } from './decorators/roles.decorator';
-  //import { RolesGuard } from './roles.guard';
+  import { IUser } from '@fit-reserve/shared/api';
+
 
 
   
@@ -47,14 +46,15 @@ import {
             throw new HttpException('Registration failed', HttpStatus.BAD_REQUEST);
         }
     }
-
+//nog de roles guard weghalen
     @UseGuards(AuthGuard) 
     @Get('profile')
-    @Roles(Role.Trainer)
     getProfile(@Request() req: any) {
       console.log(req.user); 
       return req.user;
     }
+
+    
     
   }
   

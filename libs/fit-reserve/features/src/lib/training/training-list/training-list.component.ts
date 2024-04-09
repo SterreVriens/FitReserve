@@ -61,7 +61,13 @@ export class TrainingListComponent implements OnInit, OnDestroy {
   }
   
   
-  
+  //schrijf een functie die checkt of de persoon die zich wil aanmelden niet de trainer is van deze training
+  //Als dit zo is geef een bericht dat de trainer zich niet kan aanmelden
+
+  isTrainerEnrolled(training: ITraining): boolean {
+    const userId = this.authService.getUserIdFromToken();
+    return training.UserId === userId;
+  }
 
 
   ngOnDestroy(): void {

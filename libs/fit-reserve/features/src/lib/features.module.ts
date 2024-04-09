@@ -17,6 +17,7 @@ import { TrainingEditComponent } from './training/training-edit/training-edit.co
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProgressCreateComponent } from './user/user-profile/progress-create/progress-create.component';
+import { LocationCreateComponent } from './user/user-profile/location-create/location-create.component';
 
 const routes: Routes = [
   { path: 'users', pathMatch: 'full', component: UserListComponent },
@@ -38,7 +39,7 @@ const routes: Routes = [
 @NgModule({
   imports: [CommonModule, RouterModule.forChild(routes), HttpClientModule, FormsModule, ReactiveFormsModule,NgbModalModule], // Include FormsModule here
   providers: [UserService, TrainingService,AuthService,DatePipe],
-  declarations: [UserListComponent, UserDetailComponent, TrainingListComponent, UserEditComponent,AuthLoginComponent,AuthRegisterComponent,TrainingDetailComponent,TrainingEditComponent,UserProfileComponent,ProgressCreateComponent],
-  exports: [UserListComponent, UserDetailComponent, TrainingListComponent, UserEditComponent,AuthLoginComponent,AuthRegisterComponent,TrainingDetailComponent,TrainingEditComponent,UserProfileComponent,ProgressCreateComponent],
+  declarations: [UserListComponent, UserDetailComponent, TrainingListComponent, UserEditComponent,AuthLoginComponent,AuthRegisterComponent,TrainingDetailComponent,TrainingEditComponent,UserProfileComponent,ProgressCreateComponent,LocationCreateComponent],
+  exports: [UserListComponent, UserDetailComponent, TrainingListComponent, UserEditComponent,AuthLoginComponent,AuthRegisterComponent,TrainingDetailComponent,TrainingEditComponent,UserProfileComponent,ProgressCreateComponent,LocationCreateComponent],
 })
 export class FeaturesModule {}

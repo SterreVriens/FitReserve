@@ -4,7 +4,7 @@
         <div>
           <p>Lid sinds: <strong class="color-darkorange"> {{formatDate(user.Date)}}</strong></p>
           <p>Deze gebruiker is een : <strong class="color-darkorange">{{user.Role}}</strong></p>
-          <ng-container *ngIf="isOwner(); else updateButtonTemplate">
+            <ng-container *ngIf="isOwner() || isTrainer(); else updateButtonTemplate">
             <a routerLink="edit" class="btn btn-primary ">Update</a>
           </ng-container>
           <ng-template #updateButtonTemplate>

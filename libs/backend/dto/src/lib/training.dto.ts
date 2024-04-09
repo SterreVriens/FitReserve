@@ -29,7 +29,7 @@ export class CreateTrainingDto implements ICreateTraining {
   
     @IsString()
     @IsNotEmpty()
-    Location!: string;
+    LocationId!: string;
   
     @IsNumber()
     @IsNotEmpty()

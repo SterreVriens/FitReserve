@@ -26,8 +26,8 @@ export class Training implements ITraining{
     @Prop()
     Duration!: number;
 
-    @Prop()
-    Location!: string;
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Location' })
+    LocationId!: string;
 
     @Prop()
     Places!: number;

@@ -2,7 +2,7 @@
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, ICreateTraining, IEnrollment, ITraining } from '@fit-reserve/shared/api';
+import { ApiResponse, ICreateTraining, IEnrollment, ILocation, ITraining } from '@fit-reserve/shared/api';
 import { Injectable } from '@angular/core';
 import { environment } from '@fit-reserve/shared/environment';
 
@@ -39,6 +39,29 @@ export class TrainingService {
             })
             .pipe(
                 map((response: any) => response.results as ITraining[]),
+                tap(console.log),
+                catchError(this.handleError)
+            );
+    }
+
+    //Get a list of all locations
+    public listLocations(options?: any): Observable<ILocation[]> {
+        const url = `${environment.dataApiUrl}/api/location`;
+
+        const token = sessionStorage.getItem('access_token'); // Get the token from session storage
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Set the token in the Authorization header
+        });
+        
+        return this.http
+            .get<ApiResponse<ITraining[]>>(url, {
+                ...options,
+                ...httpOptions,
+                headers
+            })
+            .pipe(
+                map((response: any) => response.results as ILocation[]),
                 tap(console.log),
                 catchError(this.handleError)
             );

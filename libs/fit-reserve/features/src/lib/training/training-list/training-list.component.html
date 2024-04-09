@@ -19,7 +19,7 @@
           </ng-template>
           <a routerLink="{{ training._id }}">Bekijk details</a>
 
-          <div *ngIf=" !training.IsEnrolled && !isFull(training)">
+          <div *ngIf=" !training.IsEnrolled && !isFull(training) && !isTrainer()">            
             <form (ngSubmit)="enroll(training._id, enrollment.Level)" #enrollForm="ngForm">
               <label for="levelDropdown" class="pr-2">Kies niveau: </label>
               <select class="form-select " id="levelDropdown" name="level" [(ngModel)]="enrollment.Level" required>
@@ -30,6 +30,9 @@
           
               <button class="btn btn-success" style="margin-left: 1%;" type="submit" [disabled]="!enrollForm.valid">Enroll</button>
             </form>
+          </div>
+          <div *ngIf="isTrainer()">
+            <p style="color: orange;">Een trainer kan niet deelnemen aan een training, gebruik hiervoor je gebruiker account!</p>
           </div>
           
           

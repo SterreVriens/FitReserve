@@ -6,6 +6,7 @@ import { UserService } from "@fit-reserve/backend/features";
 import { TrainingService } from "@fit-reserve/backend/features/training";
 import { IEnrollment } from "@fit-reserve/shared/api";
 import { RecommendationService } from "@fit-reserve/backend/features/recommendation";
+import { LocationService } from "@fit-reserve/backend/features/location";
 
 @Injectable()
 export class EnrollmentService{
@@ -15,6 +16,7 @@ export class EnrollmentService{
     constructor(
         @InjectModel(Enrollment.name) private enrollmentModel: Model<Enrollment>,
         private userService: UserService,
+        private locationService: LocationService,
         private trainingService: TrainingService,
         private readonly recommendationsService: RecommendationService,
         ){}
@@ -29,14 +31,16 @@ export class EnrollmentService{
         
         try {
             const enrollments = await this.enrollmentModel.find({ UserId: id }).exec();
-                
+
             // Haal de trainingen op voor elke inschrijving
             const enrollmentsWithTraining: IEnrollment[] = await Promise.all(enrollments.map(async (enrollment) => {
                 const training = await this.trainingService.getOne(enrollment.TrainingId);
-                    
+                const location = training ? await this.locationService.getOne(training.LocationId) : null;
+
                 return {
                     ...enrollment.toObject(),
                     Training: training || null,
+                    Location: location || null,
                 };
             }));
         
@@ -64,18 +68,20 @@ export class EnrollmentService{
     async getOne(id: string): Promise<IEnrollment | null> {
         Logger.log(`GetOne(${id})`, this.TAG);
         const enrollment = await this.enrollmentModel.findById(id).exec();
-    
+
         if (!enrollment) {
             throw new NotFoundException(`Enrollment with ID ${id} not found`);
         }
-    
+
         const user = await this.userService.getOne(enrollment.UserId);
         const training = await this.trainingService.getOne(enrollment.TrainingId);
-    
+        const location = training ? await this.locationService.getOne(training.LocationId) : null;
+
         const fullEnrollment: IEnrollment = {
             ...enrollment.toObject(),
-            User: user || null, // Gebruik null als fallback als user null is
-            Training: training || null, // Gebruik null als fallback als training null is
+            User: user || null, // Use null as fallback if user is null
+            Training: training || null, // Use null as fallback if training is null
+            Location: location || null, // Use null as fallback if location is null
         };
     
         return fullEnrollment;

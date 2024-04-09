@@ -11,9 +11,8 @@
               <div class="card-body">
                 <h5 class="card-title">Training: {{ enrollment?.Training?.SessionName }}</h5>
                 <p class="card-text"><strong>Niveau:</strong> {{ enrollment?.Level }}</p>
-                <p class="card-text"><strong>Wanneer?:</strong> {{ formatProgressDate(enrollment?.Training?.Date) }}</p>
-                <p class="card-text"><strong>Waar?:</strong> {{ enrollment?.Training?.Location }}</p>
-                
+                <p class="card-text"><strong>Wanneer?:</strong> {{ formatProgressDate(enrollment?.Training?.Date) }}</p>                
+                <p class="card-text"><strong>Waar?: </strong>{{enrollment?.Location?.Name}}</p>
                 <button *ngIf="enrollment._id" (click)="confirmDelete(enrollment._id)" class="btn btn-danger">Verwijder aanmelding</button>
                 <button *ngIf="enrollment._id" (click)="viewOrFillProgress(enrollment)" class="btn btn-primary">Bekijk jou progressie</button>
               </div>
@@ -26,17 +25,15 @@
       </ng-template>
     </div>
     <ng-container *ngIf="isTrainer(); ">
-
-      <h2>Alle gemaakte trainingen:</h2>
+      <button (click)="fillLocation()"  class="btn btn-primary">Nieuwe locatie</button>
       <div class="row">
-        <div *ngFor="let training of createdTrainingen" class="col-md-6">
+        <div *ngFor="let location of locations" class="col-md-3">
           <div class="card my-3">
             <div class="card-body">
-              <h2 class="card-title color-orange">{{ training.SessionName }}</h2>
+              <h4 class="card-title">{{ location.Name }}</h4>
               <div class="card-text">
-                <p > <strong class="color-darkorange">Beschrijving: </strong>{{ training.Description }}</p>
-                <p > <strong class="color-darkorange">Datum:</strong> {{  formatProgressDate(training.Date) }}</p>
-                <p > <strong class="color-darkorange">Duur: </strong> {{ training.Duration }}</p>
+                <p class="color-darkorange">Adress: {{ location.Address }}</p>
+                <p class="color-blue">Stad: {{ location.City }}</p>
               </div>
             </div>
           </div>

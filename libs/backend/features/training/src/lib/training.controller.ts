@@ -6,6 +6,7 @@ import { Public } from '@fit-reserve/decorators';
 import { CreateTrainingDto, UpdateTrainingDto} from '@fit-reserve/backend/dto'
 import { Training } from './schemas/training.schema';
 import { ITraining } from '@fit-reserve/shared/api';
+import { Trainer } from './schemas/roles.decorator';
 
 @Controller('training')
 export class TrainingController {
@@ -27,15 +28,17 @@ export class TrainingController {
     getOneWithUser(@Param('id') id: string): Promise<ITraining | null> {
         return this.trainingService.getOneWithUser(id);
     }
+
+    @Trainer()
     @Post('')
-    async create(@Body() data: CreateTrainingDto): Promise<ITraining|null> {
+    async create(@Body() data: CreateTrainingDto): Promise<ITraining| null> {
       console.log("Training create - create controller");
         
       return this.trainingService.create(data);
     }
 
     @Put(':id')
-    async update(@Body() data: UpdateTrainingDto, @Param('id') id: string): Promise<Training|null> {
+    async update(@Body() data: UpdateTrainingDto, @Param('id') id: string): Promise<Training| null> {
     return this.trainingService.update(data, id);
     }
 

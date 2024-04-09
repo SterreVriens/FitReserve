@@ -85,20 +85,19 @@
         </div>
 
         <div class="form-group" >
-            <label for="Location">Locatie:</label>
-            <input 
-                type="text" 
+            <label for="Location">Location:</label>
+            <select 
                 class="form-control" 
                 id="Location" 
-                placeholder="Voer locatie in" 
-                [(ngModel)]="training!.Location" 
-                name="Location" 
+                [(ngModel)]="training!.LocationId" 
+                name="LocationId" 
                 #location="ngModel"
                 [ngClass]="{
                     'is-invalid': location.invalid
                 }"
-                required
-                minlength="3">
+                required>
+                <option *ngFor="let location of locations" [value]="location._id">{{location.Name}}</option>
+            </select>
             <div *ngIf="location.invalid" class="invalid-feedback">
                 <div>Locatie mag niet leeg zijn en moet minstens 3 tekens bevatten</div>
             </div>

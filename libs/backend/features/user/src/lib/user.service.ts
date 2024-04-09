@@ -1,5 +1,5 @@
 import { Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { IUser } from '@fit-reserve/shared/api';
+import { IUser, Role } from '@fit-reserve/shared/api';
 import { Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -46,7 +46,7 @@ export class UserService{
         const n4jResult = this.recommendationsService.deleteUser(id);
 
         if (!n4jResult) {
-          throw new Error('Could not delete hour scheme');
+          throw new Error('Could not delete user from Neo4j database!');
         }
 
         Logger.log('User deleted successfully', this.TAG);
@@ -62,13 +62,14 @@ export class UserService{
     Logger.log(`Update user with ID ${id}`, this.TAG);
     try {
 
-      const currentUser = await this.userModel.findById(loggedInUserId).exec();
+      const currentUser = await this.getOne(loggedInUserId);
+      Logger.log(currentUser?.Role);
 
       if (!currentUser) {
         throw new NotFoundException('User not found');
       }
 
-      if (currentUser._id.toString() !== id) {
+      if (currentUser._id.toString() !== id && currentUser.Role === Role.Trainee) {
         throw new UnauthorizedException('You are not authorized to update this user');
       }
       const updatedUser = await this.userModel.findByIdAndUpdate(id, user, { new: true }).exec();
@@ -101,9 +102,4 @@ export class UserService{
     const saltOrRounds = 10;
     return await bcrypt.hash(plainTextPassword, saltOrRounds);
 }
-
-
-
-      
-
 }
