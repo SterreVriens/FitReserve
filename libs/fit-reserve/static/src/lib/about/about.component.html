@@ -1,260 +1,207 @@
 <div class="container">
-    <h1 class="display-4 py-3 color-blue">Over deze applicatie</h1>
-    <p class="py-2 lead">
-        Welkom bij ons CrossFit Reserveringssysteem!
-        Hier bieden we een uitgebreide en gebruiksvriendelijke ervaring voor fitnessliefhebbers om trainingssessies te ontdekken,
-        zich in te schrijven voor sessies en hun voortgang bij te houden.
-        Ons systeem is ontworpen met aandacht voor detail en voldoet aan alle gestelde richtlijnen en kaders.
-    </p>
-
-    <h2 class="display-5 py-3 color-lightblue">Onze casus</h2>
-    <p class="pb-1">
-        Ons CrossFit Reserveringssysteem stelt gebruikers in staat om te profiteren van verschillende functies:
-    </p>
-
-    <table class="table">
-        <thead class="thead-light">
-            <tr>
-                <th scope="col">Requirement</th>
-                <th scope="col">Toelichting</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Gebruikersvriendelijkheid</td>
-                <td>De gebruikersinterface moet intuïtief en gemakkelijk te gebruiken zijn voor zowel beginners als ervaren gebruikers.</td>
-            </tr>
-            <tr>
-                <td>Veiligheid</td>
-                <td>Alle gebruikersgegevens moeten veilig worden opgeslagen en overgedragen. Het systeem moet voldoen aan de geldende privacywetgeving.</td>
-            </tr>
-            <tr>
-                <td>Prestatie</td>
-                <td>Het systeem moet responsief zijn en snel reageren, zelfs onder piekbelasting.</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2 class="display-5 color-yellow">De applicatie biedt een aantal functionaliteiten:</h2>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Requirement</th>
-                <th scope="col">Toelichting</th>
-                <th scope="col">MOSCOW Prio</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Gebruikersregistratie</td>
-                <td>Gebruikers moeten zich kunnen registreren met een unieke gebruikersnaam en e-mailadres.</td>
-                <td>Must have</td>
-            </tr>
-            <tr>
-                <td>Trainingssessies Bekijken</td>
-                <td>Gebruikers moeten beschikbare trainingssessies kunnen bekijken met details zoals datum, tijdstip, locatie en beschikbare plekken.</td>
-                <td>Must have</td>
-            </tr>
-            <tr>
-                <td>Inschrijven voor Trainingssessies</td>
-                <td>Gebruikers moeten zich kunnen inschrijven voor trainingssessies naar keuze.</td>
-                <td>Must have</td>
-            </tr>
-            <tr>
-                <td>Voortgang Registreren</td>
-                <td>Gebruikers moeten hun voortgang kunnen bijhouden door gewicht, aantal herhalingen en prestatiedatum in te voeren.</td>
-                <td>Should have</td>
-            </tr>
-        </tbody>
-    </table>
-
     <div>
-        <h2 class="display-5 color-darkorange">Datamodel / ERD</h2>
+        <h2 class="display-4 py-3 ">Uitgebreide casus beschrijving</h2>
+        <p>Ons CrossFit Reserveringssysteem is ontworpen om een naadloze ervaring te bieden aan leden van onze vereniging, 
+            zowel voor trainees als trainers. 
+            Het systeem stelt gebruikers in staat om zich te registreren en trainingssessies bij te wonen, 
+            terwijl trainers de mogelijkheid hebben om sessies en locaties te beheren, evenals gebruikersgegevens te beheren.
+        </p>
         <div class="row">
             <div class="col-md-6">
-                <img src="assets/images/ERD.png" alt="ERD" class="w-full" />
+                <div>
+                    <h4>Gebruikersregistratie en -authenticatie</h4>
+                    <p>
+                        Gebruikers kunnen zich eenvoudig registreren in onze app met behulp van een unieke 
+                        gebruikersnaam en een wachtwoord naar keuze. Dit proces vereist ook een geldig e-mailadres om de registratie te voltooien
+                        . Na registratie krijgt elke gebruiker automatisch de rol van 'trainee'. 
+                        Hiermee hebben ze toegang tot de basisfunctionaliteiten van het reserveringssysteem. 
+                    </p>
+                </div>
+                <div>
+                    <h4>Aanmelden voor Trainingen</h4>
+                    <p>Trainees hebben de mogelijkheid om zich aan te melden voor beschikbare trainingssessies. 
+                        Deze aanmeldingen zijn afhankelijk van de beschikbaarheid van plekken en de timing van de sessie. 
+                        Zodra een trainingssessie vol is of heeft plaatsgevonden, kunnen trainees zich niet langer aanmelden. 
+                        Het systeem houdt nauwkeurig bij welke trainees zijn ingeschreven voor welke sessies.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div>
+                    <h4>Profielpagina</h4>
+                    <p>
+                        Op de profielpagina kunnen gebruikers een overzicht zien van de trainingssessies waarvoor ze zijn ingeschreven. 
+                        Ook kunnen ze hier de voortgang van hun trainingen bijhouden door gegevens toe te voegen, zoals gewicht, aantal herhalingen en prestatiedatum.
+                    </p>
+                </div>
+                <div>
+                    <h4>Traineraccounts</h4>
+                    <p>
+                        Trainers hebben geavanceerde bevoegdheden binnen het reserveringssysteem. 
+                        Ze kunnen andere gebruikers benoemen tot trainer en hebben de mogelijkheid om nieuwe trainingssessies en locaties toe te voegen aan het systeem. 
+                        Daarnaast hebben trainers toegang tot gebruikersgegevens en kunnen ze deze aanpassen indien nodig.
+                    </p>
+                </div>
+                <div>
+                    <h4>Gebruikersbeheer</h4>
+                    <p>
+                        Hoewel trainees beperkte mogelijkheden hebben om hun account aan te passen, hebben trainers uitgebreidere beheerfuncties. 
+                        Trainers kunnen gebruikersgegevens wijzigen, inclusief het aanpassen van gebruikersrollen. 
+                        Dit helpt bij het handhaven van de juiste toegangsrechten en het beheren van de gebruikerspopulatie van het systeem.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="my-3">
+        <h2 class="display-5 ">Datamodel / ERD</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <img src="assets/images/erd.png" alt="ERD" class="w-100" />
             </div>
             <div class="col-md-6">
                 <h3>Uitleg</h3>
-                <p>Gebruikers kunnen zich inschrijven voor de app. Een gebruiker met de rol trainer kan een nieuwe training aanmaken. 
-                    Alle gebruikers kunnen zich aanmelden voor een training, maar gebruikers kunnen zich alleen inschrijven voor cursussen die bestaan.
-                    Een gebruiker kan bij een inschrijving ook aangeven wat zijn/haar niveau is. Een gebruiker kan ook zijn voortgang van een training opslaan.
-                </p>
+                <p>Gebruikers kunnen zich inschrijven voor de app. Een gebruiker met de rol trainer kan een nieuwe training aanmaken. Bij het aanmaken van een training kan een trainer kiezen uit een lijst met locaties. Deze locaties kan hij ook aanmaken. Alle gebruikers kunnen zich aanmelden voor een training, maar gebruikers kunnen zich alleen inschrijven voor cursussen die bestaan. Een gebruiker kan bij een inschrijving ook aangeven wat zijn/haar niveau is. Een gebruiker kan ook zijn voortgang van een training opslaan.</p>
                 <h4>Associaties</h4>
                 <p>Inschrijvingen is een zwakke associatieve entiteit omdat deze geen eigen identiteit heeft buiten de relatie tussen User en trainingen.</p>
             </div>
         </div>
-        <h3>Entiteiten</h3>
-        <div class="cards-columns row">
-            <div class="col-md-6">
-                <div class="card p-3">
-                    <div class="">
-                        <div class="card-title">
-                            <h5 class="color-darkorange">User</h5>
-                        </div>
-                        <div class="card-text">
-                            <p>De user entiteit is in deze applicatie de plek waar gebruikers staan opgeslagen.
-                                Een nieuwe User maak je aan door je te registreren.
-                                Ook kun je zodra je bent ingelogd jou eigen User aanpassen.
-                            </p>
-                            <table class="table table-striped">
-                                <thead>
-                                    <th>Attribuut naam</th>
-                                    <th>Attribuut waarde</th>
-                                </thead>
-                                <tbody>
-                                    <td>Gebruikersnaam</td>
-                                    <td>String</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Wachtwoord</td>
-                                    <td>String</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Registratie datum</td>
-                                    <td>Date</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Rol</td>
-                                    <td>Role enum</td>
-                                </tbody>
-                            </table>
-                            </div>
-                
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card p-3">
-                    <div class="">
-                        <div class="card-title">
-                            <h5 class="color-darkorange">Training</h5>
-                        </div>
-                        <div class="card-text">
-                            <p>De Training entiteit is de plaats waar alle trainingen worden opgeslagen.
-                                Een training kan worden aangemaakt door een user met de trainer rol.
-                                Deze user kan ook alle trainingen aanpassen en verwijderen
-                            </p>
-                            <table class="table table-striped">
-                                <thead>
-                                    <th>Attribuut naam</th>
-                                    <th>Attribuut waarde</th>
-                                </thead>
-                                <tbody>
-                                    <td>Sessie naam</td>
-                                    <td>String</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Datum</td>
-                                    <td>Date</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Tijdstip</td>
-                                    <td>Number</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Duur</td>
-                                    <td>Number/td>
-                                </tbody>
-                                <tbody>
-                                    <td>Beschrijving</td>
-                                    <td>String</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Locatie</td>
-                                    <td>String</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Aantal plaatsen</td>
-                                    <td>Number</td>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card p-3">
-                    <div class="">
-                        <div class="card-title">
-                            <h5 class="color-darkorange">Inschrijving</h5>
-                        </div>
-                        <div class="card-text">
-                            <p>De Inschrijving entiteit gaat over de inschrijvingen die worden gedaan bij een training.
-                                Een inglogde gebruiker kan zich bij een training inschrijven wanneer er nog plekken over zijn bij de training
-                                of wanneer hij nog niet bij deze is ingelogd. Ook word bij de inschrijving bijgehouden op welk level je de
-                                training wilt gaan volgen.
-                            </p>
-                            <table class="table table-striped">
-                                <thead>
-                                    <th>Attribuut naam</th>
-                                    <th>Attribuut waarde</th>
-                                </thead>
-                                <tbody>
-                                    <td>Gebruiker</td>
-                                    <td>String</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Training</td>
-                                    <td>String</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Niveau</td>
-                                    <td>Level enum</td>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card p-3">
-                    <div class="">
-                        <div class="card-title">
-                            <h5 class="color-darkorange">Voortgang</h5>
-                        </div>
-                        <div class="card-text">
-                            <p>Het voortgangs entiteit kan een ingelogde user invullen wanneer hij zich heeft aangemeld voor een training.
-                                In de voortgang kan een user bijhouden hoe de training ging en kan hij dit later vergelijken met andere.
-                                De voortgang van een training word niet verwijderd zodra een training word verwijderd, zo kan de gebruiker 
-                                altijd nog zijn voortgang zien
-                            </p>
-                            <table class="table table-striped">
-                                <thead>
-                                    <th>Attribuut naam</th>
-                                    <th>Attribuut waarde</th>
-                                </thead>
-                                <tbody>
-                                    <td>Gewicht</td>
-                                    <td>number</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Reps</td>
-                                    <td>Number</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Duur</td>
-                                    <td>Number</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Datum</td>
-                                    <td>Date</td>
-                                </tbody>
-                                <tbody>
-                                    <td>User</td>
-                                    <td>String</td>
-                                </tbody>
-                                <tbody>
-                                    <td>Training</td>
-                                    <td>String</td>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-    
+
+    <div class="my-3">
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Functional Requirement</th>
+                    <th scope="col">Acceptatiecriteria</th>
+                    <th scope="col">MoSCoW</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td scope="row">F-01</td>
+                    <td>Als Trainee wil ik kunnen registreren met inloggegevens van mijn keuze</td>
+                    <td>
+                        <ul>
+                            <li>Na registratie heeft een gebruiker automatisch de rol van 'trainee'.</li>
+                            <li>Gebruikers moeten een geldig e-mailadres opgeven om de registratie te voltooien.</li>
+                        </ul>
+                    </td>
+                    <td>Must Have</td>
+                </tr>
+                <tr>
+                    <td scope="row">F-02</td>
+                    <td>Als gebruiker wil ik kunnen inloggen zodat ik toegang krijg tot functionaliteiten van de app</td>
+                    <td>
+                        <ul>
+                            <li>Er moet alleen kunnen worden ingelogd met een bestaand account</li>
+                            <li>Er moet een bericht komen zodra er incorrecte inloggegevens zijn</li>
+                        </ul>
+                    </td>
+                    <td>Must Have</td>
+                </tr>
+                <tr>
+                    <td scope="row">F-03</td>
+                    <td>Als Trainee wil ik een lijst zien van beschikbare trainingen zodat ik een informatieve keuze kan maken over aan welke trainingen ik wil deelnemen</td>
+                    <td>
+                        <ul>
+                            <li>Er moet een lijst te zien zijn van alle trainingen</li>
+                            <li>Trainingen die het snelst zullen plaats vinden staan bovenaan.</li>
+                        </ul>
+                    </td>
+                    <td>Must Have</td>
+                </tr>
+                <tr>
+                    <td scope="row">F-04</td>
+                    <td>Als Trainee wil ik mij kunnen enrollen op trainingen</td>
+                    <td>
+                        <ul>
+                            <li>Er kan worden ingeschreven voor een training wanneer er nog plek is</li>
+                            <li>Alleen personen met een Trainee account kunnen zich inschrijven voor een training</li>
+                            <li>Een Trainee moet kunnen aangeven op welk niveau ze de training gaan volgen</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td scope="row">F-05</td>
+                    <td>Als Trainee wil ik mijn voortgang kunnen bijhouden zodat ik mijn prestaties kan volgen</td>
+                    <td>
+                        <ul>
+                            <li>Er moet een pagina zijn waar de voortgang kan worden bijgehouden</li>
+                            <li>De voortgang moet worden opgeslagen in de database</li>
+                            <li>Ik moet mijn voortgang kunnen aanmaken of bekijken</li>
+                        </ul>
+                    </td>
+                    <td>Should Have</td>
+                </tr>
+                <tr>
+                    <td scope="row">F-06</td>
+                    <td>Als Trainer wil ik nieuwe trainingen kunnen toevoegen zodat ik nieuwe trainingen kan aanbieden</td>
+                    <td>
+                        <ul>
+                            <li>Er moet een pagina zijn waar een nieuwe training kan worden aangemaakt</li>
+                            <li>De trainer moet de datum, tijd, locatie en beschrijving van de training kunnen invullen</li>
+                        </ul>
+                    </td>
+                    <td>Must Have</td>
+                </tr>
+                <tr>
+                    <td scope="row">F-07</td>
+                    <td>Als Trainer wil ik nieuwe locaties kunnen toevoegen zodat ik nieuwe locaties kan aanbieden</td>
+                    <td>
+                        <ul>
+                            <li>Er moet een pagina zijn waar een nieuwe locatie kan worden aangemaakt</li>
+                            <li>De trainer moet de naam en beschrijving van de locatie kunnen invullen</li>
+                        </ul>
+                    </td>
+                    <td>Must Have</td>
+                </tr>
+                <tr>
+                    <td scope="row">F-08</td>
+                    <td>Als gebruiker wil ik een overzicht zien van alle gebruikersaccounts, zodat ik kan zien wie er allemaal op de app zitten</td>
+                    <td>
+                        <ul>
+                            <li>Er moet een pagina zijn waar de gebruikersgegevens kunnen worden bekeken</li>
+                        </ul>
+                    </td>
+                    <td>Must Have</td>
+                </tr>
+                <tr>
+                    <td scope="row">F-09</td>
+                    <td>Als Trainer wil ik gebruikersgegevens kunnen beheren zodat ik de gebruikerspopulatie kan beheren</td>
+                    <td>
+                        <ul>
+                            <li>Er moet een pagina zijn waar de gebruikersgegevens kunnen worden bekeken en aangepast</li>
+                            <li>De trainer moet de gebruikersrollen kunnen aanpassen</li>
+                        </ul>
+                    </td>
+                    <td>Must Have</td>
+                </tr>
+                <tr>
+                    <td scope="row">F-10</td>
+                    <td>Als Trainee wil ik mijn eigen accountnaam willen aanpassen zodat mijn gegevens up to date blijven</td>
+                    <td>
+                        <ul>
+                            <li>Er moet een pagina zijn waar de gebruikersgegevens kunnen worden bekeken en aangepast</li>
+                            <li>Een Trainee moet alleen zijn eigen accountnaam kunnen wijzigen</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td scope="row">F-11</td>
+                    <td>Als gebruiker wil ik een profiel pagina kunnen zien zodat ik alle gegevens die voor mij van waarde zijn makkelijk kan bekijken</td>
+                    <td>
+                        <ul>
+                            <li>Er moet een profiel pagina zijn die anders is voor elke gebruiker</li>
+                            <li>Een Trainee moet zijn enrollments kunnen zien</li>
+                            <li>Een Trainer moet een lijst van locaties kunnen zien</li>
+                            <li>Een Trainer moet een lijst met alle trainingen kunnen zien</li>
+                        </ul>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
