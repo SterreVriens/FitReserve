@@ -44,7 +44,6 @@ export class UserDetailComponent implements OnInit {
     isOwner(): boolean {
       // Retrieve the token from AuthService
       const userId = this.authService.getUserIdFromToken();
-      console.log('Logged in userId:', userId);
 
 
       return userId === this.user?._id
@@ -53,7 +52,6 @@ export class UserDetailComponent implements OnInit {
     //check if user has role trainer
     isTrainer(): boolean {
       const userRole = this.authService.getUserRoleFromToken();
-      console.log('Logged in userRole:', userRole);
       return userRole === Role.Trainer;
     }
 

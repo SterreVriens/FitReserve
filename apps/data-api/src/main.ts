@@ -20,7 +20,6 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ApiResponseInterceptor);
   app.useGlobalPipes(new ValidationPipe);
 
-  console.log("data API");
 
   const port = process.env.PORT || 3000;
   await app.listen(port);

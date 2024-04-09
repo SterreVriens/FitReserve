@@ -1,52 +1,49 @@
 <div class="modal-header">
-  <h4 class="modal-title">Maak een progressie aan:</h4>
-</div>
-<div class="modal-body">
-  <form 
-      #progressCreate="ngForm"
-      (ngSubmit)="onSubmit()">
-      <div class="form-group">
-          <label for="Weight">Gewicht (kg):</label>
-          <input 
-              type="number" 
-              class="form-control" 
-              id="Weight" 
-              [(ngModel)]="progress.Weight" 
-              name="Weight" 
-              required>
-          <div *ngIf="progressCreate.controls['Weight'].invalid && progressCreate.controls['Weight'].touched" class="text-danger">
-              Gewicht is verplicht.
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="Reps">Reps:</label>
-          <input 
-              type="number" 
-              class="form-control" 
-              id="Reps" 
-              [(ngModel)]="progress.Reps" 
-              name="Reps" 
-              required>
-          <div *ngIf="progressCreate.controls['Reps'].invalid && progressCreate.controls['Reps'].touched" class="text-danger">
-              Reps is verplicht.
-          </div>
-      </div>
-      <div class="form-group">
-          <label for="Duration">Tijdsduur:</label>
-          <input 
-              type="number" 
-              class="form-control" 
-              id="Duration" 
-              [(ngModel)]="progress.Duration" 
-              name="Duration">
-      </div>
-      <button 
-          type="submit" 
-          class="btn btn-primary"
-          [disabled]="!progressCreate.form.valid"
-          >Maak aan</button>
-  </form>
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-default" (click)="activeModal.dismiss()">Terug</button>
-</div>
+    <h4 class="modal-title">Maak een progressie aan:</h4>
+  </div>
+  <div class="modal-body">
+    <form 
+        #progressCreate="ngForm"
+        (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="Weight">Gewicht (kg):</label>
+            <input 
+                type="number" 
+                class="form-control" 
+                id="Weight" 
+                [(ngModel)]="progress.Weight" 
+                name="Weight" 
+                #Weight = "ngModel"
+                required>
+        </div>
+        <div class="form-group">
+            <label for="Reps">Reps:</label>
+            <input 
+                type="number" 
+                class="form-control" 
+                id="Reps" 
+                [(ngModel)]="progress.Reps" 
+                name="Reps" 
+                #Reps = "ngModel"
+                required>
+        </div>
+        <div class="form-group">
+            <label for="Duration">Tijdsduur:</label>
+            <input 
+                type="number" 
+                class="form-control" 
+                id="Duration" 
+                [(ngModel)]="progress.Duration" 
+                name="Duration">
+        </div>
+        <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="!progressCreate.form.valid"
+            >Maak aan</button>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" (click)="activeModal.dismiss()">Terug</button>
+  </div>
+  

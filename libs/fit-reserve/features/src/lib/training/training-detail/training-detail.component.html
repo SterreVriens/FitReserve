@@ -1,4 +1,5 @@
 <div class="container my-5">
+
   <div *ngIf="training; else loadingTemplate" class="">
     <h2 class="mb-4">{{training.SessionName}}</h2>
 
@@ -17,20 +18,30 @@
       <p>{{ training.User?.UserName }}</p>
     </div>
 
-    <div class="row">
-      <ng-container *ngIf="isTrainer(); else notTrainer">
-        <div class="col-md-6">
-          <button class="btn btn-primary">Update</button>
-        </div>
-      </ng-container>
-      <ng-template #notTrainer>
-        <div class="col-md-6">
-          <div class="alert alert-warning" role="alert">
-            Je hebt geen toestemming om deze training aan te passen
-          </div>
-        </div>
-      </ng-template>
+    <div>
+      <h5 class="mb-3">Alle deelnemers:</h5>
+      <ul class="list-group">
+        <li class="list-group-item w-75" *ngFor="let participant of enrollments">{{participant.User?.UserName}}</li>
+      </ul>
     </div>
+  </div>
+
+  <div class="row mt-2">
+    <ng-container *ngIf="isTrainer(); else notTrainer">
+      <div class="">
+        <button class="btn btn-primary mx-2" routerLink="edit">Update</button>
+      </div>
+      <div class="">
+        <button class="btn btn-danger" (click)="deleteTraining()">Verwijder</button>
+      </div>
+    </ng-container>
+    <ng-template #notTrainer>
+      <div class="col-md-6">
+        <div class="alert alert-warning" role="alert">
+          Je hebt geen toestemming om deze training aan te passen
+        </div>
+      </div>
+    </ng-template>
   </div>
 
   <ng-template #loadingTemplate>

@@ -32,7 +32,7 @@ export class TrainingController {
     @Trainer()
     @Post('')
     async create(@Body() data: CreateTrainingDto): Promise<ITraining| null> {
-      console.log("Training create - create controller");
+
         
       return this.trainingService.create(data);
     }

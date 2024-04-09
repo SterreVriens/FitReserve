@@ -1,51 +1,55 @@
 <div class="container">
-    <h2>Gebruiker formulier</h2>
-    <form
-        
-        #userEditForm="ngForm"
-        name="form"
-        (ngSubmit)="userEditForm.form.valid && onSubmit()"
-        novalidate>
-        
-        <div class="form-group">
-            <label for="UserName">Username:</label>
-            <input 
-                type="text" 
-                class="form-control" 
-                id="UserName" 
-                placeholder="Enter username" 
-                [(ngModel)]="user!.UserName" 
-                name="UserName" 
-                #userName="ngModel"
-                [ngClass]="{
-                    'is-invalid': userName.invalid
-                }"
-                required
-                minlength="3">
-            <div *ngIf="userName.invalid" class="invalid-feedback">
-                <div>Gebruikersnaam mag niet leeg zijn</div>
+    <div *ngIf="isTrainerOrOwner()">
+        <h2>Gebruiker formulier</h2>
+        <form
+            #userEditForm="ngForm"
+            name="form"
+            (ngSubmit)="userEditForm.form.valid && onSubmit()"
+            novalidate>
+            
+            <div class="form-group">
+                <label for="UserName">Username:</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="UserName" 
+                    placeholder="Enter username" 
+                    [(ngModel)]="user!.UserName" 
+                    name="UserName" 
+                    #userName="ngModel"
+                    [ngClass]="{
+                        'is-invalid': userName.invalid
+                    }"
+                    required
+                    minlength="3">
+                <div *ngIf="userName.invalid && (userName.dirty || userName.touched)" class="invalid-feedback">
+                    <div *ngIf="userName.errors?.['required']">Gebruikersnaam mag niet leeg zijn</div>
+                </div>
             </div>
-        </div>
-        
-        
-        
-        
-        <div *ngIf= isTrainer(); class="form-group">
-            <label for="role">Role:</label>
-            <select class="form-control" id="role" [(ngModel)]="user.Role" name="role" required>
-                <option value="" disabled>Select a role</option>
-                <option value="Trainee">Trainee</option>
-                <option value="Trainer">Trainer</option>
-            </select>
-            <div *ngIf="userEditForm.controls['role'].invalid && userEditForm.controls['role'].touched">
-                Please select a role
+            
+            <div class="form-group" *ngIf="isTrainerOrOwner()">
+                <label for="role">Role:</label>
+                <select 
+                    class="form-control" 
+                    id="role" 
+                    [(ngModel)]="user.Role" 
+                    name="role" 
+                    required
+                    #role="ngModel">
+                    <option value="" disabled>Select a role</option>
+                    <option value="Trainee">Trainee</option>
+                    <option value="Trainer">Trainer</option>
+                </select>
+                <div *ngIf="role.invalid && (role.dirty || role.touched)" class="text-danger">
+                    Please select a role
+                </div>
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary"
-         [disabled]="!userEditForm.valid"
-         [class.pointer-events-none]="userEditForm.invalid"
-         [class.opacity-30]="userEditForm.invalid"
-         >Submit</button>
-    </form>
-
+            
+            <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="!userEditForm.form.valid"
+                >Submit</button>
+        </form>
+    </div>
 </div>

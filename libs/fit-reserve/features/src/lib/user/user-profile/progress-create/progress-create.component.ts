@@ -27,7 +27,6 @@ export class ProgressCreateComponent implements OnInit{
   }
 
   onSubmit() {
-    console.log(this.progress);
     // Add logic to handle form submission
     // Emit an event or perform any other necessary actions
     this.progressCreated.emit(this.progress);

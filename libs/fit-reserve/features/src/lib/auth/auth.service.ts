@@ -34,21 +34,19 @@ export class AuthService {
           map((response: any) => {
               return response.results as IUser;
           }),
-          tap(console.log),
+          tap(),
           catchError(this.handleError)
       );
   }
 
     public register(user: IUser | null, options?: any): Observable<IUser> {
         const url = `${this.endpoint}/register`;
-        console.log(`register - ${url}`);
-        console.log(user);
     
         return this.http
             .post<ApiResponse<IUser>>(url, user, { ...httpOptions, ...options })
             .pipe(
                 map((response: any) => response.results as IUser),
-                tap(console.log),
+                tap(),
                 catchError(this.handleError)
             );
     }
@@ -66,7 +64,7 @@ export class AuthService {
           .get<ApiResponse<IUser>>(url, { ...httpOptions, ...options,headers })
           .pipe(
             map((response: any) => response.results as IUser),
-            tap(console.log),
+            tap(),
             catchError(this.handleError)
           );
     }
@@ -96,7 +94,6 @@ export class AuthService {
     }
 
     public handleError(error: HttpErrorResponse): Observable<any> {
-        console.log('handleError in authService', error);
 
         return throwError(() => new Error(error.message));
     }

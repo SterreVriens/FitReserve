@@ -1,118 +1,125 @@
 <div class="container">
-    <h2>Trainingsformulier</h2>
-    <form
-        #trainingForm="ngForm"
-        name="form"
-        (ngSubmit)="trainingForm.form.valid && onSubmit()"
-        novalidate>
-        <div class="form-group">
-            <label for="SessionName">Sessienaam:</label>
-            <input 
-                type="text" 
-                class="form-control" 
-                id="SessionName" 
-                placeholder="Voer sessienaam in" 
-                [(ngModel)]="training!.SessionName" 
-                name="SessionName" 
-                #sessionName="ngModel"
-                required
-                minlength="3">
-            <div *ngIf="sessionName.invalid && (sessionName.dirty || sessionName.touched)" class="text-danger">
-                <div *ngIf="sessionName.errors?.['required']">Sessienaam is verplicht.</div>
-                <div *ngIf="sessionName.errors?.['minlength']">Sessienaam moet minstens 3 tekens bevatten.</div>
+    <div *ngIf="isTrainer()">
+        <h2>Trainingsformulier</h2>
+        <form
+            #trainingForm="ngForm"
+            name="form"
+            (ngSubmit)="trainingForm.form.valid && onSubmit()"
+            novalidate>
+            <div class="form-group">
+                <label for="SessionName">Sessienaam:</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="SessionName" 
+                    placeholder="Voer sessienaam in" 
+                    [(ngModel)]="training!.SessionName" 
+                    name="SessionName" 
+                    #sessionName="ngModel"
+                    required
+                    minlength="3">
+                <div *ngIf="sessionName.invalid && (sessionName.dirty || sessionName.touched)" class="text-danger">
+                    <div *ngIf="sessionName.errors?.['required']">Sessienaam is verplicht.</div>
+                    <div *ngIf="sessionName.errors?.['minlength']">Sessienaam moet minstens 3 tekens bevatten.</div>
+                </div>
             </div>
-        </div>
-        
-        <div class="form-group">
-            <label for="Description">Beschrijving:</label>
-            <textarea 
-                class="form-control" 
-                id="Description" 
-                placeholder="Voer beschrijving in" 
-                [(ngModel)]="training!.Description" 
-                name="Description" 
-                #description="ngModel"
-                required
-                minlength="10">
-            </textarea>
-            <div *ngIf="description.invalid && (description.dirty || description.touched)" class="text-danger">
-                <div *ngIf="description.errors?.['required']">Beschrijving is verplicht.</div>
-                <div *ngIf="description.errors?.['minlength']">Beschrijving moet minstens 10 tekens bevatten.</div>
+            
+            <div class="form-group">
+                <label for="Description">Beschrijving:</label>
+                <textarea 
+                    class="form-control" 
+                    id="Description" 
+                    placeholder="Voer beschrijving in" 
+                    [(ngModel)]="training!.Description" 
+                    name="Description" 
+                    #description="ngModel"
+                    required
+                    minlength="10">
+                </textarea>
+                <div *ngIf="description.invalid && (description.dirty || description.touched)" class="text-danger">
+                    <div *ngIf="description.errors?.['required']">Beschrijving is verplicht.</div>
+                    <div *ngIf="description.errors?.['minlength']">Beschrijving moet minstens 10 tekens bevatten.</div>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group" >
-            <label for="Date">Datum:</label>
-            <input 
-                type="date" 
-                class="form-control" 
-                id="Date" 
-                [(ngModel)]="training!.Date" 
-                name="Date" 
-                #date="ngModel"
-                required>
-            <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
-                Datum is verplicht.
+            <div class="form-group" >
+                <label for="Date">Datum:</label>
+                <input 
+                    type="datetime-local" 
+                    class="form-control" 
+                    id="Date" 
+                    [(ngModel)]="training!.Date" 
+                    name="Date" 
+                    #date="ngModel"
+                    required>
+                <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
+                    Datum is verplicht.
+                </div>
             </div>
-        </div>
 
-        <div class="form-group" >
-            <label for="Duration">Duur (uren):</label>
-            <input 
-                type="number" 
-                class="form-control" 
-                id="Duration" 
-                placeholder="Voer duur in" 
-                [(ngModel)]="training!.Duration" 
-                name="Duration" 
-                #duration="ngModel"
-                required
-                min="0.5" 
-                step="0.5"> 
-            <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="text-danger">
-                <div *ngIf="duration.errors?.['required']">Duur is verplicht.</div>
-                <div *ngIf="duration.errors?.['min']">Duur moet minstens 0.5 zijn.</div>
+            <div class="form-group" >
+                <label for="Duration">Duur (uren):</label>
+                <input 
+                    type="number" 
+                    class="form-control" 
+                    id="Duration" 
+                    placeholder="Voer duur in" 
+                    [(ngModel)]="training!.Duration" 
+                    name="Duration" 
+                    #duration="ngModel"
+                    required
+                    min="0.5" 
+                    step="0.5"> 
+                <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="text-danger">
+                    <div *ngIf="duration.errors?.['required']">Duur is verplicht.</div>
+                    <div *ngIf="duration.errors?.['min']">Duur moet minstens 0.5 zijn.</div>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group" >
-            <label for="Location">Location:</label>
-            <select 
-                class="form-control" 
-                id="Location" 
-                [(ngModel)]="training!.LocationId" 
-                name="LocationId" 
-                #location="ngModel"
-                required>
-                <option *ngFor="let location of locations" [value]="location._id">{{location.Name}}</option>
-            </select>
-            <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger">
-                Locatie is verplicht.
+            <div class="form-group" >
+                <label for="Location">Location:</label>
+                <select 
+                    class="form-control" 
+                    id="Location" 
+                    [(ngModel)]="training!.LocationId" 
+                    name="LocationId" 
+                    #location="ngModel"
+                    required>
+                    <option *ngFor="let location of locations" [value]="location._id">{{location.Name}}</option>
+                </select>
+                <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger">
+                    Locatie is verplicht.
+                </div>
             </div>
-        </div>
 
-        <div class="form-group" >
-            <label for="Places">Beschikbare plaatsen:</label>
-            <input 
-                type="number" 
-                class="form-control" 
-                id="Places" 
-                placeholder="Voer beschikbare plaatsen in" 
-                [(ngModel)]="training!.Places" 
-                name="Places" 
-                #places="ngModel"
-                required
-                min="1"> 
-            <div *ngIf="places.invalid && (places.dirty || places.touched)" class="text-danger">
-                <div *ngIf="places.errors?.['required']">Beschikbare plaatsen zijn verplicht.</div>
-                <div *ngIf="places.errors?.['min']">Beschikbare plaatsen moeten minstens 1 zijn.</div>
+            <div class="form-group" >
+                <label for="Places">Beschikbare plaatsen:</label>
+                <input 
+                    type="number" 
+                    class="form-control" 
+                    id="Places" 
+                    placeholder="Voer beschikbare plaatsen in" 
+                    [(ngModel)]="training!.Places" 
+                    name="Places" 
+                    #places="ngModel"
+                    required
+                    min="1"> 
+                <div *ngIf="places.invalid && (places.dirty || places.touched)" class="text-danger">
+                    <div *ngIf="places.errors?.['required']">Beschikbare plaatsen zijn verplicht.</div>
+                    <div *ngIf="places.errors?.['min']">Beschikbare plaatsen moeten minstens 1 zijn.</div>
+                </div>
             </div>
-        </div>
 
-        <button 
-            type="submit" 
-            class="btn btn-primary"
-            [disabled]="!trainingForm.valid"
-            >Verzenden</button>
-    </form>
+            <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="!trainingForm.valid"
+                >Verzenden</button>
+        </form>
+    </div>
+    <div *ngIf="!isTrainer()">
+        <div class="alert alert-warning" role="alert">
+            Je hebt geen toestemming om deze training aan te passen
+        </div>
 </div>
+    

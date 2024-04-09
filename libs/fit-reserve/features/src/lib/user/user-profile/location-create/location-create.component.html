@@ -12,11 +12,13 @@
               class="form-control" 
               id="Name" 
               [(ngModel)]="location.Name" 
-              name="Name" 
+              name="Name"
+              #Name = "ngModel" 
               required>
-          <div *ngIf="locationCreate.controls['Name'].invalid && locationCreate.controls['Name'].touched" class="text-danger">
-              Naam is verplicht.
-          </div>
+              <div *ngIf="Name.invalid && (Name.dirty || Name.touched)" class="text-danger">
+                <div *ngIf="Name.errors?.['required']">Naam is verplicht.</div>
+            </div>
+          
       </div>
       <div class="form-group">
           <label for="Description">Beschrijving:</label>
@@ -26,10 +28,11 @@
               id="Description" 
               [(ngModel)]="location.Description" 
               name="Description" 
+              #Description = "ngModel" 
               required>
-          <div *ngIf="locationCreate.controls['Description'].invalid && locationCreate.controls['Description'].touched" class="text-danger">
-              Beschrijving is verplicht.
-          </div>
+              <div *ngIf="Description.invalid && (Description.dirty || Description.touched)" class="text-danger">
+                <div *ngIf="Description.errors?.['required']">Beschrijving is verplicht.</div>
+            </div>
       </div>
       <div class="form-group">
           <label for="Address">Adres:</label>
@@ -39,10 +42,11 @@
               id="Address" 
               [(ngModel)]="location.Address" 
               name="Address" 
+              #Address = "ngModel" 
               required>
-          <div *ngIf="locationCreate.controls['Address'].invalid && locationCreate.controls['Address'].touched" class="text-danger">
-              Adres is verplicht.
-          </div>
+              <div *ngIf="Address.invalid && (Address.dirty || Address.touched)" class="text-danger">
+                <div *ngIf="Address.errors?.['required']">Address is verplicht.</div>
+            </div>
       </div>
       <div class="form-group">
           <label for="City">Stad:</label>
@@ -52,10 +56,11 @@
               id="City" 
               [(ngModel)]="location.City" 
               name="City" 
+              #City = "ngModel" 
               required>
-          <div *ngIf="locationCreate.controls['City'].invalid && locationCreate.controls['City'].touched" class="text-danger">
-              Stad is verplicht.
-          </div>
+              <div *ngIf="City.invalid && (City.dirty || City.touched)" class="text-danger">
+                <div *ngIf="City.errors?.['required']">Stad is verplicht.</div>
+            </div>
       </div>
       <div class="form-group">
           <label for="Country">Land:</label>
@@ -65,10 +70,11 @@
               id="Country" 
               [(ngModel)]="location.Country" 
               name="Country" 
+              #Country = "ngModel" 
               required>
-          <div *ngIf="locationCreate.controls['Country'].invalid && locationCreate.controls['Country'].touched" class="text-danger">
-              Land is verplicht.
-          </div>
+              <div *ngIf="Country.invalid && (Country.dirty || Country.touched)" class="text-danger">
+                <div *ngIf="Country.errors?.['required']">Land is verplicht.</div>
+            </div>
       </div>
       <button 
           type="submit" 

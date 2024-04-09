@@ -151,7 +151,7 @@ export class DataSeederService {
       
             const training1= new Training();
             training1.SessionName= 'Krachttraining';
-            training1.Date= new Date('2023-11-15T10:00:00');
+            training1.Date= new Date('2024-04-14T10:00:00');
             training1.Duration= 1.5;
             training1.Description= 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
             training1.LocationId= currentLocations[1].id;
@@ -163,7 +163,7 @@ export class DataSeederService {
         
             const training3 = new Training();
             training3.SessionName = 'Krachttraining';
-            training3.Date = new Date('2023-11-15T10:00:00');
+            training3.Date = new Date('2024-04-15T10:00:00');
             training3.Duration = 1.5;
             training3.Description = 'Een intensieve krachttrainingssessie met focus op verschillende spiergroepen en gewichten.';
             training3.LocationId = currentLocations[3].id;
@@ -175,7 +175,7 @@ export class DataSeederService {
 
             const training2 = new Training();
             training2.SessionName = 'Yoga';
-            training2.Date = new Date('2023-11-16T18:30:00');
+            training2.Date = new Date('2024-04-16T18:30:00');
             training2.Duration = 1.0;
             training2.Description = 'Een ontspannende yogasessie om flexibiliteit, balans en innerlijke rust te bevorderen.';
             training2.LocationId = currentLocations[0].id;
@@ -187,7 +187,7 @@ export class DataSeederService {
 
             const training4 = new Training();
             training4.SessionName = 'Weight lifting';
-            training4.Date = new Date('2023-12-16T18:30:00');
+            training4.Date = new Date('2024-04-17T18:30:00');
             training4.Duration = 1.0;
             training4.Description = 'Weight lifting, ook wel bekend als krachttraining of gewichtheffen, is een vorm van lichaamsbeweging waarbij weerstand wordt gebruikt om spieren te versterken, de algehele fysieke conditie te verbeteren en vaak ook specifieke fitnessdoelen te bereiken. Deze vorm van training kan variëren van het tillen van halters en dumbbells tot het gebruik van machines met gewichten.';
             training4.LocationId = currentLocations[1].id;
@@ -283,7 +283,7 @@ export class DataSeederService {
             await this.rcmndService.createOrUpdateEnrollment(newEnrollment2)
 
             const enrollment3 = new Enrollment();
-            enrollment3.UserId = currentUsers[2]._id;
+            enrollment3.UserId = currentUsers[0]._id;
             enrollment3.TrainingId = currentTrainings[1]._id;
             enrollment3.Level = Level.Beginner;
             const newEnrollment3 = new this.enrollmentModel(enrollment3);

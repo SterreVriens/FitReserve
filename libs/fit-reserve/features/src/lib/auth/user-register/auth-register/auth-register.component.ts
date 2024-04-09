@@ -28,10 +28,8 @@ export class AuthRegisterComponent {
   ) {}
 
   onSubmit() {
-    console.log(`register user - ${this.user.UserName}`)
     this.authService.register(this.user).subscribe(
-      (success) =>{
-        console.log(success);
+      (success) =>{;
         if(success){
           this.router.navigate(['/feature/auth/login'], {relativeTo:this.route});
         } 

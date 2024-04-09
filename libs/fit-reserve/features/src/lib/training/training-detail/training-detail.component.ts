@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ITraining } from '@fit-reserve/shared/api';
+import { IEnrollment, ITraining } from '@fit-reserve/shared/api';
 import { AuthService } from '../../auth/auth.service';
 import { TrainingService } from '../training.service';
 import { DatePipe } from '@angular/common';
@@ -14,6 +14,7 @@ import { DatePipe } from '@angular/common';
 export class TrainingDetailComponent implements OnInit {
   training: ITraining | null = null;
   trainingId: string | null = null; 
+  enrollments: IEnrollment[] | null = null;
 
 
   constructor(
@@ -31,31 +32,37 @@ export class TrainingDetailComponent implements OnInit {
       this.trainingService.read(trainingId).subscribe(
         (training) => {
           this.training = training;
+          this.trainingService.getEnrollmentsForTraining(trainingId).subscribe(
+            (enrollments) => {
+              this.enrollments = enrollments;
+            },
+            (error) => {
+              console.error('Error getting enrollments:', error);
+            }
+          );
         },
         (error) => {
-          console.error('Er is een fout opgetreden bij het ophalen van de training', error);
+          console.error('Error retrieving training:', error);
         }
       );
     }
   }
 
-  onSubmit(): void {
-    console.log('onSubmit - delete');
-  
-    if(this.training){
-      this.trainingService.delete(this.training._id ).subscribe(
-
-        (success: any) => {
-          console.log('Delete successful', success);
+  deleteTraining(): void {
+    if (this.training) {
+      this.trainingService.delete(this.training._id).subscribe(
+        () => {
           this.router.navigate(['..'], { relativeTo: this.route });
         },
-        (error: any) => {
-          console.error('Error deleting user:', error)        }
+        (error) => {
+          console.error('Error deleting training:', error);
+        }
       );
+    } else {
+      console.error('Error: Training is null');
     }
-    else console.error('Er is een fout opgetreden bij het verwijderen van de gebruiker', Error);
-     
   }
+  
 
   isTrainer(): boolean {
     const role = this.authService.getUserRoleFromToken();

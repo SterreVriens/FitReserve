@@ -30,7 +30,6 @@ export class TrainingService {
      * @options options - optional URL queryparam options
      */
     public list(options?: any): Observable<ITraining[] | null> {
-        console.log(`list ${this.endpoint}`);
 
         return this.http
             .get<ApiResponse<ITraining[]>>(this.endpoint, {
@@ -39,7 +38,7 @@ export class TrainingService {
             })
             .pipe(
                 map((response: any) => response.results as ITraining[]),
-                tap(console.log),
+                tap(),
                 catchError(this.handleError)
             );
     }
@@ -62,7 +61,7 @@ export class TrainingService {
             })
             .pipe(
                 map((response: any) => response.results as ILocation[]),
-                tap(console.log),
+                tap(),
                 catchError(this.handleError)
             );
     }
@@ -73,14 +72,14 @@ export class TrainingService {
      */
     public read(id: string | null, options?: any): Observable<ITraining> {
         const url = `${this.endpoint}/full/${id}`;
-        console.log(`read ${url}`);
+
     
         return this.http
           .get<ApiResponse<ITraining>>(url, { ...options, ...httpOptions })
           .pipe(
             map((response: any) => 
             response.results as ITraining),
-            tap(console.log),
+            tap(),
             catchError(this.handleError)
           );
     }
@@ -90,7 +89,6 @@ export class TrainingService {
      */
     public delete(id: string | null, options?: any): Observable<ITraining | null> {
         const url = `${this.endpoint}/${id}`;
-        console.log(`Delete - ${url}`);
 
         const token = sessionStorage.getItem('access_token'); // Get the token from session storage
         const headers = new HttpHeaders({
@@ -102,7 +100,7 @@ export class TrainingService {
           .delete<ApiResponse<ITraining>>(url, { ...httpOptions, ...options,headers })
           .pipe(
             map((response: any) => response.results as ITraining),
-            tap(console.log),
+            tap(),
             catchError(this.handleError)
           );
     }
@@ -111,7 +109,7 @@ export class TrainingService {
      * Handle errors.
      */
     public handleError(error: HttpErrorResponse): Observable<any> {
-        console.log('handleError in trainingService', error);
+
 
         return throwError(() => new Error(error.message));
     }
@@ -121,7 +119,6 @@ export class TrainingService {
      */
     public update(training: ICreateTraining,id:string, options?: any): Observable<ITraining> {
         const url = `${this.endpoint}/${id}`;
-        console.log(`Update training - ${url}`);
 
         const token = sessionStorage.getItem('access_token'); // Get the token from session storage
         const headers = new HttpHeaders({
@@ -133,7 +130,7 @@ export class TrainingService {
             .put<ApiResponse<ITraining>>(url, training, { ...httpOptions, ...options,headers })
             .pipe(
                 map((response: any) => response.results as ITraining),
-                tap(console.log),
+                tap(),
                 catchError(this.handleError)
             );
     }
@@ -142,7 +139,6 @@ export class TrainingService {
      * Create a new training session.
      */
     public create(training: ICreateTraining| null,options?: any): Observable<ITraining> {
-        console.log('Create training -', training);
 
         const token = sessionStorage.getItem('access_token'); // Get the token from session storage
         const headers = new HttpHeaders({
@@ -154,7 +150,7 @@ export class TrainingService {
             .post<ApiResponse<ITraining>>(this.endpoint, training, { ...httpOptions, ...options, headers })
             .pipe(
                 map((response: any) => response.results as ITraining),
-                tap(console.log),
+                tap(),
                 catchError(this.handleError)
             );
     }
@@ -165,7 +161,6 @@ export class TrainingService {
 
     public enroll(enrollment: IEnrollment| null,options?: any): Observable<IEnrollment> {
         const url = `${environment.dataApiUrl}/api/enrollment/`;
-        console.log('Create enrollment -', enrollment);
 
         const token = sessionStorage.getItem('access_token'); // Get the token from session storage
         const headers = new HttpHeaders({
@@ -177,7 +172,7 @@ export class TrainingService {
             .post<ApiResponse<ITraining>>(url, enrollment, { ...httpOptions, ...options,headers })
             .pipe(
                 map((response: any) => response.results as ITraining),
-                tap(console.log),
+                tap(),
                 catchError(this.handleError)
             );
     }
@@ -188,26 +183,25 @@ export class TrainingService {
 
     public checkIfUserEnrolled(trainingId: string, userId: string): Observable<boolean> {
         const url = `${environment.dataApiUrl}/api/enrollment/${trainingId}/${userId}`;
-        console.log('Check if user is enrolled');
+  
       
         return this.http
           .get<ApiResponse<IEnrollment>>(url, httpOptions)
           .pipe(
             map((response: any) => !!response.results), // Convert to boolean
-            tap(console.log),
+            tap(),
             catchError(this.handleError)
           );
       }
 
       public getEnrollmentsForTraining(trainingId: string, options?: any): Observable<IEnrollment[] | null> {
         const url = `${environment.dataApiUrl}/api/enrollment/training/${trainingId}`;
-        console.log(`Get enrollments for training - ${url}`);
       
         return this.http
           .get<ApiResponse<IEnrollment[]>>(url, { ...options, ...httpOptions })
           .pipe(
             map((response: any) => response.results as IEnrollment[]),
-            tap(console.log),
+            tap(),
             catchError(this.handleError)
           );
       }

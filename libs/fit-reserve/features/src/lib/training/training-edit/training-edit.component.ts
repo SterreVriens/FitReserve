@@ -1,11 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrainingService } from '../training.service';
-import { AuthService } from '../../auth/auth.service'; // Adjust the path based on your project structure
+import { AuthService } from '../../auth/auth.service';
 import { ICreateTraining, Id, ILocation } from '@fit-reserve/shared/api';
 import { Subscription } from 'rxjs';
-//import mongoose from 'mongoose';
-// const ObjectId = mongoose.Types.ObjectId;
 
 @Component({
   selector: 'fit-reserve-training-edit',
@@ -29,7 +27,7 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private trainingService: TrainingService,
-    private authService: AuthService // Inject the AuthService
+    private authService: AuthService
   ) {}
 
   private trainingSubscription: Subscription | undefined;
@@ -38,13 +36,11 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(async (params) => {
       this.trainingSubscription = await this.trainingService.listLocations().subscribe(
         (locations) => {
-          console.log('Locations:', locations);
           this.locations = locations;
         },
         (error) => {
           console.error('Error fetching locations:', error);
         }
-      
       );
       this.trainingId = params.get('id') ?? null;
       if (this.trainingId) {
@@ -70,19 +66,14 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log('onSubmit - create/update');
-    console.log('Request Data:', this.training);
-  
     const userId = this.authService.getUserIdFromToken();
   
     if (userId) {
       this.training.UserId = userId;
   
       if (this.trainingId) {
-        console.log(`Update training - ${this.trainingId}`);
         this.trainingService.update(this.training, this.trainingId).subscribe(
-          (success) => {
-            console.log('Response:', success);
+          () => {
             this.router.navigate(['..'], { relativeTo: this.route });
           },
           (error) => {
@@ -90,10 +81,8 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
           }
         );
       } else {
-        console.log('Create training -', this.training);
         this.trainingService.create(this.training).subscribe(
           (success) => {
-            console.log('Response:', success);
             if (success) {
               this.router.navigate(['..'], { relativeTo: this.route });
             }
@@ -108,6 +97,11 @@ export class TrainingEditComponent implements OnInit, OnDestroy {
       console.error('Error: UserId is null');
     }
   }
-  
-  
+
+  isTrainer(): boolean {
+    const role = this.authService.getUserRoleFromToken();
+
+    return role === 'Trainer';
+  }
+
 }

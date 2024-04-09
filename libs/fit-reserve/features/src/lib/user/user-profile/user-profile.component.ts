@@ -72,7 +72,6 @@ export class UserProfileComponent implements OnInit {
                   }
                 );
                 this.subscription = this.trainingService.list().subscribe((results) => {
-                  console.log(`results: ${results}`);
                   
                   if (results !== null) {
                     this.trainingen = results;
@@ -93,7 +92,6 @@ export class UserProfileComponent implements OnInit {
                   }
                 });
                 this.subscription = this.userService.getAllLocations().subscribe((results) => {
-                  console.log(`results: ${results}`);
                   
                   if (results !== null) {
                     this.locations = results;
@@ -101,7 +99,6 @@ export class UserProfileComponent implements OnInit {
                   }
                 });
                 
-                console.log(u)
                 this.user = user;
             },
             (error) => {
@@ -131,8 +128,7 @@ export class UserProfileComponent implements OnInit {
 
   deleteEnrollment(enrollmentId: string): void {
     this.userService.deleteEnrollment(enrollmentId).subscribe(
-      (response) => {
-        console.log(response);
+      () => {
         this.refreshEnrollments();
       },
       (error) => {
@@ -169,41 +165,32 @@ export class UserProfileComponent implements OnInit {
     if (enrollment._id) {
       this.currentUserID = this.authService.getUserIdFromToken();
       if (this.isLoggedIn) {
-        this.userService.getProgress(enrollment.TrainingId, this.currentUserID).subscribe(
-          (progress) => {
-            console.log('Existing Progress:', progress);
-            if (progress) {
-              const modalRef = this.modalService.open(ProgressModalComponent, { centered: true, backdrop: false });
-              modalRef.componentInstance.progress = progress;
-            } else {
-              console.warn('Progress is undefined.');
-            }
-          },
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          (error) => {
-            const modalRef = this.modalService.open(ProgressCreateComponent, { centered: true, backdrop: false });
-          
-            modalRef.componentInstance.progressCreated.subscribe((newProgress: IProgress) => {
-
-              newProgress.TrainingId=enrollment.TrainingId;
-              newProgress.UserId = this.currentUserID;
-              console.log('New Progress Created:', newProgress);
-              
-              this.userService.createProgress(newProgress).subscribe(
-                (succes) => {
-                  console.log('Progress sucesfully created', succes)
-                  this.location.go(this.location.path());
-                },
-                (error) => {
-                  console.error('Error fetching user enrollments:', error);
-                }
-              );
-            });
+        try {
+          const progress = await this.userService.getProgress(enrollment.TrainingId, this.currentUserID).toPromise();
+          if (progress) {
+            const modalRef = this.modalService.open(ProgressModalComponent, { centered: true, backdrop: false });
+            modalRef.componentInstance.progress = progress;
           }
-        );
+        } catch (error) {
+          const modalRef = this.modalService.open(ProgressCreateComponent, { centered: true, backdrop: false });
+          modalRef.componentInstance.progressCreated.subscribe((newProgress: IProgress) => {
+            newProgress.TrainingId = enrollment.TrainingId;
+            newProgress.UserId = this.currentUserID;
+            
+            this.userService.createProgress(newProgress).subscribe(
+              () => {
+                this.location.go(this.location.path());
+              },
+              (error) => {
+                console.error('Error creating progress:', error);
+              }
+            );
+          });
+        }
       }
     }
   }
+  
 
   async fillLocation(): Promise<void> {
     

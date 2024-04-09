@@ -52,13 +52,22 @@ export class EnrollmentService{
     }
         
 
+    //haal de training en users op die bij de ernollment horen
     async getAllFromTraining(id: string): Promise<Enrollment[]> {
         Logger.log(`GetAllFromTraining(${id})`, this.TAG);
     
         try {
-            const result = await this.enrollmentModel.find({ TrainingId: id }).exec();
-    
-            return result || []; // Als resultaat null is, retourneer een lege array
+            const enrollments = await this.enrollmentModel.find({ TrainingId: id }).exec();
+            //zoek de users die bij het userid passen
+            const enrollmentsWithUser: Enrollment[] = await Promise.all(enrollments.map(async (enrollment) => {
+                const user = await this.userService.getOne(enrollment.UserId);
+                return {
+                    ...enrollment.toObject(),
+                    User: user || null,
+                };
+            }));
+
+            return enrollmentsWithUser || []; // Als resultaat null is, retourneer een lege array
         } catch (error) {
             console.error('Error fetching training enrollments:', error);
             return [];

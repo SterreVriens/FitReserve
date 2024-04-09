@@ -30,7 +30,6 @@ export class TrainingListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.trainingService.list().subscribe((results) => {
-      console.log(`results: ${results}`);
       
       // Controleer of results niet null is voordat je de forEach-loop uitvoert
       if (results !== null) {
@@ -40,7 +39,6 @@ export class TrainingListComponent implements OnInit, OnDestroy {
         this.trainingen.forEach(t => {
           this.isUserEnrolled(t._id).subscribe((isEnrolled: boolean) => {
             t.IsEnrolled = isEnrolled;
-            console.log(t._id + " heeft status " + t.IsEnrolled);
           });
 
           let enrol: IEnrollment[] | null= [];
@@ -95,12 +93,10 @@ export class TrainingListComponent implements OnInit, OnDestroy {
 
   isUserEnrolled(trainingId: string): Observable<boolean> {
     const userId = this.authService.getUserIdFromToken();
-    console.log(`training : ${trainingId} + ${userId}`);
 
     if (userId) {
         return this.trainingService.checkIfUserEnrolled(trainingId, userId).pipe(
             map((enrollment) => {
-                console.log('Response:', enrollment);
                 const isEnrolled = enrollment;
 
                 // Check if this.trainingen is not null before using find
@@ -128,7 +124,6 @@ export class TrainingListComponent implements OnInit, OnDestroy {
 
 
   enroll(trainingId: string, level: Level): void {
-    console.log(`Enrolling user in training ${trainingId}`);
 
     const userId = this.authService.getUserIdFromToken();
   
@@ -141,7 +136,6 @@ export class TrainingListComponent implements OnInit, OnDestroy {
 
       this.trainingService.enroll(this.enrollment).subscribe(
             (success) => {
-              console.log('Response:', success);
               if (success) {
                 this.router.navigate([`/feature/training/${trainingId}`], { });
               }

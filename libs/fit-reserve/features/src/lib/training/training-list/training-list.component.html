@@ -21,13 +21,13 @@
 
             <div *ngIf="!training.IsEnrolled && !isFull(training) && !isTrainer()">
               <form (ngSubmit)="enroll(training._id, enrollment.Level)" #enrollForm="ngForm" class="my-3">
-                <label for="levelDropdown" class="pr-2 text-primary"> <strong>Kies niveau:</strong> </label>
+                <label for="levelDropdown" class="pr-2"> <strong>Kies niveau:</strong> </label>
                 <select class="form-select" id="levelDropdown" name="level" [(ngModel)]="enrollment.Level" required>
                   <option value="Beginner">Beginner</option>
                   <option value="Intermediate">Intermediate</option>
                   <option value="Advanced">Advanced</option>
                 </select>
-                <button class="btn btn-success" style="margin-left: 1%;" type="submit" [disabled]="!enrollForm.valid">Enroll</button>
+                <button class="btn btn-success px-4" style="margin-left: 1%;" type="submit" [disabled]="!enrollForm.valid">Enroll</button>
               </form>
             </div>
             <a routerLink="{{ training._id }}" class="btn btn-primary ">Bekijk details</a>

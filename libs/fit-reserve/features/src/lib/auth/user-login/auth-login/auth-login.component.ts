@@ -28,11 +28,9 @@ export class AuthLoginComponent{
 
 
   onSubmit() {
-    console.log(`login user - ${this.user.UserName}`)
     this.authService.login(this.user).subscribe(
       (success: any) => { // Use 'any' type here
         const token = success.access_token;
-        console.log("Token:", token);
         if (success) {
           
           sessionStorage.setItem('access_token', token);

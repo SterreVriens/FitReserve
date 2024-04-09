@@ -52,13 +52,10 @@ export class UserEditComponent implements OnInit {
 
 
   onSubmit() {
-    console.log('onSubmit - create/update');
   
     if (this.userId) {
-      console.log(`Update user - ${this.userId}`);
       this.userService.update(this.user).subscribe(
         (updatedUser) => {
-          console.log(updatedUser);
   
           // Navigate to the user detail page with the updated UserName
           this.router.navigate(['feature', 'users', updatedUser._id]);
@@ -69,10 +66,8 @@ export class UserEditComponent implements OnInit {
       );
     } else {
       // New user: Create the user
-      console.log('Create user -', this.user);
       this.userService.create(this.user).subscribe(
         (newUser) => {
-          console.log(newUser);
   
           // Navigate to the user detail page with the new UserName
           this.router.navigate(['feature', 'users', newUser.UserName]);
@@ -87,7 +82,19 @@ export class UserEditComponent implements OnInit {
   //check if user has role trainer
   isTrainer(): boolean {
     const userRole = this.authService.getUserRoleFromToken();
-    console.log('Logged in userRole:', userRole);
     return userRole === Role.Trainer;
   }
+
+  isOwner(): boolean {
+    // Retrieve the token from AuthService
+    const userId = this.authService.getUserIdFromToken();
+
+
+    return userId === this.user?._id
+  }
+
+  isTrainerOrOwner(): boolean {
+    return this.isTrainer() || this.isOwner();
+}
+
 }
