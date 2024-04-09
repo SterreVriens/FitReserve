@@ -142,6 +142,17 @@ export class UserProfileComponent implements OnInit {
     );
   }
 
+  refreshLocations(): void {
+    this.userService.getAllLocations().subscribe(
+      (locations) => {
+        this.locations = locations;
+      },
+      (error) => {
+        console.error('Error fetching user locations:', error);
+      }
+    );
+  }
+
   
   async viewOrFillProgress(enrollment: IEnrollment): Promise<void> {
     if (enrollment._id) {
@@ -191,8 +202,8 @@ export class UserProfileComponent implements OnInit {
             modalRef.componentInstance.locationCreated.subscribe((newLocation: ILocation) => {
               
               this.userService.createLocation(newLocation).subscribe(
-                (succes) => {
-                  console.log('Progress sucesfully created', succes)
+                () => {
+                  this.refreshLocations();
                   this.location.go(this.location.path());
                 },
                 (error) => {

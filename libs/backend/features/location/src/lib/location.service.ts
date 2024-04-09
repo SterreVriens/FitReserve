@@ -2,6 +2,7 @@ import { Injectable, Logger } from "@nestjs/common";
 import { Model } from "mongoose";
 import { Location } from "./schemas/location.schemas";
 import { InjectModel } from "@nestjs/mongoose";
+import { ICreateLocation } from "@fit-reserve/shared/api";
 
 
 
@@ -24,7 +25,7 @@ export class LocationService {
         return await this.locationModel.findOne({ _id: id }).exec();
     }
 
-    async create(location: Location): Promise<Location | null> {
+    async create(location: ICreateLocation): Promise<Location | null> {
         Logger.log('create', this.TAG);
         return this.locationModel.create(location);
     }
