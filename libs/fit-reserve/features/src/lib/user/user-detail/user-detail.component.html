@@ -1,22 +1,20 @@
 <div class="container">
-    <div *ngIf="user; else loadingTemplate">
-        <h2 class="color-blue">Gebruiker: {{user.UserName}}</h2>
-        <div>
-          <p>Lid sinds: <strong class="color-darkorange"> {{formatDate(user.Date)}}</strong></p>
-          <p>Deze gebruiker is een : <strong class="color-darkorange">{{user.Role}}</strong></p>
-            <ng-container *ngIf="isOwner() || isTrainer(); else updateButtonTemplate">
-            <a routerLink="edit" class="btn btn-primary ">Update</a>
+  <div class="mt-4" *ngIf="user; else loadingTemplate">
+      <h2 class="">{{ user.UserName }}</h2>
+      <div>
+          <p>Lid sinds: <strong class="">{{ formatDate(user.Date) }}</strong></p>
+          <p>Deze gebruiker is een: <strong class="">{{ user.Role }}</strong></p>
+          <ng-container *ngIf="isOwner() || isTrainer(); else updateButtonTemplate">
+              <a routerLink="edit" class="btn btn-primary">Update</a>
           </ng-container>
           <ng-template #updateButtonTemplate>
-            <p>Jij hebt geen toestemming om deze gebruiker aan te passen</p>
+              <p>Jij hebt geen toestemming om deze gebruiker aan te passen</p>
           </ng-template>
-        </div>
       </div>
-      
-      <ng-template #loadingTemplate>
-        <p class="color-orange">Er ging iets fout :(</p>
-        <p>Probeer om de pagina te refreshen</p>
-      </ng-template>
-      
-</div>
+  </div>
 
+  <ng-template #loadingTemplate>
+      <p class="">Er ging iets fout :(</p>
+      <p>Probeer om de pagina te refreshen</p>
+  </ng-template>
+</div>

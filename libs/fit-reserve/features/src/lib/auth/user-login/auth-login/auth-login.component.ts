@@ -41,7 +41,7 @@ export class AuthLoginComponent{
       },
       (error) => {
         console.error('Error login in user:', error)
-        this.errorMessage = 'Invalid username or password';
+        this.errorMessage = 'Invalide gebruikersnaam of wachtwoord';
       }
     )
   }

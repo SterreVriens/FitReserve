@@ -1,41 +1,40 @@
-
 <div class="container">
-  <h1 class="color-lightblue">Alle trainingen:</h1>
+  <h1 class="">Al onze trainingen</h1>
   <ng-container *ngIf="isTrainer(); ">
-    <a routerLink="create" class="button">Maak een training</a>
+    <a routerLink="create" class="btn btn-primary my-3">Maak een training</a>
   </ng-container>
 
-  <div *ngFor="let training of trainingen">
-    <div class="card my-3">
-      <div class="card-body">
-        <h2 class="card-title color-orange">{{ training.SessionName }}</h2>
-        <div class="card-text">
-          <p class="color-darkorange">Beschrijving: {{ training.Description }}</p>
-          <p class="color-blue">Datum:  {{  formatProgressDate(training.Date) }}</p>
-          <p class="color-yellow">Duur: {{ training.Duration }}</p>
-          <p class="color-darkorange" *ngIf="isFull(training); else notFull" >This training is full!</p>
-          <ng-template #notFull>
-          <p>{{ training.AmountEnrolled }} / {{ training.Places }}</p>
-          </ng-template>
-          <a routerLink="{{ training._id }}">Bekijk details</a>
+  <div class="row">
+    <div *ngFor="let training of trainingen" class="col-md-6">
+      <div class="card my-3 border-primary"  style="height: 450px; ">
+        <div class="card-body">
+          <h2 class="card-title ">{{ training.SessionName }}</h2>
+          <div class="card-text">
+            <p class=""><strong>Beschrijving:</strong> {{ training.Description }}</p>
+            <p class=""><strong>Datum:</strong>  {{ formatProgressDate(training.Date) }}</p>
+            <p class=""><strong>Duur:</strong> {{ training.Duration }}</p>
+            <p class="" *ngIf="isFull(training); else notFull">This training is full!</p>
+            <ng-template #notFull>
+              <p class=""><strong>Aantal plaatsen: </strong>{{ training.AmountEnrolled }} / {{ training.Places }}</p>
+            </ng-template>
+            
 
-          <div *ngIf=" !training.IsEnrolled && !isFull(training) && !isTrainer()">            
-            <form (ngSubmit)="enroll(training._id, enrollment.Level)" #enrollForm="ngForm">
-              <label for="levelDropdown" class="pr-2">Kies niveau: </label>
-              <select class="form-select " id="levelDropdown" name="level" [(ngModel)]="enrollment.Level" required>
-                <option value="Beginner">Beginner</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Advanced">Advanced</option>
-              </select>
-          
-              <button class="btn btn-success" style="margin-left: 1%;" type="submit" [disabled]="!enrollForm.valid">Enroll</button>
-            </form>
+            <div *ngIf="!training.IsEnrolled && !isFull(training) && !isTrainer()">
+              <form (ngSubmit)="enroll(training._id, enrollment.Level)" #enrollForm="ngForm" class="my-3">
+                <label for="levelDropdown" class="pr-2 text-primary"> <strong>Kies niveau:</strong> </label>
+                <select class="form-select" id="levelDropdown" name="level" [(ngModel)]="enrollment.Level" required>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
+                <button class="btn btn-success" style="margin-left: 1%;" type="submit" [disabled]="!enrollForm.valid">Enroll</button>
+              </form>
+            </div>
+            <a routerLink="{{ training._id }}" class="btn btn-primary ">Bekijk details</a>
+            <div *ngIf="isTrainer()">
+              <p class="text-primary my-2"> <strong>Een trainer kan niet deelnemen aan een training, gebruik hiervoor je gebruiker account!</strong></p>
+            </div>
           </div>
-          <div *ngIf="isTrainer()">
-            <p style="color: orange;">Een trainer kan niet deelnemen aan een training, gebruik hiervoor je gebruiker account!</p>
-          </div>
-          
-          
         </div>
       </div>
     </div>

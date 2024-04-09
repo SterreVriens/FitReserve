@@ -1,16 +1,14 @@
 <div class="container">
-    <h1 class="color-lightblue">Alle gebruikers:</h1>
+    <h1 class="">Al onze gebruikers</h1>
     <div class="row">
-        <div *ngFor="let user of users" class="col-md-6"> 
-            <div >
-                <div class="card my-3">
-                    <div class="card-body">
-                        <h2 class="card-title color-orange">{{user.UserName}}</h2>
-                        <div class="card-text">
-                            <p class="color-blue">Rol: {{user.Role }}</p>
-                            <p class="color-yellow">Aangemeld:  {{ user.Date| date:'dd-MM-yyyy' }}</p>
-                            <a routerLink="{{ user._id }}">Bekijk details</a>
-                        </div>
+        <div *ngFor="let user of users" class="col-md-6">
+            <div class="card my-3 border-primary">
+                <div class="card-body">
+                    <h2 class="card-title ">{{ user.UserName }}</h2>
+                    <div class="card-text">
+                        <p class=""> <strong>Rol:</strong> {{ user.Role }}</p>
+                        <p class=""> <strong>Lid sinds:</strong> {{ user.Date | date:'dd-MM-yyyy' }}</p>
+                        <a routerLink="{{ user._id }}" class="btn btn-primary">Bekijk details</a>
                     </div>
                 </div>
             </div>

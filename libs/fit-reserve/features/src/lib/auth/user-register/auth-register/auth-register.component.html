@@ -1,12 +1,11 @@
 <div class="container">
-    
     <form 
         #registrationForm="ngForm"
         name="registrationform"
         (ngSubmit)="registrationForm.form.valid && onSubmit()"
         novalidate>
         <div class="form-group">
-            <label for="Username">Username</label>
+            <label for="UserName">Gebruikersnaam</label>
             <input 
                 type="text" 
                 class="form-control" 
@@ -16,9 +15,12 @@
                 [(ngModel)]="user.UserName"
                 #UserName="ngModel"
                 required>
+            <div *ngIf="UserName.invalid && (UserName.dirty || UserName.touched)" class="text-danger">
+                <div *ngIf="UserName.errors?.['required']">Gebruikersnaam mag niet leeg zijn.</div>
+            </div>
         </div>
         <div class="form-group">
-            <label for="Password">Password</label>
+            <label for="Password">Wachtwoord</label>
             <input 
                 type="password" 
                 class="form-control" 
@@ -28,12 +30,15 @@
                 [(ngModel)]="user.Password"
                 #Password="ngModel"
                 required>
+            <div *ngIf="Password.invalid && (Password.dirty || Password.touched)" class="text-danger">
+                <div *ngIf="Password.errors?.['required']">Wachtwoord mag niet leeg zijn.</div>
+            </div>
         </div>
         <button 
             type="submit" 
             class="btn btn-primary"
+            [disabled]="registrationForm.invalid"
             >Submit</button>
     </form>
-    <p>Al geregristreerd? <a routerLink="/feature/auth/login">login</a></p>
-
+    <p>Al geregistreerd? <a routerLink="/feature/auth/login">Login</a></p>
 </div>

@@ -15,13 +15,11 @@
                 [(ngModel)]="training!.SessionName" 
                 name="SessionName" 
                 #sessionName="ngModel"
-                [ngClass]="{
-                    'is-invalid': sessionName.invalid
-                }"
                 required
                 minlength="3">
-            <div *ngIf="sessionName.invalid" class="invalid-feedback">
-                <div>Sessienaam kan niet leeg zijn en moet langer zijn dan 3 tekens</div>
+            <div *ngIf="sessionName.invalid && (sessionName.dirty || sessionName.touched)" class="text-danger">
+                <div *ngIf="sessionName.errors?.['required']">Sessienaam is verplicht.</div>
+                <div *ngIf="sessionName.errors?.['minlength']">Sessienaam moet minstens 3 tekens bevatten.</div>
             </div>
         </div>
         
@@ -34,14 +32,12 @@
                 [(ngModel)]="training!.Description" 
                 name="Description" 
                 #description="ngModel"
-                [ngClass]="{
-                    'is-invalid': description.invalid
-                }"
                 required
                 minlength="10">
             </textarea>
-            <div *ngIf="description.invalid" class="invalid-feedback">
-                <div>Beschrijving kan niet leeg zijn en moet langer zijn dan 10 tekens</div>
+            <div *ngIf="description.invalid && (description.dirty || description.touched)" class="text-danger">
+                <div *ngIf="description.errors?.['required']">Beschrijving is verplicht.</div>
+                <div *ngIf="description.errors?.['minlength']">Beschrijving moet minstens 10 tekens bevatten.</div>
             </div>
         </div>
 
@@ -54,12 +50,9 @@
                 [(ngModel)]="training!.Date" 
                 name="Date" 
                 #date="ngModel"
-                [ngClass]="{
-                    'is-invalid': date.invalid
-                }"
                 required>
-            <div *ngIf="date.invalid" class="invalid-feedback">
-                <div>Datum is verplicht</div>
+            <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
+                Datum is verplicht.
             </div>
         </div>
 
@@ -73,14 +66,12 @@
                 [(ngModel)]="training!.Duration" 
                 name="Duration" 
                 #duration="ngModel"
-                [ngClass]="{
-                    'is-invalid': duration.invalid
-                }"
                 required
                 min="0.5" 
                 step="0.5"> 
-            <div *ngIf="duration.invalid" class="invalid-feedback">
-                <div>Duur is verplicht en moet een geldig nummer zijn</div>
+            <div *ngIf="duration.invalid && (duration.dirty || duration.touched)" class="text-danger">
+                <div *ngIf="duration.errors?.['required']">Duur is verplicht.</div>
+                <div *ngIf="duration.errors?.['min']">Duur moet minstens 0.5 zijn.</div>
             </div>
         </div>
 
@@ -92,14 +83,11 @@
                 [(ngModel)]="training!.LocationId" 
                 name="LocationId" 
                 #location="ngModel"
-                [ngClass]="{
-                    'is-invalid': location.invalid
-                }"
                 required>
                 <option *ngFor="let location of locations" [value]="location._id">{{location.Name}}</option>
             </select>
-            <div *ngIf="location.invalid" class="invalid-feedback">
-                <div>Locatie mag niet leeg zijn en moet minstens 3 tekens bevatten</div>
+            <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger">
+                Locatie is verplicht.
             </div>
         </div>
 
@@ -113,13 +101,11 @@
                 [(ngModel)]="training!.Places" 
                 name="Places" 
                 #places="ngModel"
-                [ngClass]="{
-                    'is-invalid': places.invalid
-                }"
                 required
                 min="1"> 
-            <div *ngIf="places.invalid" class="invalid-feedback">
-                <div>Beschikbare plaatsen zijn verplicht en moeten een geldig nummer zijn</div>
+            <div *ngIf="places.invalid && (places.dirty || places.touched)" class="text-danger">
+                <div *ngIf="places.errors?.['required']">Beschikbare plaatsen zijn verplicht.</div>
+                <div *ngIf="places.errors?.['min']">Beschikbare plaatsen moeten minstens 1 zijn.</div>
             </div>
         </div>
 
@@ -127,9 +113,6 @@
             type="submit" 
             class="btn btn-primary"
             [disabled]="!trainingForm.valid"
-            [class.pointer-events-none]="trainingForm.invalid"
-            [class.opacity-30]="trainingForm.invalid">
-            Verzenden
-        </button>
+            >Verzenden</button>
     </form>
 </div>

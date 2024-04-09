@@ -1,66 +1,70 @@
 <div class="container">
-    <div *ngIf="isLoggedIn; else loginRedirect">
-      <h2>Gebruikers profiel</h2>
-      <p>Welkom, {{ user?.UserName }}!</p>
-  
-      <div *ngIf="enrollments.length > 0; else noEnrollments">
-        <h3>Jou aanmeldingen:</h3>
-        <div class="row">
-          <div *ngFor="let enrollment of enrollments" class="col-md-6">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Training: {{ enrollment?.Training?.SessionName }}</h5>
-                <p class="card-text"><strong>Niveau:</strong> {{ enrollment?.Level }}</p>
-                <p class="card-text"><strong>Wanneer?:</strong> {{ formatProgressDate(enrollment?.Training?.Date) }}</p>                
-                <p class="card-text"><strong>Waar?: </strong>{{enrollment?.Location?.Name}}</p>
-                <button *ngIf="enrollment._id" (click)="confirmDelete(enrollment._id)" class="btn btn-danger">Verwijder aanmelding</button>
-                <button *ngIf="enrollment._id" (click)="viewOrFillProgress(enrollment)" class="btn btn-primary">Bekijk jou progressie</button>
+  <div *ngIf="isLoggedIn; else loginRedirect">
+      <h2>Welkom, {{ user?.UserName }}!</h2>
+      <p>Leuk je weer te zien :)</p>
+
+      <div *ngIf="!isTrainer()">
+          <div *ngIf="enrollments.length > 0; else noEnrollments">
+              <h3>Jou aanmeldingen:</h3>
+              <div class="row">
+                  <div *ngFor="let enrollment of enrollments" class="col-md-6">
+                      <div class="card mb-3 border-primary">
+                          <div class="card-body">
+                              <h5 class="card-title">Training: {{ enrollment?.Training?.SessionName }}</h5>
+                              <p class="card-text"><strong>Niveau:</strong> {{ enrollment?.Level }}</p>
+                              <p class="card-text"><strong>Wanneer?:</strong> {{ formatProgressDate(enrollment?.Training?.Date) }}</p>
+                              <p class="card-text"><strong>Waar?: </strong>{{ enrollment?.Location?.Name }}</p>
+                              <button *ngIf="enrollment._id" (click)="confirmDelete(enrollment._id)" class="btn btn-danger mr-2">Verwijder aanmelding</button>
+                              <button *ngIf="enrollment._id" (click)="viewOrFillProgress(enrollment)" class="btn btn-primary">Bekijk jou progressie</button>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            </div>
           </div>
-        </div>
+          <ng-template #noEnrollments>
+              <p>Jij bent nog nergens voor aangemeld.</p>
+          </ng-template>
       </div>
-      <ng-template #noEnrollments>
-        <p>Jij bent nog nergens voor aangemeld.</p>
-      </ng-template>
-    </div>
-    <ng-container *ngIf="isTrainer(); ">
-      <button (click)="fillLocation()"  class="btn btn-primary">Nieuwe locatie</button>
-      <div class="row">
-        <div *ngFor="let location of locations" class="col-md-3">
-          <div class="card my-3">
-            <div class="card-body">
-              <h4 class="card-title">{{ location.Name }}</h4>
-              <div class="card-text">
-                <p class="color-darkorange">Adress: {{ location.Address }}</p>
-                <p class="color-blue">Stad: {{ location.City }}</p>
+
+      <ng-container *ngIf="isTrainer(); ">
+          <h3>Locaties</h3>
+          <button (click)="fillLocation()" class="btn btn-primary mb-3">Nieuwe locatie</button>
+          <div class="row">
+              <div *ngFor="let location of locations" class="col-md-4">
+                  <div class="card mb-3 border-primary">
+                      <div class="card-body">
+                          <h4 class="card-title">{{ location.Name }}</h4>
+                          <div class="card-text">
+                              <p class=""><strong>Adres:</strong> {{ location.Address }}</p>
+                              <p class=""> <strong>Stad: </strong>{{ location.City }}</p>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            </div>
           </div>
-        </div>
-      </div>
-      <h2>Alle trainingen:</h2>
-      <div class="row">
-        <div *ngFor="let training of trainingen" class="col-md-6">
-          <div class="card my-3">
-            <div class="card-body">
-              <h2 class="card-title color-orange">{{ training.SessionName }}</h2>
-              <div class="card-text">
-                <p > <strong class="color-darkorange">Beschrijving: </strong>{{ training.Description }}</p>
-                <p > <strong class="color-darkorange">Datum:</strong> {{  formatProgressDate(training.Date) }}</p>
-                <p > <strong class="color-darkorange">Duur: </strong> {{ training.Duration }}</p>
-                <p>{{training.AmountEnrolled}} / {{training.Places}}</p>
-                <p class="color-darkorange" *ngIf="isFull(training)">This training is full!</p>
-                <a class="btn btn-primary" routerLink="/feature/training/{{ training._id }}">Bekijk details</a>
+          <h2>Alle trainingen:</h2>
+          <div class="row">
+              <div *ngFor="let training of trainingen" class="col-md-6">
+                  <div class="card mb-3 border-primary" style="height: 400px;">
+                      <div class="card-body">
+                          <h2 class="card-title">{{ training.SessionName }}</h2>
+                          <div class="card-text">
+                              <p><strong>Beschrijving:</strong> {{ training.Description }}</p>
+                              <p><strong>Datum:</strong> {{ formatProgressDate(training.Date) }}</p>
+                              <p><strong>Duur:</strong> {{ training.Duration }}</p>
+                              <p><strong>Beschikbare plekken:</strong> {{ training.AmountEnrolled }} / {{ training.Places }}</p>
+                              <p class="text-warning" *ngIf="isFull(training)">This training is full!</p>
+                              <a class="btn btn-primary" routerLink="/feature/training/{{ training._id }}">Bekijk details</a>
+                          </div>
+                      </div>
+                  </div>
               </div>
-            </div>
           </div>
-        </div>
-      </div>
-    </ng-container>
-    <ng-template #loginRedirect>
-      <p>Please log in to view your profile.</p>
-      <button (click)="redirectToLogin()">Go to Login</button>
-    </ng-template>
+      </ng-container>
+
   </div>
-  
+  <ng-template #loginRedirect>
+      <p class="mt-3">Please log in to view your profile.</p>
+      <button (click)="redirectToLogin()" class="btn btn-primary">Go to Login</button>
+  </ng-template>
+</div>

@@ -1,35 +1,82 @@
-
 <div class="modal-header">
-    <h4 class="modal-title">Maak een locatie aan</h4>
-  </div>
-  <div class="modal-body">
-    <form 
+  <h4 class="modal-title">Maak een locatie aan</h4>
+</div>
+<div class="modal-body">
+  <form 
       #locationCreate="ngForm"
-      (ngSubmit)="onSubmit()">
+      (ngSubmit)="locationCreate.form.valid && onSubmit()">
       <div class="form-group">
-        <label for="name">Naam:</label>
-        <input type="string" class="form-control" id="Name" [(ngModel)]="location.Name" name="Name" required>
+          <label for="Name">Naam:</label>
+          <input 
+              type="text" 
+              class="form-control" 
+              id="Name" 
+              [(ngModel)]="location.Name" 
+              name="Name" 
+              required>
+          <div *ngIf="locationCreate.controls['Name'].invalid && locationCreate.controls['Name'].touched" class="text-danger">
+              Naam is verplicht.
+          </div>
       </div>
       <div class="form-group">
-        <label for="Description">Beschrijving:</label>
-        <input type="string" class="form-control" id="Description" [(ngModel)]="location.Description" name="Description" required>
+          <label for="Description">Beschrijving:</label>
+          <input 
+              type="text" 
+              class="form-control" 
+              id="Description" 
+              [(ngModel)]="location.Description" 
+              name="Description" 
+              required>
+          <div *ngIf="locationCreate.controls['Description'].invalid && locationCreate.controls['Description'].touched" class="text-danger">
+              Beschrijving is verplicht.
+          </div>
       </div>
       <div class="form-group">
-        <label for="Address">Address:</label>
-        <input type="string" class="form-control" id="Address" [(ngModel)]="location.Address" name="Address" required>
+          <label for="Address">Adres:</label>
+          <input 
+              type="text" 
+              class="form-control" 
+              id="Address" 
+              [(ngModel)]="location.Address" 
+              name="Address" 
+              required>
+          <div *ngIf="locationCreate.controls['Address'].invalid && locationCreate.controls['Address'].touched" class="text-danger">
+              Adres is verplicht.
+          </div>
       </div>
       <div class="form-group">
-        <label for="City">Stad:</label>
-        <input type="string" class="form-control" id="City" [(ngModel)]="location.City" name="City" required>
+          <label for="City">Stad:</label>
+          <input 
+              type="text" 
+              class="form-control" 
+              id="City" 
+              [(ngModel)]="location.City" 
+              name="City" 
+              required>
+          <div *ngIf="locationCreate.controls['City'].invalid && locationCreate.controls['City'].touched" class="text-danger">
+              Stad is verplicht.
+          </div>
       </div>
       <div class="form-group">
-        <label for="Country">Land:</label>
-        <input type="string" class="form-control" id="Country" [(ngModel)]="location.Country" name="Country" required>
+          <label for="Country">Land:</label>
+          <input 
+              type="text" 
+              class="form-control" 
+              id="Country" 
+              [(ngModel)]="location.Country" 
+              name="Country" 
+              required>
+          <div *ngIf="locationCreate.controls['Country'].invalid && locationCreate.controls['Country'].touched" class="text-danger">
+              Land is verplicht.
+          </div>
       </div>
-      <button type="submit" class="btn btn-primary" [disabled]="!locationCreate.form.valid">Create Progress</button>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" (click)="activeModal.dismiss()">Close</button>
-  </div>
-  
+      <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="!locationCreate.form.valid"
+          >Maak locatie aan</button>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-default" (click)="activeModal.dismiss()">Sluiten</button>
+</div>

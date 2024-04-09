@@ -28,6 +28,7 @@ export class UserProfileComponent implements OnInit {
   trainingen: ITraining[] | null = null;
   locations: ILocation[] | null = null;
   createdTrainingen: ITraining[] | null = null;
+  today = new Date();
 
   constructor(private authService: AuthService,
     private userService: UserService,  
@@ -38,6 +39,7 @@ export class UserProfileComponent implements OnInit {
     private trainingService: TrainingService) {}
 
   ngOnInit(): void {
+    this.today.getDate();
     this.isLoggedIn = !!this.authService.getUserIdFromToken();
     if (this.isLoggedIn) {
         this.authService.getProfile().subscribe(
